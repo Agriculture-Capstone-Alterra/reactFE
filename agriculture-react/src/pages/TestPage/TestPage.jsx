@@ -3,6 +3,7 @@ import Table from "../../components/Table/Table";
 
 export default function TestPage(){
 
+    // begin : dummy data untuk data pada chart
     const generateRandomData = (count) => {
         return Array.from({ length: count }, (_, index) => ({
             month: (index + 1).toString(),
@@ -22,6 +23,7 @@ export default function TestPage(){
             color: '#847042',
         },
     ];
+    //  end : dummy data untuk data pada chart
 
     return(
         <>

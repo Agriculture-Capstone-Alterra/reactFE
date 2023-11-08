@@ -4,13 +4,21 @@ import styles from './LineChart.module.css';
 import { useEffect } from 'react';
 
 const LineChart = ({ data }) => {
+    // untuk props data, kurang lebih seperti berikut struktur array yang harus diberikan : 
+    // data = [
+    //      {dataSetName:'bulan ini',data : [{month:'1', value:'100'}, {month:'2',value:'121'}], color : "#4B567E"},
+    //      {dataSetName:'bulan lalu',data : [{month:'1', value:'100'}, {month:'2',value:'121'}], color : "#4B567E"},
+    // ]
+    // dimana dataSetName akan dijadikan nama label / legend pada line chart, data berisi array yang menampung object beratribut month (string) dan value (numeric)
+    // color jadi field yang menampung warna untuk legends nya, berikan dalam format hexadesimal
+
     const labels = data[0].data.map((item) => item.month);
 
     const datasets = data.map((dataset) => ({
         label: dataset.dataSetName,
         data: dataset.data.map((item) => item.value),
         fill: 'origin',
-        backgroundColor: `${dataset.color}80`, // Appending '20' for 0.2 opacity
+        backgroundColor: `${dataset.color}80`,
         borderColor: dataset.color,
         cubicInterpolationMode: 'monotone',
         tension: 0.5,
