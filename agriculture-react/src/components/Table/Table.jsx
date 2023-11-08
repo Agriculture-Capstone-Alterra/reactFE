@@ -5,7 +5,7 @@ import "./Table.css"
 export default function Table({headers, children}){
     // passing props headers adalah array yang isinya string. bentuknya seprti berikut vv: 
     // headers = ["No.", "Nama pengguna", "Nama yang lainya", "dll"]
-
+    
     // props children itu adalah apapun yang ada di antara tag Table pembuka dan penutup
     // contoh penggunaan vv : 
     // <Table headers={headers}>

@@ -5,7 +5,6 @@ import "./essentials/essentialcss.css"
 import TestPage from './pages/TestPage/TestPAge';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
