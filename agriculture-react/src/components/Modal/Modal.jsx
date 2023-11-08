@@ -24,14 +24,14 @@ const Modal = () => {
                 <h5 className="modal-title">Hapus Data Tanaman</h5>
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div className="modal-body">
+              <div className="modal-body text-center">
                 <p>Apakah anda yakin akan mengapus data ini?</p>
               </div>
-              <div className="modal-footer gap-3">
+              <div className="modal-footer justify-content-center gap-3">
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                   Batal
                 </button>
-                <button type="button" className="btn btn-primary">
+                <button type="button" className="btn btn-danger">
                   Hapus
                 </button>
               </div>
