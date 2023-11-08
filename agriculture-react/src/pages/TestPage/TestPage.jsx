@@ -10,7 +10,9 @@ export default function TestPage(){
         
         <div>
             <Card/>
+            <br/>
             <Modal/>
+            <br/>
             <InfoCard/>
         </div>
         
