@@ -1,0 +1,31 @@
+.topbar-parent {
+  width: 100%;
+}
+
+.topbar-title {
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  width: 960px;
+}
+
+.topbar-children {
+  padding: 20px 10px;
+}
+
+.topbar-icon {
+  position: relative;
+}
+
+.topbar-counter {
+  position: absolute;
+  left: 20px;
+  top: 11px;
+  text-align: center;
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 600;
+  width: 13px;
+  height: 12px;
+}
