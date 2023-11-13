@@ -1,22 +1,20 @@
-import { useState } from 'react'
-import {BrowserRouter, Routes, Route, Link, Outlet} from 'react-router-dom';
-import "./essentials/essentialcss.css"
-import TestPage from './pages/TestPage/TestPAge';
+import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
+import "./essentials/essentialcss.css";
+import TestPage from "./pages/TestPage/TestPage";
+import Sidebar from "./components/Sidebar/Sidebar";
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <BrowserRouter>
+    <BrowserRouter>
+      <div className="app d-flex">
+        <Sidebar />
         <Routes>
-          <Route path="/" element={<TestPage/>} />
+          <Route path="/" element={<TestPage />} />
         </Routes>
-      </BrowserRouter>
-
-
-    </>
-  )
+      </div>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
