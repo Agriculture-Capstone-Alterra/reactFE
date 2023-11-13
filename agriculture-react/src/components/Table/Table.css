@@ -10,13 +10,22 @@
     border-color: black;
 }
 
-
-.table-body > tr:nth-child(odd){
+.table-body > tr:nth-child(even){
     background-color: #DCEEE8;
 }
 
-
+.table-body > tr > td{
+    padding: 10px 0px 10px 10px;
+    font-size: 16px;
+    color: black;
+    
+}
 
 .table-th{
     padding: 10px 4px;
+    line-height: 24px;
+}
+
+.table-head-bodygap{
+    height: 18px;
 }
