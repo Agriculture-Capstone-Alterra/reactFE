@@ -7,12 +7,9 @@ import Sidebar from "./components/Sidebar/Sidebar";
 function App() {
   return (
     <BrowserRouter>
-      <div className="app d-flex">
-        <Sidebar />
         <Routes>
           <Route path="/" element={<TestPage />} />
         </Routes>
-      </div>
     </BrowserRouter>
   );
 }

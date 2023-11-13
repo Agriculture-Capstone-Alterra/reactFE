@@ -33,3 +33,14 @@ p, tr{
 .fontw900{
     font-weight:900;
 }
+
+.fonts16{
+    font-size: 16px;
+}
+.fonts12{
+    font-size: 12px;
+}
+
+.text-removemargin{
+    margin-bottom: 0px;
+}
