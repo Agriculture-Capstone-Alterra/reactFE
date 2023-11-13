@@ -41,6 +41,10 @@ p, tr{
     font-size: 12px;
 }
 
+.fonts20{
+    font-size: 20px;
+}
+
 .text-removemargin{
     margin-bottom: 0px;
 }
