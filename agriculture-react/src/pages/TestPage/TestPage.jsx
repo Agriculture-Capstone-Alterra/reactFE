@@ -1,5 +1,5 @@
 import Table from "../../components/Table/Table";
-import DashboardCard from "../../components/dashboard card/dashboard";
+import DashboardCard from "../../components/dashboard card/dashboardCard";
 export default function TestPage(){
 
     return(
