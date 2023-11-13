@@ -3,7 +3,6 @@ import "./essentials/essentialcss.css";
 import TestPage from "./pages/TestPage/TestPage";
 import Sidebar from "./components/Sidebar/Sidebar";
 
-
 function App() {
   return (
     <BrowserRouter>
