@@ -1,25 +1,20 @@
-
-import Modal from "../../components/Modal/Modal";
-import Card from "../../components/Card/Card";
-import InfoCard from "../../components/InfoCard/InfoCard";
+import Filter from "../../components/Filter";
 import Table from "../../components/Table/Table";
 
-export default function TestPage(){
-
-    return(
-        <>
-
-        
-        <div>
-            <Card/>
-            <br/>
-            <Modal/>
-            <br/>
-            <InfoCard/>
-            <Table>              
-            </Table>
+export default function TestPage() {
+  return (
+    <>
+      <div style={{ padding: "30px", backgroundColor: "" }}>
+        <div className="row">
+          <div className="col-md-9">
+            <Table></Table>
+          </div>
+          <div className="col-md-3">
+            <Filter />
+          </div>
         </div>
-        
-        </>
-    )
+      </div>
+      <div style={{ padding: "30px" }}></div>
+    </>
+  );
 }
