@@ -28,15 +28,21 @@ export default function TestPage(){
         },
     ];
     //  end : dummy data untuk data pada chart
+    
+    
     return(
         <>
-        <Layout/>
-        <div>
-              <div className="mt-2" style={{ width: '800px', height: '400px' }}>
-                  {/* <LineChart data={data} /> */}
-                  <LineChart data={data} />
-              </div>
-        </div>
+        <Layout pagetitle={"nama header"} breadcrumbs={"Menanam Tanaman / Chart"}>
+            {/* <div>
+                <div className="mt-2" style={{ width: '800px', height: '400px' }}>
+                    <LineChart data={data} />
+                </div>
+            </div> */}
+
+            <p>Test isintya</p>
+            
+        </Layout>
+        
       <div style={{ padding: "30px" }}></div>
     </>
   );

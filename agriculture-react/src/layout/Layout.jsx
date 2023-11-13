@@ -1,19 +1,28 @@
+import Sidebar from "../components/Sidebar/Sidebar";
+import "./Layout.css"
 
 
-export default function Layout({children , pagetitle}){
+export default function Layout({children , pagetitle, breadcrumbs}){
     return (
 
         <>
-        {/* di TopBar seharusnya bakal ada props untuk masukin title */}
         
         <div className="d-flex">
-            <div style={{height: "100vh", width: "300px"}} className="bg-info">SIDEBAR</div>
-            <div style={{width: "100%"}} className="d-flex flex-column">
+            <Sidebar/>
+            <div className="d-flex flex-column layout-rightpart">
                 <div style={{height: "100px", width: "100%"}} className="bg-primary">
-                    <p>TOP BAR</p>
+                    <p>{pagetitle}</p>
                 </div>
-                <div style={{height: "1000px", width: "100%"}} className="bg-success">
-                    MAIN CONTENT
+                <div className="layout-breadcrumbsdiv">
+                    <p className="fonts12 text-removemargin">
+                        <span className="fontw600">{breadcrumbs}</span>
+                        <span className="fontw600 text-secondary">{breadcrumbs}</span>
+                    </p>
+                </div>
+
+                <div className="layout-maincontent">
+                    
+                    {children}
                 
                 </div>
             
