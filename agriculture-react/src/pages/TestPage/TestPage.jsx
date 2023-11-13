@@ -1,5 +1,5 @@
 import Table from "../../components/Table/Table";
-import Dashboard from "../../components/dashboard card/dashboard";
+import DashboardCard from "../../components/dashboard card/dashboard";
 export default function TestPage(){
 
     return(
@@ -8,7 +8,7 @@ export default function TestPage(){
             <Table>
                 
             </Table>
-            <Dashboard/>
+            <DashboardCard/>
         </div>
         
         </>

@@ -4,7 +4,7 @@ import card2 from '../../assets/Group2.svg'
 import cloud from '../../assets/Cloud.svg'
 import './dashboard.css'
 
-function Dashboard() {
+function DashboardCard() {
     return (
         <div className="dashboard">
             <div className="border">
@@ -39,4 +39,4 @@ function Dashboard() {
     )
 }
 
-export default Dashboard;
+export default DashboardCard;
