@@ -1,12 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-import './TambahTanaman.css'
-import Breadcrumb from '../../components/Breadcrumb'
-import FormLayout from '../../components/FormLayout'
-import Input from '../../components/Input'
-import TextArea from '../../components/Textarea'
-import Select from '../../components/Select'
-import Invalid from '../../components/Invalid'
+import './style.css'
+import Breadcrumb from '../../../components/Breadcrumb'
+import FormLayout from '../../../components/FormLayout'
+import Input from '../../../components/Input'
+import TextArea from '../../../components/Textarea'
+import Select from '../../../components/Select'
+import Invalid from '../../../components/Invalid'
 
 const TambahTanaman = () => {
     const jenisTanamanOptions = [
