@@ -1,0 +1,137 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  min-width: 80px; /* Minimum width when closed */
+  height: 100vh;
+  padding: 20px 24px;
+  position: relative;
+  background-color: #f9fafb;
+  font-family: "Inter", sans-serif;
+  transition: width 0.4s;
+}
+
+/* Sidebar logo */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-logo-text {
+  color: #36725d;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+/* Sidebar list */
+.nav-link {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  align-self: stretch;
+  gap: 10px;
+}
+
+.sidebar-item-text {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.nav-link.sidebar-text svg {
+  width: 24px;
+  height: 24px;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #51ab8c;
+  color: #f9fafb;
+}
+
+.nav-pills .nav-link {
+  color: #6b7280;
+}
+
+.nav-pills .nav-link:not(.active):hover {
+  color: #51ab8c;
+  border: 1px solid #51ab8c;
+}
+
+/* Sidebar toggle button */
+.sidebar-toggle {
+  display: flex;
+  align-items: center;
+  border-radius: 100px;
+  border: 1px solid #6b728040;
+  color: #6b7280;
+  margin-left: auto;
+}
+
+.sidebar-toggle:hover {
+  color: #51ab8c;
+  border: 1px solid #51ab8c;
+}
+
+/* Sidebar closed */
+.sidebar.closed {
+  width: 90px; /* Width when closed */
+}
+
+.sidebar.closed .sidebar-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.sidebar.closed .sidebar-logo-text {
+  display: none;
+}
+
+.sidebar.closed .sidebar-list .nav-link span {
+  display: none;
+}
+
+.nav-link.sidebar-text {
+  position: relative;
+}
+
+/* Tooltip */
+.tooltip {
+  display: none;
+  position: absolute;
+  background-color: #000000e0;
+  color: #f9fafb;
+  padding: 8px;
+  border-radius: 8px;
+  z-index: 1;
+  margin-left: 48px;
+  font-family: "Inter", sans-serif;
+  white-space: nowrap;
+  transition: opacity 0.4s ease;
+}
+
+.sidebar.closed .nav-link:hover .tooltip {
+  display: block;
+  opacity: 1;
+}
+
+.sidebar.open .tooltip {
+  opacity: 0;
+}
+
+.tooltip::before {
+  content: "";
+  position: absolute;
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent #000000e0 transparent transparent;
+  /* top: 50%; */
+  left: -16px;
+  transform: translateY(10%);
+}

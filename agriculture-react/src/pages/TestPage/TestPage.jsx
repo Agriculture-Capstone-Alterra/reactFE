@@ -35,8 +35,10 @@ export default function TestPage(){
                 {/* <LineChart data={data} /> */}
                 <LineChart data={data} />
             </div>
+
         </div>
-        
-        </>
-    )
+      </div>
+      <div style={{ padding: "30px" }}></div>
+    </>
+  );
 }
