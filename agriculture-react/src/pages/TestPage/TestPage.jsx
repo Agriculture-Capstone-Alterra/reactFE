@@ -29,21 +29,36 @@ export default function TestPage(){
     ];
     //  end : dummy data untuk data pada chart
     
+    // begin : dummy data untuk breadcrumb
+    const breadcrumbsobjectexample = [
+        {
+            crumblink : "/linkpage1",
+            crumbname : "Nama Page1",
+        },
+        {
+            crumblink : "/linkpage2",
+            crumbname : "Nama Page2",
+        },
+        {
+            crumblink : "/linkpage3",
+            crumbname : "Nama Page Final",
+        }
+    ]
+    //end : dummy data untuk breadcrumbs
+
     
     return(
         <>
-        <Layout pagetitle={"nama header"} breadcrumbs={"Menanam Tanaman / Chart"}>
-            {/* <div>
+        <Layout pagetitle={"Nama Header"} breadcrumbs={breadcrumbsobjectexample}>
+
+            {/* begin main content */}
+            <div>
                 <div className="mt-2" style={{ width: '800px', height: '400px' }}>
                     <LineChart data={data} />
                 </div>
-            </div> */}
-
-            <p>Test isintya</p>
-            
+            </div>
+            {/* end main content */}
         </Layout>
-        
-      <div style={{ padding: "30px" }}></div>
     </>
   );
 }
