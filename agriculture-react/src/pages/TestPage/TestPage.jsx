@@ -1,6 +1,6 @@
 import LineChart from "../../components/LineChart/LineChart";
 import Table from "../../components/Table/Table";
-
+import DashboardCard from "../../components/dashboard card/dashboardCard";
 export default function TestPage(){
 
     // begin : dummy data untuk data pada chart
@@ -35,7 +35,6 @@ export default function TestPage(){
                 {/* <LineChart data={data} /> */}
                 <LineChart data={data} />
             </div>
-
         </div>
       </div>
       <div style={{ padding: "30px" }}></div>
