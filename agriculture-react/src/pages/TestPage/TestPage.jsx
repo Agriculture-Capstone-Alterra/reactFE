@@ -1,7 +1,11 @@
 import LineChart from "../../components/LineChart/LineChart";
 import Table from "../../components/Table/Table";
+import Layout from "../../layout/Layout";
 import DashboardCard from "../../components/dashboard card/dashboardCard";
 export default function TestPage(){
+
+    const headers= ["Ngetest ioni satu", "kedua", "Ketiga", "keempat"]
+
 
     // begin : dummy data untuk data pada chart
     const generateRandomData = (count) => {
@@ -24,20 +28,37 @@ export default function TestPage(){
         },
     ];
     //  end : dummy data untuk data pada chart
+    
+    // begin : dummy data untuk breadcrumb
+    const breadcrumbsobjectexample = [
+        {
+            crumblink : "/linkpage1",
+            crumbname : "Nama Page1",
+        },
+        {
+            crumblink : "/linkpage2",
+            crumbname : "Nama Page2",
+        },
+        {
+            crumblink : "/linkpage3",
+            crumbname : "Nama Page Final",
+        }
+    ]
+    //end : dummy data untuk breadcrumbs
 
+    
     return(
         <>
-        <div style={ {padding:"30px", backgroundColor: "grey"}}>
-            <Table>
-                
-            </Table>
-            <div className="mt-2" style={{ width: '800px', height: '400px' }}>
-                {/* <LineChart data={data} /> */}
-                <LineChart data={data} />
+        <Layout pagetitle={"Nama Header"} breadcrumbs={breadcrumbsobjectexample}>
+
+            {/* begin main content */}
+            <div>
+                <div className="mt-2" style={{ width: '800px', height: '400px' }}>
+                    <LineChart data={data} />
+                </div>
             </div>
-        </div>
-      </div>
-      <div style={{ padding: "30px" }}></div>
+            {/* end main content */}
+        </Layout>
     </>
   );
 }

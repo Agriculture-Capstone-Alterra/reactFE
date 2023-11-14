@@ -1,0 +1,30 @@
+.layout-maincontent{
+    min-height: 100vh;
+    width: 100%;
+}
+
+.layout-rightpart{
+    width: 100%;
+    margin-left: 16px;
+}
+
+.layout-breadcrumbsdiv{
+    padding: 30px 0px 30px 16px;
+}
+
+.layout-crumblink{
+    text-decoration: none;
+    margin : 0px 12px
+}
+
+.layout-crumblink.past{
+    color: black;
+}
+
+.layout-crumblink.now{
+    color: #4B5563
+}
+
+.layout-crumblink-divider{
+    color: #D1D5DB
+}
