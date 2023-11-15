@@ -1,7 +1,7 @@
 
 import React from 'react';
 import MawarPutih from '../../assets/img/mawarputih.jpg';
-import './card.css';
+import './card.module.css';
 
 const Card = () => {
   return (
