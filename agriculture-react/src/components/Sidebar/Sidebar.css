@@ -4,7 +4,7 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  width: 280px;
+  width: 310px;
   min-width: 80px; /* Minimum width when closed */
   height: 100vh;
   padding: 20px 24px;
