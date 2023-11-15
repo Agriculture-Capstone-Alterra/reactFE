@@ -5,8 +5,10 @@ import "./Layout.css"
 
 
 export default function Layout({children , pagetitle, breadcrumbs}){
-
-    const crumbsize = breadcrumbs.length
+    let crumbsize
+    if(breadcrumbs){
+        crumbsize = breadcrumbs.length
+    }
     return (
         <>
         <div className="d-flex">
@@ -17,6 +19,7 @@ export default function Layout({children , pagetitle, breadcrumbs}){
                     <p className="fonts12 text-removemargin">
                         {
                             breadcrumbs ?
+                            
                             breadcrumbs.map((items, index)=>{
                                 
                                 if(index == crumbsize-1){
