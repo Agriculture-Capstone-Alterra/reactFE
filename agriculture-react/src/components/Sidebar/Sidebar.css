@@ -1,17 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
-
 /* Sidebar */
 .sidebar {
   display: flex;
   flex-direction: column;
   width: 310px;
   min-width: 80px; /* Minimum width when closed */
-  height: 100vh;
   padding: 20px 24px;
   position: relative;
-  background-color: #f9fafb;
   font-family: "Inter", sans-serif;
   transition: width 0.4s;
+  background: var(--netral-50, #f9fafb);
 }
 
 /* Sidebar logo */

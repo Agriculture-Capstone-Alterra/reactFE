@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "./Sidebar.css";
 import { MdLogout, MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import { SidebarData } from "./SidebarData";
+import "./Sidebar.css";
 
 const Sidebar = () => {
   const [sidebarOpen, setsidebarOpen] = useState(true);
@@ -20,7 +20,7 @@ const Sidebar = () => {
     <div className={`sidebar ${sidebarOpen ? "open" : "closed"}`}>
       <nav className="sidebar-logo text-decoration-none d-flex align-items-center">
         <img src="/sidebar-logo.png" alt="logo"></img>
-        {sidebarOpen && <span className="sidebar-logo-text">Agriculture</span>}
+        {sidebarOpen && <span className="sidebar-logo-text">Agriplant</span>}
       </nav>
       <hr />
       <ul className="sidebar-list nav nav-pills flex-column gap-1">
