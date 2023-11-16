@@ -4,7 +4,6 @@
   flex-direction: column;
   width: 310px;
   min-width: 80px; /* Minimum width when closed */
-  height: 100vh;
   padding: 20px 24px;
   position: relative;
   font-family: "Inter", sans-serif;
