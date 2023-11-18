@@ -1,0 +1,20 @@
+.btnAction {
+    background-color: #E5E7EB;
+}
+
+.btnPagination {
+    box-sizing: border-box;
+    color: #6B7280 !important;
+    border-color: #E5E7EB;
+}
+
+.btnPagination:hover {
+    box-sizing: border-box;
+    background-color: #6B728040;
+    border: none;
+}
+
+.paginationButtonText {
+    font-size: 24px;
+    font-weight: lighter;
+}
