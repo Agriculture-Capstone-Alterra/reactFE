@@ -11,10 +11,39 @@
 .btnPagination:hover {
     box-sizing: border-box;
     background-color: #6B728040;
-    border: none;
+    border-color: #E5E7EB;
 }
 
 .paginationButtonText {
     font-size: 24px;
     font-weight: lighter;
+}
+
+.titleWrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.customTitle {
+    color: #292D32;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0;
+}
+
+.customCard{
+    border-radius: var(--spacing-space-3, 12px);
+    border: 1px solid var(--stroke-25, rgba(107, 114, 128, 0.25));
+    /* background: var(--netral-50, #F9FAFB); */
+}
+
+.btnPrimary{
+    background-color: #51AB8C;
+}
+.btnPrimary:hover{
+    background-color: #3e856d;
 }
