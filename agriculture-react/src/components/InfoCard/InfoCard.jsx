@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 function InfoCard(props) {
+  const { title, content } = props;
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const handleCollapse = () => {
     setIsCollapsed(!isCollapsed);
-  }
+  };
 
   return (
     <div className="card p-2">
-      <div className="d-flex justify-content-around font-style" onClick={handleCollapse}>
-        <h6>Informasi Penanganan Hama</h6>
+      <div className="d-flex justify-content-between font-style" onClick={handleCollapse}>
+        <h6>{title}</h6> 
         <h6>{isCollapsed ? '+' : '-'}</h6>
       </div>
       {!isCollapsed && (
@@ -21,5 +23,10 @@ function InfoCard(props) {
     </div>
   );
 }
+
+InfoCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  content: PropTypes.node.isRequired,
+};
 
 export default InfoCard;
