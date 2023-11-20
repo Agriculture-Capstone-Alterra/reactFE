@@ -16,7 +16,7 @@ const InfoDetailRiwayatTanaman = () => {
     },
     {
       crumbname: "List Tanaman",
-      crumblink: "/history-tanaman/list-tanaman/",
+      crumblink: "/list-tanaman",
     },
     {
       crumbname: "Info Detail Riwayat Tanaman",
@@ -75,7 +75,6 @@ const InfoDetailRiwayatTanaman = () => {
                 </div>
                 <InfoCard
                   title="Deskripsi Tanaman"
-                  style={{ backgroundColor: "#FFFF" }} 
                   content="Cara terbaik untuk mengendalikan hama dan penyakit ialah selalu pencegahan daripada intervensi. Penanam bayam harus mempertimbangkan langkah-langkah berikut:
 
           Disarankan menggunakan benih bersertifikat. Dalam kebanyakan kasus, petani harus memilih hibrida yang memiliki ketahanan terhadap bolting dan Bulai.
@@ -83,37 +82,50 @@ const InfoDetailRiwayatTanaman = () => {
           Pemupukan dan/atau Irigasi yang tidak memadai akan mempercepat efek negatif.
           Langkah-langkah pengendalian bahan kimia diizinkan hanya setelah berkonsultasi dengan ahli agronomi berlisensi setempat.
           Rotasi tanaman dapat diterapkan untuk mengendalikan beberapa penyakit."
-
                 />
               </div>
             </div>
           </div>
-          <div className="col">
-            <h4 className="">Tanggal Mulai Menanam</h4>
-            <div className=""><img src={Calendar}/>22 Februari 2023</div>
-            <h4 className="">Kalender Musiman</h4>
-            <h5 className="">Musim Kemarau</h5>
-            <div className=""><img src={Calendar}/>22 Februari 2023</div>
-            <h5 className="">Musim Hujan</h5>
-            <div className=""><img src={Calendar}/>22 Februari 2023</div>
+          <div className="col  row-gap-3">
+            <h4 className="g-col-6">Tanggal Mulai Menanam</h4>
+            <div className="">
+              <img src={Calendar} />
+              22 Februari 2023
+            </div>
+            <h4 className="g-col-6">Kalender Musiman</h4>
+            <h5 className="g-col-6">Musim Kemarau</h5>
+            <div className="">
+              <img src={Calendar} />
+              22 Februari 2023
+            </div>
+            <h5 className="g-col-6">Musim Hujan</h5>
+            <div className="">
+              <img src={Calendar} />
+              22 Februari 2023
+            </div>
 
-            <h4 className="">Progress Tanaman</h4>
+            <h4 className="g-col-6">Progress Tanaman</h4>
 
-            <h4 className="">Perkembangan Tumbuhan</h4>
+            <h4 className="g-col-6">Perkembangan Tumbuhan</h4>
 
             <InfoCard
-            title="Informasi Penanganan Hama"
-            content="Cara terbaik untuk mengendalikan hama dan penyakit ialah selalu pencegahan daripada intervensi. Penanam bayam harus mempertimbangkan langkah-langkah berikut:
+              title="Informasi Penanganan Hama"
+              content="Cara terbaik untuk mengendalikan hama dan penyakit ialah selalu pencegahan daripada intervensi. Penanam bayam harus mempertimbangkan langkah-langkah berikut:
 
           Disarankan menggunakan benih bersertifikat. Dalam kebanyakan kasus, petani harus memilih hibrida yang memiliki ketahanan terhadap bolting dan Bulai.
           Perkecambahan benih yang rendah atau laju pembibitan yang tidak tepat akan mempercepat efek negatif hama dan penyakit.
           Pemupukan dan/atau Irigasi yang tidak memadai akan mempercepat efek negatif.
           Langkah-langkah pengendalian bahan kimia diizinkan hanya setelah berkonsultasi dengan ahli agronomi berlisensi setempat.
           Rotasi tanaman dapat diterapkan untuk mengendalikan beberapa penyakit."
-          />
-          
-
-
+            />
+            <InfoCard
+              title="Informasi Nutrisi dan Pupuk"
+              content="Pertumbuhan bayam memerlukan tanah yang kaya nutrisi. 
+              Petani berpengalaman menggunakan campuran pupuk kompos dan fosforus sebelum menanam benih. 
+              Dalam kasus defisiensi fosforus yang parah, P2O5 dapat diterapkan. Banyak petani juga menggunakan fertigasi untuk menyuburkan tanaman 
+              melalui irigasi. Bayam memerlukan nitrogen (N) sekitar 70-80 kg per hektar, dan petani sering menggunakan Amonium Nitrat. Dalam produksi organik, pupuk organik kaya nitrogen dapat digunakan. 
+              Pupuk organik membantu dalam pengendalian gulma dan konservasi kelembaban tanah. Penting untuk melakukan Analisa Tanah dan berkonsultasi dengan ahli agronomi berlisensi sebelum menerapkan metode pemupukan apa pun, karena setiap ladang memiliki kebutuhan yang berbeda."
+            />
           </div>
         </div>
       </div>
