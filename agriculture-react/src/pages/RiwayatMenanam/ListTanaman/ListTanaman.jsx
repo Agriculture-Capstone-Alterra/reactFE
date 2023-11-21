@@ -55,7 +55,7 @@ const ListTanaman = () => {
             <div className={styles.cardContainer}>
               <div className={styles.card}>
                 {cards.map((card, index) => (
-                  <Card key={index} name={card.name} date={card.date} />
+                  <Card key={index} name={card.name} />
                 ))}
               </div>
               <div className={styles.filter}>

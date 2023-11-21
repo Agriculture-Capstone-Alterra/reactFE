@@ -3,6 +3,8 @@ import "./essentials/essentialcss.css";
 import TableTanaman from "./pages/MenanamTanaman/TableTanaman/indeks";
 import TestPage from "./pages/TestPage/TestPage";
 import Sidebar from "./components/Sidebar/Sidebar";
+import Topbar from "./components/Topbar/Topbar";
+
 import PengingatTanaman from "./pages/PengingatMerawatTanaman/PengingatTanaman";
 
 import TambahTanaman from "./pages/MenanamTanaman/TambahTanaman";
@@ -17,7 +19,6 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 function App() {
   return (
     <BrowserRouter>
-
       <Routes>
           <Route path="/" element={<TestPage />} />
           <Route path="/riwayat-menanam" element={<RiwayatMenanam />} />
