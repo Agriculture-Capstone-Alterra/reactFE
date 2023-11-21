@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-p, tr{
+p, tr, a, button{
     font-family: Inter;
+    margin-bottom: 0px;
 
 }
 .fontw100{
@@ -34,17 +35,33 @@ p, tr{
     font-weight:900;
 }
 
+.fonts14{
+    font-size: 14px;
+}
 .fonts16{
     font-size: 16px;
 }
 .fonts12{
     font-size: 12px;
 }
-
+.fonts24{
+    font-size: 24px;
+}
 .fonts20{
     font-size: 20px;
+}
+.fonts32{
+    font-size: 32px;
+}
+.fonts40{
+    font-size: 40px;
 }
 
 .text-removemargin{
     margin-bottom: 0px;
+}
+
+.removelinkdecor{
+    text-decoration: none;
+    color: black;
 }
