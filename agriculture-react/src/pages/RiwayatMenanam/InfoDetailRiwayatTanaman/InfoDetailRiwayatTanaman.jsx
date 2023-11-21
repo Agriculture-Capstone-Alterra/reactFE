@@ -9,6 +9,7 @@ import Varietas from "../../../assets/varietas.svg";
 import Calendar from "../../../assets/calendar.svg";
 import BarChart from "../../../components/BarChart/BarChart";
 import "./style.css";
+
 const InfoDetailRiwayatTanaman = () => {
   const breadcrumbsobjectexample = [
     {
@@ -25,6 +26,7 @@ const InfoDetailRiwayatTanaman = () => {
     },
   ];
 
+  
   return (
     <Layout
       pagetitle={"Info Detail History Tanaman"}
