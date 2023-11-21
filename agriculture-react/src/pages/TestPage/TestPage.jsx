@@ -1,6 +1,4 @@
-import LineChart from "../../components/LineChart/LineChart";
 import Layout from "../../layout/Layout";
-import DashboardCard from "../../components/dashboard card/dashboardCard";
 export default function TestPage() {
   const headers = ["Ngetest ioni satu", "kedua", "Ketiga", "keempat"];
 
@@ -49,7 +47,7 @@ export default function TestPage() {
         {/* begin main content */}
         <div>
           <div className="mt-2" style={{ width: "800px", height: "400px" }}>
-            
+
           </div>
         </div>
         {/* end main content */}
