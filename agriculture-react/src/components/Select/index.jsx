@@ -6,7 +6,6 @@ const Select = ({ id, name, value, className, onChange, options, title}) => {
       name={name}
       value={value}
       onChange={onChange}
-      required
     >
       <option value="" disabled selected>
         {title}

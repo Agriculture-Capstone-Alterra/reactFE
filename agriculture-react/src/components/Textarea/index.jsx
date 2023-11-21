@@ -7,7 +7,6 @@ const TextArea = ({ value, onChange, placeholder, name, className, id, row }) =>
                 className={className ? className : 'form-control'}
                 rows={row}
                 id={id ? id : ''} 
-                required
             />
 }
 
