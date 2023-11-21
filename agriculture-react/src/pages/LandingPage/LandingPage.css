@@ -1,0 +1,232 @@
+.lp-navbar{
+    background-color: #438E75;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.lp-logo{
+    height: 52px;
+}
+
+.lp-nav-link{
+    text-decoration: none;
+    color: white;
+}
+
+.lp-btn-group{
+    column-gap: 32px;
+}
+
+.lp-home-div{
+    background-color: #438E75;
+    overflow: hidden;
+}
+
+.lp-home-leftpart{
+    width: 581px;
+    margin-left: 100px;
+    margin-top: 107px;
+    margin-bottom: 225px;
+    row-gap: 32px;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.lp-home-rightpart{
+
+}
+.lp-home-tangan{
+    position: relative;
+    left: 125px;
+}
+
+.lp-btn-unduh{
+    background-color: #FDE68A;
+    border-style: none;
+    border-radius: 50px;
+    padding: 0px 20px;
+    height: 40px;
+    box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.lp-fitur-container{
+    display: flex;
+    width: 353px;
+    height: 225px;
+    padding: 18px 14px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-space-0, 0px);
+    flex-shrink: 0;
+    border-radius: var(--spacing-space-5, 20px);
+    background: var(--success-500, #10B981);
+    overflow: hidden;
+}
+.lp-fitur-container.infocuaca{
+    background: var(--success-500, #1E3A8A);
+    overflow: hidden;
+}
+.lp-fitur-container.waktusiram{
+    background: var(--success-500, #D97706);
+    overflow: hidden;
+}
+.lp-fitur-subdiv{
+    display: flex;
+    width: 100%;
+    padding: var(--spacing-space-11, 64px) var(--spacing-space-18, 100px);
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-space-9, 48px);
+}
+.lp-fitur-wordsetpbystep{
+    width: 275px;
+    
+}
+.lp-stepbystep{
+    position: relative;
+    left: 100px;
+    bottom: 15px;
+}
+.lp-infocuacaakurat{
+    position: relative;
+    bottom: 100px;
+    right: 14px;
+}
+.lp-pengingatwaktumenyiram{
+    position: relative;
+    bottom: 150px;
+    left: 175px;
+}
+
+.lp-fitur-wordinfocuaca{
+    width: 315px;
+}
+.lp-fitur-wordwaktusiram{
+    width: 258px;
+}
+.lp-fitur-wordwaktusiram > .title{
+    line-height: 27px;
+}
+.lp-wordwaktusiram{
+    width: 170px;
+}
+.lp-fitur-words{
+    line-height: 120%;
+}
+
+.lp-jenistnmn-words{
+    padding: 10px;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.lp-jenistnmn-picgroup{
+    gap: 8px;
+}
+.lp-jenistnmnpic{
+    width: 100px;
+    height: 100px;
+}
+
+.lp-jenistnmnpicwords{
+    color: #295646
+}
+.lp-jenistnmn-variant{
+    gap: 70px;
+}
+.lp-jenistnmn-div{
+    padding: 64px 0px;
+}
+
+.lp-fiturpromote{
+    padding: 64px 140px;
+}
+.lp-fiturpromote-wordpart{
+    width: 510px;
+    gap: 29px;
+}
+.lp-fiturpromote-img{
+    width: 596px;
+    height: 529px;
+    margin-left: 60px;
+}
+
+.lp-fiturpromote-img.left{
+    width: 595.52px;
+    height: 476.312px;
+    margin-right: 60px;
+    margin-left: 0px;
+}
+.lp-aplikasi-img{
+    height: 620px;
+    
+}
+.lp-aplikasi{
+    padding: 20px 140px;
+    gap: 64px;
+}
+.lp-aplikasi-dlbtngroup{
+    gap: 20px;
+}
+.lp-aplikasi-dlbtn{
+    width: 190px;
+    height: 57px;
+}
+.lp-font-primary800{
+    color: #295646;
+}
+.lp-testimoni{
+    column-gap: 40px;
+    overflow: hidden;
+    width: 100%
+}
+.lp-testimoni-div{
+    display: flex;
+    width: 380px;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    gap:  20px;
+    border-radius: 24px;
+    background:  #F9FAFB;
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.25);
+    margin-left: 20px;
+}
+.lp-testimoni-pic{
+    width: 80px;
+    height: 80px;
+    background-color: aqua;
+}
+.lp-testimonidiv-toppart{
+    gap: 10px;
+    width: 100%;
+}
+
+.lp-footer{
+    padding: 60px 0px;
+}
+.lp-footer-nav, .lp-footer-lower{
+    width: 1200px;
+}
+.lp-footernav-navbtns{
+    column-gap: 60px;
+    width: 600px;
+}
+.lp-footer-line{
+    width: 1200px;
+    background-color: #9CA3AF;
+    height: 1px;
+    margin: 30px 0px;
+}
+.lp-footersocialbtn{
+    width: 24px;
+    height: 24px;
+}.lp-footer-socialsgroup{
+    gap: 10px;
+}
+
+.lp-testimoni-profilword{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

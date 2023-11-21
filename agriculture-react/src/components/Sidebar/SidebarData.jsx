@@ -30,8 +30,8 @@ export const SidebarData = [
     icon: <MdListAlt />,
   },
   {
-    title: "History Tanaman",
-    path: "/history-tanaman",
+    title: "Riwayat Menanam",
+    path: "/riwayat-menanam",
     icon: <MdHistory />,
   },
   {
