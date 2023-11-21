@@ -2,11 +2,11 @@ import card from '../../assets/Group.svg'
 import card1 from '../../assets/Group1.svg'
 import card2 from '../../assets/Group2.svg'
 import cloud from '../../assets/Cloud.svg'
-import './dashboard.css'
+import './dashboardCard.css'
 
 function DashboardCard() {
     return (
-        <div className="dashboard">
+        <div className="dashboardcard">
             <div className="border">
                 <div className="border2">
                     <p className='text1'>250+</p>
