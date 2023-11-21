@@ -1,0 +1,29 @@
+.border-cuaca {
+    position: relative;
+    display: flex;
+    width: 320px;
+    height: 120px;
+    padding: 30px 20px;
+    align-items: center;
+    gap: var(--corner-radius-l, 10px);
+    border-radius: var(--corner-radius-l, 10px);
+    background: var(--success-500, #10B981);
+}
+
+.text-suhu{
+    color: var(--netral-50, #F9FAFB);
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.text-suhu2{
+    color: var(--netral-50, #F9FAFB);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
