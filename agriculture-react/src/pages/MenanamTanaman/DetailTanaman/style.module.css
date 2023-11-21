@@ -1,0 +1,27 @@
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+.cardScroll {
+  display: flex;
+  overflow-x: scroll;
+  width: 100%;
+  gap: 10px;
+}
+
+.cardInfo {
+  flex-shrink: 0;
+  width: 348px;
+  border-radius: 16px;
+}
+
+.collapse {
+  opacity: 0;
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+.expand {
+  opacity: 1;
+  display: block;
+}

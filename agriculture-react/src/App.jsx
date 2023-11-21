@@ -16,13 +16,14 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 function App() {
   return (
     <BrowserRouter>
-        <Routes>
+
+      <Routes>
+        <Route path="/" element={<TestPage />} />
           <Route path="menanam-tanaman" element={<TableTanaman/>} />
           <Route path="/" element={<TestPage />} />
           <Route path="/menanam-tanaman/tambah-tanaman" element={<TambahTanaman />} />
           <Route path="/" element={<TestPage />} />
           <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
-
           <Route path="/riwayat-menanam" element={<RiwayatMenanam />} />
           <Route path="/list-tanaman" element={<ListTanaman />} />
           <Route path="/testpage" element={<TestPage />} />
