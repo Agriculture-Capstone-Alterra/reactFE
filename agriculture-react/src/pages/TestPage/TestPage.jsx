@@ -49,16 +49,16 @@ export default function TestPage(){
     
     return(
         <>
-        <Layout pagetitle={"Nama Header"} breadcrumbs={breadcrumbsobjectexample}>
+            <Layout pagetitle={"Nama Header"} breadcrumbs={breadcrumbsobjectexample}>
 
-            {/* begin main content */}
-            <div>
-                <div className="mt-2" style={{ width: '800px', height: '400px' }}>
-                    <LineChart data={data} />
+                {/* begin main content */}
+                <div>
+                    <div className="mt-2" style={{ width: '800px', height: '400px' }}>
+                        <LineChart data={data} />
+                    </div>
                 </div>
-            </div>
-            {/* end main content */}
-        </Layout>
-    </>
+                {/* end main content */}
+            </Layout>
+        </>
   );
 }
