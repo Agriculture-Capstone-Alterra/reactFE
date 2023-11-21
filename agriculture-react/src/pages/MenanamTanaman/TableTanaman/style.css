@@ -1,0 +1,81 @@
+.table {
+    display: flex;
+    flex-direction: column;
+    padding: var(--corner-radius-l, 10px) 20px;
+    align-items: flex-start;
+    gap: var(--spacing-space-4, 16px);
+    flex: 1 0 0;
+    align-self: stretch;
+    width: 806px;  
+    height: 719px; 
+    border-radius: 20px;
+    border: 1px solid var(--stroke-10, rgba(107, 114, 128, 0.10));
+    background: var(--netral-50, #F9FAFB);
+}
+
+.table-list {
+    display: flex;
+    padding: var(--spacing-space-3, 12px) 20px;
+    justify-content: space-between; 
+    align-items: center;
+    gap: var(--corner-radius-l, 10px);
+    align-self: stretch;
+    border-radius: var(--spacing-space-0, 0px);
+}
+
+.table-text-title{
+    display: flex;
+    height: 34px;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 0 0;
+    color: #000;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 32px; 
+}
+
+.tambah-tanaman{
+    display: flex;
+    padding: 6px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--btn-primary-default, #51AB8C);
+    background: var(--btn-primary-default, #51AB8C);
+    color: var(--netral-50, #F9FAFB);
+    transition: background-color 0.3s ease;
+}
+
+.tambah-tanaman:hover {
+    background-color: #388e3c; 
+  }
+
+
+.pagination{
+    display: flex;
+    padding: var(--corner-radius-l, 10px) 5px;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-space-4, 16px);
+    align-self: stretch;
+}
+
+.button-page {
+    display: flex;
+    padding: 8px;
+    align-items: center;
+    color: #6B7280;
+    gap: 4px;
+    border-radius: 4px;
+    border: 1px solid var(--stroke-25, rgba(107, 114, 128, 0.25));
+    transition: border-color 0.3s ease; 
+  }
+  
+  .button-page:hover {
+    border-color: #6B7280; 
+    
+  }
