@@ -1,13 +1,12 @@
-const Select = ({ id, name, value, className, onChange, options, title}) => {
+const Select = ({ id, name, value, className, onChange, options, title }) => {
   return (
     <select
-      className={className ? className :"form-select" }
+      className={className ? className : "form-select"}
       id={id}
       name={name}
       value={value}
       onChange={onChange}
-      required
-    >
+      required>
       <option value="" disabled selected>
         {title}
       </option>
