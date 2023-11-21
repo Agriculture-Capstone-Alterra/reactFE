@@ -47,7 +47,7 @@ export default function TestPage() {
         {/* begin main content */}
         <div>
           <div className="mt-2" style={{ width: "800px", height: "400px" }}>
-            
+
           </div>
         </div>
         {/* end main content */}
