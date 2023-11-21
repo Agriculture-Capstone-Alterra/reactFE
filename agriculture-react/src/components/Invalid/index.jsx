@@ -1,8 +1,8 @@
-const Invalid = ({children}) => {
+const Invalid = ({errormsg}) => {
     return (
         <>
             <div className="invalid-feedback">
-                    {children}
+                {errormsg}
             </div>
         </>
     )
