@@ -1,0 +1,83 @@
+.dashboard-container{
+    padding: 20px;
+    background-color: #E5E7EB;
+}
+
+
+.dashboard-toppart{
+    column-gap: 20px;
+    
+}
+
+.dashboard-middlepart{
+    column-gap: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard-chartdiv{
+    margin-bottom: 20px;
+    width: 800px; 
+}
+
+.dasboard-persentasediv{
+    padding: 20px;
+    row-gap: 20px;
+    border-radius: 10px;
+}
+.dashboard-middle-rightpart{
+    width: 100%;
+}
+
+.dashboard-topfarmer{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    border-radius: 10px;
+    padding: 20px;
+    justify-content: space-between;
+    background-color: white;
+
+}
+.dashboard-topfarmer-toppart{
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dashboard-btn{
+    background-color: #448E75;
+    padding: 4px 15px;
+    border-radius: 10px;
+    display: flex;
+    width: 80px;
+    height: 31px;
+    padding: var(--spacing-space-0, 0px) var(--corner-radius-l, 10px);
+    justify-content: center;
+    align-items: center;
+    color: white;
+    border-style: none;
+    gap: 4px;
+}
+
+
+.dashboard-topfarmer-farmerdiv{
+    padding: 10px 20px;
+
+}
+.dashboard-farmerimg{
+    border-radius: 99px;
+    margin-right: 10px;
+}
+.dashboard-farmername{
+    word-break: break-word;
+}
+.dashboard-farmerdiv-leftpart{
+    width: 100%;
+}
+.dashboard-farmerdiv-rightpart{
+    width: 72px;
+    height: 64px;
+}
+.dashboard-leavelogofarmer{
+    margin-right: 4px
+}
