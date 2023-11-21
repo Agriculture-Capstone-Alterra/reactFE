@@ -3,7 +3,7 @@ import "./essentials/essentialcss.css";
 import TestPage from "./pages/TestPage/TestPage";
 import Sidebar from "./components/Sidebar/Sidebar";
 import RiwayatMenanam from "./pages/RiwayatMenanam/RiwayatMenanam/RiwayatMenanam";
-import ListTanaman from "./pages/RiwayatMenanam/ListTanaman/ListTanaman";
+import RiwayatListTanaman from "./pages/RiwayatMenanam/ListTanaman/ListTanaman";
 import InfoDetailRiwayatTanaman from "./pages/RiwayatMenanam/InfoDetailRiwayatTanaman/InfoDetailRiwayatTanaman";
 function App() {
   return (
@@ -11,9 +11,9 @@ function App() {
       <Routes>
         <Route path="/" element={<TestPage />} />
         <Route path="/riwayat-menanam" element={<RiwayatMenanam />} />
-        <Route path="/list-tanaman" element={<ListTanaman />} />
+        <Route path="riwayat-menanam/list-tanaman" element={<RiwayatListTanaman />} />
         <Route
-          path="/info-detail-riwayat-tanaman"
+          path="riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman"
           element={<InfoDetailRiwayatTanaman />}/>
       </Routes>
     </BrowserRouter>
