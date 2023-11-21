@@ -1,4 +1,4 @@
-import "./style.css";
+import "./style.module.css";
 
 const Filter = () => {
   const teknologi = ["Hidroponik", "Aeroponik"];
