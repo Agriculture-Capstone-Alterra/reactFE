@@ -6,9 +6,9 @@ import Sidebar from "./components/Sidebar/Sidebar";
 function App() {
   return (
     <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<TestPage />} />
-        </Routes>
+      <Routes>
+        <Route path="/" element={<TestPage />} />
+      </Routes>
     </BrowserRouter>
   );
 }
