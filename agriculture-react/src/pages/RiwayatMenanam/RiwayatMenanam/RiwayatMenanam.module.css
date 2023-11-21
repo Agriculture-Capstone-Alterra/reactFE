@@ -1,5 +1,6 @@
 .riwayatMenanam {
   background: var(--netral-100, #f3f4f6);
+  font-family: "Inter", sans-serif;
 }
 
 .riwayatTable {
@@ -31,10 +32,27 @@
   padding: 10px 20px;
   align-items: center;
   gap: 20px;
-
   border-radius: var(--corner-radius-xxl, 20px);
   border: 1px solid var(--stroke-25, rgba(107, 114, 128, 0.25));
-  background: var(--netral-50, #f9fafb);
+  background-color: #f3f4f6;
+}
+
+.riwayatSearchIcon {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  color: #9ca3af;
+}
+
+.riwayatSearchInput {
+  border: none;
+  outline: none;
+  overflow: hidden;
+  color: #9ca3af;
+  background-color: transparent;
+  font-size: 12px;
 }
 
 .riwayatPagination {
@@ -68,6 +86,7 @@
 .noDataContainer {
   display: flex;
   flex-direction: column;
+  width: 100%;
   height: 440px;
   justify-content: center;
   align-items: center;
