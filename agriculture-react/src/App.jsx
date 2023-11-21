@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 import "./essentials/essentialcss.css";
 import TestPage from "./pages/TestPage/TestPage";
-import Sidebar from "./components/Sidebar/Sidebar";
+import InfoDetailRiwayatTanaman from "./pages/RiwayatMenanam/InfoDetailRiwayatTanaman/InfoDetailRiwayatTanaman";
 import RiwayatMenanam from "./pages/RiwayatMenanam/RiwayatMenanam/RiwayatMenanam";
 import ListTanaman from "./pages/RiwayatMenanam/ListTanaman/ListTanaman";
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -16,11 +16,12 @@ function App() {
         <Route path="/list-tanaman" element={<ListTanaman />} />
         <Route
           path="/info-detail-riwayat-tanaman"
-          element={<InfoDetailRiwayatTanaman />}/>
+          element={<InfoDetailRiwayatTanaman />}
+        />
         <Route path="/testpage" element={<TestPage />} />
-        <Route path="/" element={<Dashboard/>} />
-        <Route path="/dashboard" element={<Dashboard/>} />
-        <Route path="/landingpage" element={<LandingPage/>} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/landingpage" element={<LandingPage />} />
       </Routes>
     </BrowserRouter>
   );
