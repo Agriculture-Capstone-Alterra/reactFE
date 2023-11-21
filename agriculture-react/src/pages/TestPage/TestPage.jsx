@@ -1,5 +1,4 @@
 import LineChart from "../../components/LineChart/LineChart";
-import Table from "../../components/Table/Table";
 import Layout from "../../layout/Layout";
 import DashboardCard from "../../components/dashboard card/dashboardCard";
 export default function TestPage() {
@@ -50,7 +49,7 @@ export default function TestPage() {
         {/* begin main content */}
         <div>
           <div className="mt-2" style={{ width: "800px", height: "400px" }}>
-            <LineChart data={data} />
+
           </div>
         </div>
         {/* end main content */}

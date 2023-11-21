@@ -1,12 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-const Button = ({ to, label }) => {
-  return (
-    <Link to={to}>
-      <button>{label}</button>
-    </Link>
-  );
+const Button = ({ onClick, type, className, children }) => {
+    return (
+        <button
+            onClick={onClick}
+            type={type}
+            className={className}   
+        >
+            {children}
+        </button>
+    );
 };
 
 export default Button;

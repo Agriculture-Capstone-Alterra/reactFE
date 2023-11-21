@@ -1,12 +1,14 @@
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import Trash from '../../../assets/trash.svg'
+import Add from '../../../assets/addBlack.svg'
 import './style.css'
-import Breadcrumb from '../../../components/Breadcrumb'
 import FormLayout from '../../../components/FormLayout'
 import Input from '../../../components/Input'
 import TextArea from '../../../components/Textarea'
 import Select from '../../../components/Select'
 import Invalid from '../../../components/Invalid'
+import Layout from '../../../layout/Layout'
+import DragFile from '../../../components/DragFile'
+import DropFile from '../../../components/DropFile'
 
 const TambahTanaman = () => {
     const jenisTanamanOptions = [
@@ -21,21 +23,23 @@ const TambahTanaman = () => {
         { value: 'Hidroponik', label: 'Hidroponik' },
         { value: 'Aeroponik', label: 'Aeroponik' },
     ];
+    const breadcrumTambahTanaman = [
+        {
+            crumblink : "/menanam-tanaman",
+            crumbname : "Menanam Tanaman",
+        },
+        {
+            crumblink : "/menanam-tanaman/tambah-tanaman",
+            crumbname : "Tambah Tanaman",
+        }
+    ];
+    const handleSubmit = () => {
+    }
     return (
-        <>
-        <div className='mx-3 my-3'>
-            <Breadcrumb>
-                <li className="breadcrumb-item fontw600">
-                    <>Menanam Tanaman</>
-                </li>
-                <li className="breadcrumb-item fontw600 colorActive">
-                    <>Tambah Tanaman</>
-                </li>
-            </Breadcrumb>
-        </div>
-        <div className='mx-5 my-5'>
-            <FormLayout>
-                <h4 className='fontw600'>
+        <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={breadcrumTambahTanaman}>
+        <div className='mt-2' style={{ padding:'0px 0px 30px 30px', marginRight:'0'}}>
+            <FormLayout onSubmit={handleSubmit}>
+                <h4 className='fontw800'>
                     Tambah Tanaman
                 </h4>
                 <div className="form-group mb-3">
@@ -45,7 +49,7 @@ const TambahTanaman = () => {
                     name="namatanaman"
                     placeholder='Masukkan nama tanaman'
                     />
-                    <Invalid>Tolong masukkan nama tanaman.</Invalid>
+                    <Invalid errormsg={"Tolong masukkan nama tanaman."} />
                 </div>
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="jenistanaman">Jenis Tanaman</label>
@@ -55,7 +59,7 @@ const TambahTanaman = () => {
                         options={jenisTanamanOptions}
                         title="Pilih Jenis Tanaman"
                     />
-                    <Invalid>Tolong pilih jenis tanaman.</Invalid>
+                    <Invalid errormsg={"Tolong pilih jenis tanaman."}/>
                 </div>
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="deskripsitanaman">Deskripsi Tanaman</label>
@@ -65,23 +69,12 @@ const TambahTanaman = () => {
                     placeholder='Masukkan deskripsi tanaman'
                     rows={2}
                     />
-                    <Invalid>Tolong masukkan deskripsi tanaman.</Invalid>
+                    <Invalid errormsg={"Tolong masukkan deskripsi tanaman."}/>
                 </div>
-                <label className="form-label fontw600" htmlFor="gambartanaman">Gambar Tanaman</label>
-                <div className="input-group mb-3">
-                    <input
-                    type="file" 
-                    className="form-control" 
-                    id="gambartanaman"
-                    name='gambartanaman'
-                    required
-                    multiple
-                    />
-                    <label className="input-group-text" htmlFor="gambartanaman">
-                        Pilih File
-                    </label>
-                    <Invalid>Tolong masukkan gambar tanaman.</Invalid>
-                </div>                  
+                <label className="form-label fontw600" htmlFor="gambartanaman">Gambar Tanaman</label> 
+                <DragFile 
+                    name={'gambartanaman'}
+                /> 
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="varietastanaman">Varietas Tanaman</label>
                     <Input
@@ -89,7 +82,7 @@ const TambahTanaman = () => {
                     name="varietastanaman"
                     placeholder='Masukkan varietas tanaman'
                     />
-                    <Invalid>Tolong masukkan varietas tanaman.</Invalid>
+                    <Invalid errormsg={"Tolong masukkan varietas tanaman."}/>
                 </div>
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="teknologitanaman">Teknologi Tanaman</label>
@@ -99,48 +92,49 @@ const TambahTanaman = () => {
                         options={teknologiTanamanOptions}
                         title="Pilih Teknologi Tanaman"
                     />
+                    <Invalid errormsg={"Tolong pilih teknologi tanaman."}/>
                 </div>
-                <h4 className='fontw600'>Kalender Bercocok Tanam :</h4>
+                <div className='form-label fontw600'>Kalender Musiman</div>
                 <div className='row'>
-                    <p className='fontw600'>Musim Kemarau</p>
+                    <p className='label-musim'>Musim Kemarau</p>
                     <div className="form-group col-md-3 mb-3 d-grid">
-                        <label className="form-label fontw400" htmlFor="awalkemarau">Awal Penanaman :</label>
+                        <label className="form-label-musim" htmlFor="awalkemarau">Awal Penanaman</label>
                         <Input
                             type="date"
                             id="awalkemarau"
                             name="awalkemarau"
                         />
-                        <Invalid>Tolong masukkan tanggal.</Invalid>
+                        <Invalid errormsg={"Tolong masukkan tanggal."}/>
                     </div>
                     <div className="form-group col-md-3 mb-3 d-grid">
-                        <label className="form-label fontw400" htmlFor="akhirkemarau">Akhir Penanaman :</label>
+                        <label className="form-label-musim" htmlFor="akhirkemarau">Akhir Penanaman</label>
                         <Input
                             type="date"
                             id="akhirkemarau"
                             name="akhirkemarau"
                         />
-                        <Invalid>Tolong masukkan tanggal.</Invalid>
+                        <Invalid errormsg={"Tolong masukkan tanggal."}/>
                     </div>
                 </div>
                 <div className='row'>
-                    <p className='fontw600'>Musim Hujan</p>
+                    <p className='label-musim'>Musim Hujan</p>
                     <div className="form-group col-md-3 mb-3 d-grid">
-                        <label className="form-label fontw400" htmlFor="awalhujan">Awal Penanaman :</label>
+                        <label className="form-label-musim" htmlFor="awalhujan">Awal Penanaman</label>
                         <Input
                             type="date"
                             id="awalhujan"
                             name="awalhujan"
                         />
-                        <Invalid>Tolong masukkan tanggal.</Invalid>
+                        <Invalid errormsg={"Tolong masukkan tanggal."}/>
                     </div>
                     <div className="form-group col-md-3 mb-3 d-grid">
-                        <label className="form-label fontw400" htmlFor="akhirhujan">Akhir Penanaman :</label>
+                        <label className="form-label-musim" htmlFor="akhirhujan">Akhir Penanaman</label>
                         <Input
                             type="date"
                             id="akhirhujan"
                             name="akhirhujan"
                         />
-                        <Invalid>Tolong masukkan tanggal.</Invalid>
+                        <Invalid errormsg={"Tolong masukkan tanggal."}/>
                     </div>
                 </div>
                 <div className="form-group mb-3">
@@ -151,7 +145,7 @@ const TambahTanaman = () => {
                     placeholder='Masukkan informasi hama dan penanggulangan tanaman'
                     rows={2}
                     />
-                    <Invalid>Tolong masukkan informasi hama dan penanggulangan tanaman.</Invalid>
+                    <Invalid errormsg={"Tolong masukkan informasi hama dan penanggulangan tanaman."}/>
                 </div>
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="informasinutrisi">Informasi Nutrisi dan Pupuk</label>
@@ -161,49 +155,133 @@ const TambahTanaman = () => {
                     placeholder='Masukkan informasi nutrisi dan pupuk'
                     rows={2}
                     />
-                    <Invalid>Tolong masukkan informasi nutrisi dan pupuk.</Invalid>
+                    <Invalid errormsg={"Tolong masukkan informasi nutrisi dan pupuk."}/>
                 </div>
-                <div className="form-group mb-3">
-                    <label className="form-label fontw600" htmlFor="penyiraman">Penyiraman</label>
-                    <div className='row'>
-                        <div className='col-auto d-inline-flex'>
-                            <Input
-                            type="number"
-                            className="form-control my-1"
-                            id="minggupenyiraman"
-                            name="minggupenyiraman"
-                            />
-                            <label className='my-2 mx-2 fontw400'>Minggu</label>
-                        </div>
-                        <div className='col-auto d-inline-flex'>
-                            <Input
-                            type="number"
-                            className="form-control my-1"
-                            id="kalipenyiraman"
-                            name="kalipenyiraman"
-                            />
-                            <label className='my-2 mx-2 fontw400'>Kali</label>
+                <div className='form-label fontw600'>Panduan Menanam</div>
+                <p className='p-label'>Alat yang Dibutuhkan</p>
+                <div>
+                    <div className='card px-4 py-3 mb-3'>
+                        <div className='row'>
+                            <div className='col container'>
+                                <div className='row'>
+                                    <div className='col-sm'>
+                                        <div className="form-group mb-3">
+                                            <label className="form-label fontw600" htmlFor="namaalat">Nama Alat</label>
+                                            <Input
+                                            id="namaalat"
+                                            name="namaalat"
+                                            placeholder='Masukkan nama alat'
+                                            />
+                                            <Invalid errormsg={"Tolong masukkan nama alat."} />
+                                        </div>
+                                    </div>
+                                    <div className='col-sm'>
+                                        <div className="form-group mb-3"> 
+                                            <label className="form-label fontw600" htmlFor="gambaralat">Gambar Alat</label>
+                                            <DropFile name={"gambaralat"} />
+                                        </div>
+                                    </div>
+                                    <div className="form-group mb-3">
+                                        <label className="form-label fontw600" htmlFor="deskripsialat">Deskripsi Alat</label>
+                                        <TextArea
+                                        id="deskripsialat"
+                                        name="deskripsialat"
+                                        placeholder='Masukkan deskripsi alat'
+                                        rows={2}
+                                        />
+                                        <Invalid errormsg={"Tolong masukkan deskripsi alat."}/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='col-auto d-center'>
+                                <button className='btn btn-danger'><img src={Trash}/></button>
+                            </div>
                         </div>
                     </div> 
-                    <Invalid>Tolong masukkan waktu penyiraman tanaman.</Invalid>
+                    <button className='b-none p-label mb-3'><img src={Add}/>Tambahkan Alat Lain</button>
+                    <hr className='m-0'/>
                 </div>
-                <div className="form-group mb-3">
-                    <label className="form-label fontw600" htmlFor="waktupenyiraman">Waktu Penyiraman</label>
-                    <Input
-                    type="time"
-                    id="waktupenyiraman"
-                    name="waktupenyiraman"
+                <div className='form-label fontw600 mt-3'>Saran Untuk Tempat Penanaman</div>
+                <div className='card px-4 py-3 mb-3'>
+                    <div className="form-group mb-3">
+                        <label className="form-label fontw600" htmlFor="saranpenanaman">Deskripsi</label>
+                        <TextArea
+                        id="saranpenanaman"
+                        name="saranpenanaman"
+                        placeholder='Masukkan saran untuk tempat penanaman'
+                        rows={2}
+                        />
+                        <Invalid errormsg={"Tolong masukkan saran untuk tempat penanaman."}/>
+                    </div>
+                    <label className="form-label fontw600" htmlFor="gambarsaran">Foto</label>
+                    <DragFile 
+                        name={'gambarsaran'}
                     />
-                    <Invalid>Tolong masukkan waktu penyiraman tanaman.</Invalid>
+                </div>
+                <div className='form-label fontw600'>Langkah Penanaman</div>
+                <div>
+                    <div className='card px-4 py-3 mb-3'>
+                        <div className='row'>
+                            <div className='col container'>
+                                <div className='row'>
+                                    <div className='col-sm'>
+                                        <div className="form-group mb-3">
+                                            <label className="form-label fontw600" htmlFor="namalangkah">Nama Langkah</label>
+                                            <Input
+                                            id="namalangkah"
+                                            name="namalangkah"
+                                            placeholder='Masukkan nama langkah'
+                                            />
+                                            <Invalid errormsg={"Tolong masukkan nama langkah-langkah penanaman."} />
+                                        </div>
+                                    </div>
+                                    <div className='col-sm'>
+                                        <div className="form-group mb-3">
+                                            <label className="form-label fontw600" htmlFor="gambarlangah">Foto</label>
+                                            <DropFile name={"gambarlangkah"} />
+                                        </div>
+                                    </div>
+                                    <div className="form-group mb-3">
+                                        <label className="form-label fontw600" htmlFor="deskripsilangkah">Deskripsi Langkah</label>
+                                        <TextArea
+                                        id="deskripsilangkah"
+                                        name="deskripsilangkah"
+                                        placeholder='Masukkan deskripsi langkah penanaman'
+                                        rows={2}
+                                        />
+                                        <Invalid errormsg={"Tolong masukkan deskripsi langkah penanaman."}/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='col-auto d-center'>
+                                <button className='btn btn-danger'><img src={Trash}/></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button className='b-none p-label mb-3'><img src={Add}/>Tambahkan Langkah Penanaman</button>
+                    <hr className='m-0'/>
+                </div>
+                <div className="form-group mb-3 mt-3">
+                    <label className="form-label fontw600" htmlFor="caramerawat">Cara merawat tanaman</label>
+                    <TextArea
+                    id="caramerawat"
+                    name="caramerawat"
+                    placeholder='Masukkan cara merawat tanaman'
+                    rows={2}
+                    />
+                    <Invalid errormsg={"Tolong masukkan cara merawat tanaman."}/>
                 </div>
                 <div className="form-group row justify-content-end">
+                    <button type="submit" className="btn btn-outline-green col-auto m12">
+                        Batal
+                    </button>
                     <button type="submit" className="btn btn-green col-auto m12">
                         Tambah
                     </button>
                 </div>
             </FormLayout>
         </div>
-        </>
+        </Layout>
     )
 }
 

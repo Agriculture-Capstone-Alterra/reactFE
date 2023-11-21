@@ -7,7 +7,6 @@ const Input = ({ value, onChange, type, placeholder, name, className, id }) => {
                 name={name}
                 className={className ? className : 'form-control'}
                 id={id ? id : ""}
-                required
             />
 }
 
