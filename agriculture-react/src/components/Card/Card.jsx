@@ -2,7 +2,7 @@ import React from "react";
 import MawarPutih from "../../assets/img/mawarputih.jpg";
 import Teknologi from "../../assets/Teknologi.svg";
 import jenisTanaman from "../../assets/jenisTanaman.svg";
-import "./card.css";
+import "./Card.css";
 
 const Card = () => {
   return (

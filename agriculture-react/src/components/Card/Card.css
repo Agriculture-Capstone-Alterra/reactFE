@@ -4,8 +4,8 @@
   
   .card-img-top {
     object-fit: cover;
-    height: 15rem; /* Sesuaikan tinggi gambar sesuai kebutuhan Anda */
-    width: 100%; /* Sesuaikan lebar gambar sesuai kebutuhan Anda */
+    height: 14rem; 
+    width: 100%; 
   }
 
 .content {

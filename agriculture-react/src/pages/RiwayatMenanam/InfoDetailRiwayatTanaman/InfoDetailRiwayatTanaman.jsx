@@ -7,6 +7,7 @@ import JenisTanaman from "../../../assets/jenisTanaman.svg";
 import Teknologi from "../../../assets/teknologi.svg";
 import Varietas from "../../../assets/varietas.svg";
 import Calendar from "../../../assets/calendar.svg";
+import BarChart from "../../../components/BarChart/BarChart";
 import "./style.css";
 const InfoDetailRiwayatTanaman = () => {
   const breadcrumbsobjectexample = [
@@ -75,6 +76,7 @@ const InfoDetailRiwayatTanaman = () => {
                 </div>
                 <InfoCard
                   title="Deskripsi Tanaman"
+                  style={{ width: "30rem" }}
                   content="Cara terbaik untuk mengendalikan hama dan penyakit ialah selalu pencegahan daripada intervensi. Penanam bayam harus mempertimbangkan langkah-langkah berikut:
 
           Disarankan menggunakan benih bersertifikat. Dalam kebanyakan kasus, petani harus memilih hibrida yang memiliki ketahanan terhadap bolting dan Bulai.
@@ -105,6 +107,7 @@ const InfoDetailRiwayatTanaman = () => {
             </div>
 
             <h4 className="g-col-6">Progress Tanaman</h4>
+            <BarChart />
 
             <h4 className="g-col-6">Perkembangan Tumbuhan</h4>
 
