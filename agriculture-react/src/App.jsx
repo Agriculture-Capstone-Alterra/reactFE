@@ -2,8 +2,6 @@ import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 import "./essentials/essentialcss.css";
 import TableTanaman from "./pages/MenanamTanaman/TableTanaman/indeks";
 import TestPage from "./pages/TestPage/TestPage";
-import Sidebar from "./components/Sidebar/Sidebar";
-import Topbar from "./components/Topbar/Topbar";
 
 import PengingatTanaman from "./pages/PengingatMerawatTanaman/PengingatTanaman";
 import TambahTanaman from "./pages/MenanamTanaman/TambahTanaman";
@@ -18,10 +16,15 @@ function App() {
     <BrowserRouter>
       <Routes>
           <Route path="/" element={<TestPage />} />
+
+          {/* Start Riwayat Menanam Pages */}
           <Route path="/riwayat-menanam" element={<RiwayatMenanam />} />
           <Route path="riwayat-menanam/list-tanaman" element={<RiwayatListTanaman />} />
           <Route path="riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman" element={<InfoDetailRiwayatTanaman />}/>
-          <Route path="menanam-tanaman" element={<TableTanaman/>} />
+          {/* End Riwayat Menanam Pages */}
+
+          <Route path="/menanam-tanaman" element={<TableTanaman/>} />
+          <Route path="/" element={<TestPage />} />
           <Route path="/menanam-tanaman/tambah-tanaman" element={<TambahTanaman />} />
           <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
           <Route path="/testpage" element={<TestPage />} />
