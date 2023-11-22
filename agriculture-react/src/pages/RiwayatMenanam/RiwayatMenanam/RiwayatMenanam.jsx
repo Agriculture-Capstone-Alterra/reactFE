@@ -66,7 +66,7 @@ const RiwayatMenanam = () => {
     console.log("Row clicked:", namaPengguna);
 
     //Link ke halaman List Tanaman dari Nama Pengguna
-    window.location.href = "/list-tanaman";
+    window.location.href = "riwayat-menanam/list-tanaman";
   };
 
   return (

@@ -3,6 +3,7 @@ import Card from "../../../components/Card/Card";
 import Layout from "../../../layout/Layout";
 import styles from "./ListTanaman.module.css";
 import Filter from "../../../components/Filter";
+import { Link } from "react-router-dom";
 
 const ListTanaman = () => {
   const cardExample = [
@@ -29,7 +30,7 @@ const ListTanaman = () => {
     },
     {
       crumbname: "List Tanaman",
-      crumblink: "/list-tanaman",
+      crumblink: "/riwayat-menanam/list-tanaman",
     },
   ];
 
@@ -55,7 +56,13 @@ const ListTanaman = () => {
             <div className={styles.cardContainer}>
               <div className={styles.card}>
                 {cards.map((card, index) => (
-                  <Card key={index} name={card.name} />
+                  <Link
+                    key={index}
+                    to={`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman`}
+                    className="link-sementara text-decoration-none"
+                  >
+                    <Card name={card.name} />
+                  </Link>
                 ))}
               </div>
               <div className={styles.filter}>
