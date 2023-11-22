@@ -3,11 +3,10 @@ import "./essentials/essentialcss.css";
 import TableTanaman from "./pages/MenanamTanaman/TableTanaman/indeks";
 import TestPage from "./pages/TestPage/TestPage";
 import Sidebar from "./components/Sidebar/Sidebar";
+import Topbar from "./components/Topbar/Topbar";
+
 import PengingatTanaman from "./pages/PengingatMerawatTanaman/PengingatTanaman";
-
 import TambahTanaman from "./pages/MenanamTanaman/TambahTanaman";
-import ListTanaman from "./pages/MenanamTanaman/ListTanaman";
-
 import RiwayatMenanam from "./pages/RiwayatMenanam/RiwayatMenanam/RiwayatMenanam";
 import RiwayatListTanaman from "./pages/RiwayatMenanam/ListTanaman/ListTanaman";
 import InfoDetailRiwayatTanaman from "./pages/RiwayatMenanam/InfoDetailRiwayatTanaman/InfoDetailRiwayatTanaman";
@@ -17,7 +16,6 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 function App() {
   return (
     <BrowserRouter>
-
       <Routes>
           <Route path="/" element={<TestPage />} />
           <Route path="/riwayat-menanam" element={<RiwayatMenanam />} />
@@ -29,7 +27,6 @@ function App() {
           <Route path="/menanam-tanaman/tambah-tanaman" element={<TambahTanaman />} />
           <Route path="/" element={<TestPage />} />
           <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
-          <Route path="/list-tanaman" element={<ListTanaman />} />
           <Route path="/testpage" element={<TestPage />} />
           <Route path="/" element={<Dashboard/>} />
           <Route path="/dashboard" element={<Dashboard/>} />
