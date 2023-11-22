@@ -4,12 +4,14 @@ import Table from "../../../components/Table/Table";
 import styles from "./riwayatMenanam.module.css";
 import { MdArrowBackIos, MdArrowForwardIos, MdSearch } from "react-icons/md";
 import { FaUsersSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const RiwayatMenanam = () => {
   const [dataPengguna, setDataPengguna] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   // Pagination table
   const indexOfLastItem = currentPage * 10;
@@ -66,7 +68,7 @@ const RiwayatMenanam = () => {
     console.log("Row clicked:", namaPengguna);
 
     //Link ke halaman List Tanaman dari Nama Pengguna
-    window.location.href = "riwayat-menanam/list-tanaman";
+    navigate(`/riwayat-menanam/list-tanaman/`);
   };
 
   return (

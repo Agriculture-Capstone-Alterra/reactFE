@@ -3,9 +3,11 @@ import Card from "../../../components/Card/Card";
 import Layout from "../../../layout/Layout";
 import styles from "./ListTanaman.module.css";
 import Filter from "../../../components/Filter";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ListTanaman = () => {
+  const navigate = useNavigate();
+
   const cardExample = [
     {
       name: "Tanaman 1",
@@ -56,13 +58,17 @@ const ListTanaman = () => {
             <div className={styles.cardContainer}>
               <div className={styles.card}>
                 {cards.map((card, index) => (
-                  <Link
+                  <div
                     key={index}
-                    to={`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman`}
-                    className="link-sementara text-decoration-none"
+                    onClick={() =>
+                      navigate(
+                        "/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman"
+                      )
+                    }
+                    className={styles.cardItem}
                   >
                     <Card name={card.name} />
-                  </Link>
+                  </div>
                 ))}
               </div>
               <div className={styles.filter}>
