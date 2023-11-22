@@ -5,7 +5,7 @@ import Button from '../../../components/Button/Button';
 import EditIcon from "../../../assets/icons/EditIcon.svg";
 import TrashIcon from "../../../assets/icons/trash.svg";
 import { TbDots, TbRuler } from "react-icons/tb";
-// import styles from './style.css';
+import styles from './style.css';
 
 const TableTanaman = () => {
   const [OpenForm, setOpenForm, setCloseForm] = useState(true);
