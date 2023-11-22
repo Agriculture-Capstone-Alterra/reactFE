@@ -96,14 +96,14 @@ const Pagination = ({ dataList, itemsPerPage, setCurrentData, numberingData }) =
   };
 
   return (
-    <div className="d-flex justify-content-center mt-4 gap-2">
+    <div className="d-flex justify-content-center mt-4 mb-4 gap-2">
       <button
-        className={`btn d-flex align-items-center justify-content-around ${styles.btnPagination}`}
+        className={`btn d-flex align-items-center justify-content-around mt-2 mb-2 ${styles.btnPagination}`}
         onClick={handlePrevPage}
         disabled={currentPage === 1}
       >
         <FaChevronLeft className="me-2 pt-1" fontSize={16} />
-        <span className={`${styles.paginationButtonText}`}>Prev</span>
+        <p className={`${styles.paginationButtonText} p-0`}>Prev</p>
       </button>
       <div className="pagination d-flex">
       {generatePageNumbers().map((pageNumber, index) => (
@@ -121,11 +121,11 @@ const Pagination = ({ dataList, itemsPerPage, setCurrentData, numberingData }) =
         ))}
       </div>
       <button
-        className={`btn d-flex align-items-center justify-content-around ${styles.btnPagination}`}
+        className={`btn d-flex align-items-center justify-content-around mt-2 mb-2 ${styles.btnPagination}`}
         onClick={handleNextPage}
         disabled={currentPage === totalPages}
       >
-        <span className={`${styles.paginationButtonText}`}>Next</span>
+        <p className={`${styles.paginationButtonText}`}>Next</p>
         <FaChevronRight className="ms-2 pt-1" />
       </button>
     </div>

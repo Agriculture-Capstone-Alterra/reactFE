@@ -50,9 +50,8 @@ const PengingatTanaman = () => {
   return (
     <>
       <Layout pagetitle={'Pengingat Tanaman'} breadcrumbs={crumbs}>
-        <div className="container-fluid">
           <div className="ps-3 pe-3">
-            <div className={`card ps-4 pe-4 ${styles.customCard}`}>
+            <div className={`ps-4 pe-4 ${styles.customCard}`}>
               <div className="card-body">
                 <div className={`d-flex justify-content-between align-items-center pb-4 pt-4`}>
                   <p className={`fonts20 fontw600 mb-0`}>Pengingat Tanaman</p>
@@ -121,7 +120,6 @@ const PengingatTanaman = () => {
               </div>
             </div>
           </div>
-        </div>
       </Layout>
       {/* call ToastNotification component */}
       {showToast && (
