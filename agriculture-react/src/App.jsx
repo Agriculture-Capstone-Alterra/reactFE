@@ -21,7 +21,6 @@ function App() {
           <Route path="/riwayat-menanam" element={<RiwayatMenanam />} />
           <Route path="riwayat-menanam/list-tanaman" element={<RiwayatListTanaman />} />
           <Route path="riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman" element={<InfoDetailRiwayatTanaman />}/>
-
           <Route path="menanam-tanaman" element={<TableTanaman/>} />
           <Route path="/" element={<TestPage />} />
           <Route path="/menanam-tanaman/tambah-tanaman" element={<TambahTanaman />} />
