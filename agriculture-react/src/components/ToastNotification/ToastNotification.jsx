@@ -29,10 +29,13 @@ const ToastNotification = ({ position, text, timer, onClose }) => {
       toast.onmouseenter = Swal.stopTimer;
       toast.onmouseleave = Swal.resumeTimer;
     },
+    customClass:{
+      popup: 'fonstw400',
+    }
   };
 
   useEffect(() => {
-    console.log("called");
+    // console.log("called");
     Swal.fire({ title: text, ...toastOptions }).then(onClose);
   }, []);
 
