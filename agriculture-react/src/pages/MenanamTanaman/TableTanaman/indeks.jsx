@@ -12,6 +12,7 @@ import Filter from '../../../components/Filter';
 import styles from './style.css';
 import './style.css';
 
+
 const TableTanaman = () => {
   const itemsPerPage = 10;
   const [bookData, setBookData] = useState([]);
