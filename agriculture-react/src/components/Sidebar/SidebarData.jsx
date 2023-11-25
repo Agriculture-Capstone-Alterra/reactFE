@@ -11,16 +11,16 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 export const SidebarData = [
   {
     title: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icon: <MdOutlineDashboard />,
   },
   {
     title: "Informasi Cuaca",
-    path: "/informasi-cuaca",
+    path: "#",
     icon: <MdCloudQueue />,
   },
   {
-    title: "Pengingat Tanaman",
+    title: "Remainder",
     path: "/pengingat-tanaman",
     icon: <IoMdStopwatch />,
   },
@@ -36,12 +36,12 @@ export const SidebarData = [
   },
   {
     title: "Pertumbuhan",
-    path: "/pertumbuhan",
+    path: "#",
     icon: <FaArrowTrendUp />,
   },
   {
     title: "Produk Lokal",
-    path: "/produk-lokal",
+    path: "#",
     icon: <MdOutlineShoppingCart />,
   },
 ];

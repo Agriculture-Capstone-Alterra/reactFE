@@ -4,8 +4,6 @@
     border-color: #155724;
 }
 
-.btnOutlinePrimary{
-}
 .btnOutlinePrimary:hover{
   color: white;
   background: #60A5FA !important;
