@@ -227,7 +227,7 @@ const PengingatTanaman = () => {
       <Modal
         id="deleteData"
         title="Hapus Data Tanaman"
-        content="Apakah anda yakin akan mengapus data tanaman?"
+        content={<p className='text-center'>Apakah anda yakin akan mengapus data tanaman?</p>}
         onCancel= {() => {}}
         onSubmit= {() => {}}
         type="delete"
@@ -235,7 +235,7 @@ const PengingatTanaman = () => {
       <Modal
         id="editData"
         title="Edit Data"
-        content="Apakah anda yakin akan mengedit data tanaman?"
+        content={<p className='text-center'>Apakah anda yakin akan mengedit data tanaman?</p>}
         onCancel= {() => {}}
         onSubmit= {() => {}}
         type="edit"
