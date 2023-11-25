@@ -1,0 +1,22 @@
+.btnSecondary:hover,
+.btnDanger:hover {
+    background-color: #155724;
+    border-color: #155724;
+}
+
+.btnOutlinePrimary{
+}
+.btnOutlinePrimary:hover{
+  color: white;
+  background: #60A5FA !important;
+}
+.btnPrimary{
+  background: #60A5FA !important;
+  border: 1px solid #60A5FA !important;
+  color: white;
+}
+.btnPrimary:hover{
+  background: #5089cf !important;
+  border: 1px solid #5089cf !important;
+  color: white;
+}

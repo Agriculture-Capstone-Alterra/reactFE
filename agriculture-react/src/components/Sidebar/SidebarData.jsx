@@ -20,8 +20,8 @@ export const SidebarData = [
     icon: <MdCloudQueue />,
   },
   {
-    title: "Remainder",
-    path: "/remainder",
+    title: "Pengingat Tanaman",
+    path: "/pengingat-tanaman",
     icon: <IoMdStopwatch />,
   },
   {
