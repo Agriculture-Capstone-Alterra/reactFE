@@ -132,14 +132,14 @@ const PengingatTanaman = () => {
                 </Table>
               </div>
             </div>
+            {/* Pagination component Penyiraman */}
+            <Pagination
+              dataList={dataPenyiramanList}
+              itemsPerPage={itemsPerPage}
+              setCurrentData={setCurrentDataPenyiraman}
+              numberingData={true}
+            />
           </div>
-          {/* Pagination component Penyiraman */}
-          <Pagination
-            dataList={dataPenyiramanList}
-            itemsPerPage={itemsPerPage}
-            setCurrentData={setCurrentDataPenyiraman}
-            numberingData={true}
-          />
           {/* end table penyiaman */}
           {/* start table pemupukan */}
           <div className="ps-3 pe-3">
@@ -203,7 +203,6 @@ const PengingatTanaman = () => {
                 </Table>
               </div>
             </div>
-          </div>
           {/* Pagination component pemupukan */}
           <Pagination
             dataList={dataPemupukanList}
@@ -211,6 +210,7 @@ const PengingatTanaman = () => {
             setCurrentData={setCurrentDataPemupukan}
             numberingData={true}
           />
+          </div>
           {/* end table pemupukan */}
       </Layout>
       {/* call ToastNotification component */}
