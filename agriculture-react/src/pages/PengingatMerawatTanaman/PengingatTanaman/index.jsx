@@ -146,7 +146,7 @@ const PengingatTanaman = () => {
             <div className={`ps-4 pe-4 pb-4 ${styles.customCard}`}>
               <div className="card-body">
                 <div className={`d-flex justify-content-between align-items-center pb-4 pt-4`}>
-                  <p className={`fonts24 fontw600 mb-0`}>Data Penyiraman Tanaman</p>
+                  <p className={`fonts24 fontw600 mb-0`}>Data Pemupukan Tanaman</p>
                   <button
                     className={`fonts16 btn btn-success btn-sm fw-light d-flex align-items-center ${styles.btnPrimary}`}
                   >
