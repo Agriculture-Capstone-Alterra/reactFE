@@ -15,8 +15,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="/" element={<TestPage />} />
-
           {/* Start Riwayat Menanam Pages */}
           <Route path="/riwayat-menanam" element={<RiwayatMenanam />} />
           <Route path="riwayat-menanam/list-tanaman" element={<RiwayatListTanaman />} />
@@ -24,9 +22,7 @@ function App() {
           {/* End Riwayat Menanam Pages */}
 
           <Route path="/menanam-tanaman" element={<TableTanaman/>} />
-          <Route path="/" element={<TestPage />} />
           <Route path="/menanam-tanaman/tambah-tanaman" element={<TambahTanaman />} />
-          <Route path="/" element={<TestPage />} />
           <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
           <Route path="/testpage" element={<TestPage />} />
           <Route path="/" element={<Dashboard/>} />
