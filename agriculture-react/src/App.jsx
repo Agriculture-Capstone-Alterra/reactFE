@@ -19,10 +19,12 @@ function App() {
     <BrowserRouter>
       <Routes>
           <Route path="/" element={<PrivateRoute/>}>
+            {/* punya sfutra */}
             <Route path="/testpaage" element={<TestPage />} />
             <Route path="/dashboard" element={<Dashboard/>} />
             <Route path="/landingpage" element={<LandingPage/>} />
-            {/* <Route path='/testauth' element={<PrivateRoute />}/> */}
+            {/* end punya safutra */}
+
           </Route>
 
           {/* Start Riwayat Menanam Pages */}
