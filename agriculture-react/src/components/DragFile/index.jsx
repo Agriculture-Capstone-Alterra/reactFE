@@ -23,10 +23,10 @@ const DragFile = ({ value, onChange, name }) => {
     handleFiles(files);
   };
 
-  const handleFileInputChange = () => {
+  const handleFileInputChange = (e) => {
     const files = fileInputRef.current.files;
     handleFiles(files);
-    onChange();
+    onChange(e);
   };
 
   const handleFiles = (files) => {
@@ -95,7 +95,7 @@ const DragFile = ({ value, onChange, name }) => {
         </div>
         <input
           type="file"
-          multiple
+          multiple={true}
           ref={fileInputRef}
           onChange={handleFileInputChange}
           value={value}
