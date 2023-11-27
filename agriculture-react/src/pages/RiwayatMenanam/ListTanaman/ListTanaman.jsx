@@ -4,23 +4,24 @@ import Layout from "../../../layout/Layout";
 import styles from "./ListTanaman.module.css";
 import Filter from "../../../components/Filter";
 import { useNavigate } from "react-router-dom";
+import { PiGrainsSlashFill } from "react-icons/pi";
 
 const ListTanaman = () => {
   const navigate = useNavigate();
 
   const cardExample = [
-    {
-      name: "Tanaman 1",
-      date: "12-12-2023",
-    },
-    {
-      name: "Tanaman 2",
-      date: "12-12-2024",
-    },
-    {
-      name: "Tanaman 3",
-      date: "12-12-2025",
-    },
+    // {
+    //   name: "Mawar Putih",
+    //   index: 1,
+    // },
+    // {
+    //   name: "Mawar Merah",
+    //   index: 2,
+    // },
+    // {
+    //   name: "Anggrek Ungu",
+    //   index: 3,
+    // },
   ];
 
   const [cards, setCards] = useState(cardExample);
@@ -36,6 +37,12 @@ const ListTanaman = () => {
     },
   ];
 
+  const handleCardClick = (index) => {
+    console.log("Card clicked:", index);
+
+    navigate(`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman`);
+  };
+
   return (
     <div className={styles.container}>
       <Layout pagetitle={"List Tanaman"} breadcrumbs={breadcrumbsobjectexample}>
@@ -50,26 +57,29 @@ const ListTanaman = () => {
               // value={}
             >
               <option value="">Urutkan dalam</option>
-              <option value="1">Paling lama</option>
-              <option value="2">Paling baru</option>
-              <option value="3">A-Z</option>
-              <option value="4">Z-A</option>
+              <option value="oldest">Paling lama</option>
+              <option value="newest">Paling baru</option>
+              <option value="ascending">A-Z</option>
+              <option value="descending">Z-A</option>
             </select>
             <div className={styles.cardContainer}>
               <div className={styles.card}>
-                {cards.map((card, index) => (
-                  <div
-                    key={index}
-                    onClick={() =>
-                      navigate(
-                        "/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman"
-                      )
-                    }
-                    className={styles.cardItem}
-                  >
-                    <Card name={card.name} />
+                {cards.length === 0 ? (
+                  <div className={styles.noDataContainer}>
+                    <PiGrainsSlashFill size={182} />
+                    <p>Data Tanaman Tidak Tersedia</p>
                   </div>
-                ))}
+                ) : (
+                  cards.map((card, index) => (
+                    <Card
+                      key={index}
+                      className={styles.cardItem}
+                      index={card.index}
+                      name={card.name}
+                      onClick={() => handleCardClick(card.index)}
+                    />
+                  ))
+                )}
               </div>
               <div className={styles.filter}>
                 <Filter />
