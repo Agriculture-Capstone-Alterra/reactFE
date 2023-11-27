@@ -9,24 +9,24 @@ import Varietas from "../../../assets/varietas.svg";
 import Calendar from "../../../assets/calendar.svg";
 import BarChart from "../../../components/BarChart/BarChart";
 import "./style.css";
+// import SliderImg from "../../../components/SliderImg/SliderImg";
 
 const InfoDetailRiwayatTanaman = () => {
   const breadcrumbsobjectexample = [
     {
       crumbname: "Riwayat Menanam",
-      crumblink: "/history-tanaman/",
+      crumblink: "/riwayat-menanam/",
     },
     {
       crumbname: "List Tanaman",
-      crumblink: "/list-tanaman",
+      crumblink: "/riwayat-menanam/list-tanaman",
     },
     {
       crumbname: "Info Detail Riwayat Tanaman",
-      crumblink: "/history-tanaman/list-tanaman/info-detail-riwayat-tanaman",
+      crumblink: "/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman",
     },
   ];
 
-  
   return (
     <Layout
       pagetitle={"Info Detail History Tanaman"}
@@ -35,7 +35,10 @@ const InfoDetailRiwayatTanaman = () => {
       <div className="container">
         <div className="row">
           <div className="col">
-            <div className="card" style={{ width: "30rem" }}>
+            <div
+              className="card"
+              style={{ width: "640px", backgroundColor: "#E5E7EB" }}
+            >
               <img
                 src={MawarPutih}
                 className="card-img-top img-style"
@@ -45,7 +48,7 @@ const InfoDetailRiwayatTanaman = () => {
                 <h5 className="card-title text-center fw-bold">Mawar Putih</h5>
                 <div
                   className="content d-flex justify-content-between"
-                  style={{ gap: "40px" }}
+                  style={{ gap: "32px" }}
                 >
                   <div className="text-center">
                     <div className="">
@@ -78,7 +81,6 @@ const InfoDetailRiwayatTanaman = () => {
                 </div>
                 <InfoCard
                   title="Deskripsi Tanaman"
-                  style={{ width: "30rem" }}
                   content="Cara terbaik untuk mengendalikan hama dan penyakit ialah selalu pencegahan daripada intervensi. Penanam bayam harus mempertimbangkan langkah-langkah berikut:
 
           Disarankan menggunakan benih bersertifikat. Dalam kebanyakan kasus, petani harus memilih hibrida yang memiliki ketahanan terhadap bolting dan Bulai.
@@ -90,28 +92,29 @@ const InfoDetailRiwayatTanaman = () => {
               </div>
             </div>
           </div>
-          <div className="col  row-gap-3">
-            <h4 className="g-col-6">Tanggal Mulai Menanam</h4>
-            <div className="">
+          <div className="col" style={{ width: "436px"}}>
+            <h4 className="">Tanggal Mulai Menanam</h4>
+            <h6 className="">
               <img src={Calendar} />
               22 Februari 2023
-            </div>
+            </h6>
             <h4 className="g-col-6">Kalender Musiman</h4>
             <h5 className="g-col-6">Musim Kemarau</h5>
-            <div className="">
+            <h6 className="">
               <img src={Calendar} />
               22 Februari 2023
-            </div>
+            </h6>
             <h5 className="g-col-6">Musim Hujan</h5>
-            <div className="">
+            <h6 className="">
               <img src={Calendar} />
               22 Februari 2023
-            </div>
+            </h6>
 
             <h4 className="g-col-6">Progress Tanaman</h4>
             <BarChart />
 
             <h4 className="g-col-6">Perkembangan Tumbuhan</h4>
+            <SliderImg />
 
             <InfoCard
               title="Informasi Penanganan Hama"
