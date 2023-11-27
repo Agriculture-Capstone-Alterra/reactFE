@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../../../layout/Layout";
 import Table from "../../../components/Table/Table";
 import styles from "./riwayatMenanam.module.css";
-import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import { MdArrowBackIos, MdArrowForwardIos, MdSearch } from "react-icons/md";
 import { FaUsersSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 const RiwayatMenanam = () => {
   const [dataPengguna, setDataPengguna] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   // Pagination table
   const indexOfLastItem = currentPage * 10;
@@ -47,7 +48,7 @@ const RiwayatMenanam = () => {
   ];
 
   const tableHeaders = [
-    "No.",
+    "No",
     "Nama Pengguna",
     "Jumlah Tanaman",
     "Terakhir Update",
@@ -67,7 +68,7 @@ const RiwayatMenanam = () => {
     console.log("Row clicked:", namaPengguna);
 
     //Link ke halaman List Tanaman dari Nama Pengguna
-    window.location.href = "/list-tanaman";
+    navigate(`/riwayat-menanam/list-tanaman/`);
   };
 
   return (
@@ -77,15 +78,16 @@ const RiwayatMenanam = () => {
         breadcrumbs={breadcrumbsobjectexample}
       >
         <div>
-          <div className="mt-2" style={{ width: "800px", marginLeft: "16px" }}>
+          <div className="mt-2" style={{ width: "100%" }}>
             <div className={styles.riwayatTable}>
               <div className={styles.riwayatTableHeader}>
                 <h4>List Nama Pengguna</h4>
-                <div>
+                <div className={styles.riwayatSearchBox}>
+                  <MdSearch className={styles.riwayatSearchIcon} />
                   <input
-                    className={`form-control ${styles.riwayatSearchBox}`}
+                    className={styles.riwayatSearchInput}
                     type="search"
-                    placeholder="Cari nama pengguna..."
+                    placeholder="Cari Nama Pengguna"
                     aria-label="Search"
                     onChange={handleSearch}
                     value={searchTerm}
@@ -93,15 +95,14 @@ const RiwayatMenanam = () => {
                 </div>
               </div>
               {filteredData.length === 0 ? (
-                <div className={styles.noDataContainer}>
-                  <FaUsersSlash className={styles.noDataIcon} />
-                  <p>Data Pengguna Belum Tersedia</p>
-                </div>
+                <Table headers={tableHeaders}>
+                  <div className={styles.noDataContainer}>
+                    <FaUsersSlash className={styles.noDataIcon} />
+                    <p>Data Pengguna Belum Tersedia</p>
+                  </div>
+                </Table>
               ) : (
-                <Table
-                  headers={tableHeaders}
-                  className={styles.riwayatTableContainer}
-                >
+                <Table headers={tableHeaders}>
                   {currentItems.map((item, index) => (
                     <tr
                       key={index + indexOfFirstItem}

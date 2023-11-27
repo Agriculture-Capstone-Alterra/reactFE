@@ -14,19 +14,18 @@ const InfoDetailRiwayatTanaman = () => {
   const breadcrumbsobjectexample = [
     {
       crumbname: "Riwayat Menanam",
-      crumblink: "/history-tanaman/",
+      crumblink: "/riwayat-menanam",
     },
     {
       crumbname: "List Tanaman",
-      crumblink: "/list-tanaman",
+      crumblink: "/riwayat-menanam/list-tanaman",
     },
     {
       crumbname: "Info Detail Riwayat Tanaman",
-      crumblink: "/history-tanaman/list-tanaman/info-detail-riwayat-tanaman",
+      crumblink: "/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman",
     },
   ];
 
-  
   return (
     <Layout
       pagetitle={"Info Detail History Tanaman"}
