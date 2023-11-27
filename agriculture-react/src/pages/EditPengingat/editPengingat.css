@@ -1,15 +1,81 @@
-.editTanaman-parent {
+.editPengingat-parent {
   font-size: 24px;
   font-weight: 800;
 }
 
-.editTanaman-label {
+.editPengingat-label {
   font-size: 20px;
   font-weight: 600;
 }
 
-.editTanaman-select {
-  border-radius: 0px;
-  border-bottom: 1px solid var(--stroke-10, rgba(107, 114, 128, 0.1));
-  background: var(--netral-50, #f9fafb);
+.editPengingat-select {
+  width: 389px;
+  height: 46px;
+}
+
+.editPengingat-Input {
+  width: 389px;
+  height: 46px;
+}
+
+.editPengingat-Input:disabled {
+  background-color: #fff;
+  width: 389px;
+  height: 46px;
+}
+.editPengingat-date {
+  border-color: #ced4da;
+  border-radius: 4px;
+  width: 278px;
+  height: 38px;
+}
+.editPengingat-time {
+  border-color: #ced4da;
+  border-radius: 4px;
+  width: 250px;
+  height: 38px;
+}
+
+.editPengingat-kustom {
+  color: #3b82f6;
+  border: none;
+}
+
+.editPengingat-kustom:hover {
+  color: #3b82f6;
+  background-color: #fff;
+}
+
+.editPengingat-btnwaktu {
+  background-color: #374151;
+  border-color: #374151;
+  border-radius: 4px;
+}
+
+.editPengingat-btnwaktu:hover {
+  background-color: #374151;
+  border-color: #374151;
+}
+
+.editPengingat-btnOutline {
+  color: #51ab8c;
+  border-color: #51ab8c;
+  border-radius: 4px;
+}
+
+.editPengingat-btnOutline:hover {
+  color: #51ab8c;
+  background-color: #fff;
+  border-color: #51ab8c;
+}
+
+.editPengingat-btnPrimary {
+  background-color: #51ab8c;
+  border-color: #51ab8c;
+  border-radius: 4px;
+}
+
+.editPengingat-btnPrimary:hover {
+  background-color: #51ab8c;
+  border-color: #51ab8c;
 }
