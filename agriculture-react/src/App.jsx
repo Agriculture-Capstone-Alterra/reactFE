@@ -7,6 +7,7 @@ import Topbar from "./components/Topbar/Topbar";
 
 import PengingatTanaman from "./pages/PengingatMerawatTanaman/PengingatTanaman";
 import TambahTanaman from "./pages/MenanamTanaman/TambahTanaman";
+import DetailTanaman from "./pages/MenanamTanaman/DetailTanaman";
 import RiwayatMenanam from "./pages/RiwayatMenanam/RiwayatMenanam/RiwayatMenanam";
 import RiwayatListTanaman from "./pages/RiwayatMenanam/ListTanaman/ListTanaman";
 import InfoDetailRiwayatTanaman from "./pages/RiwayatMenanam/InfoDetailRiwayatTanaman/InfoDetailRiwayatTanaman";
@@ -17,22 +18,34 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="/" element={<TestPage />} />
-          <Route path="/riwayat-menanam" element={<RiwayatMenanam />} />
-          <Route path="riwayat-menanam/list-tanaman" element={<RiwayatListTanaman />} />
-          <Route path="riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman" element={<InfoDetailRiwayatTanaman />}/>
+        <Route path="/" element={<TestPage />} />
+        <Route path="/riwayat-menanam" element={<RiwayatMenanam />} />
+        <Route
+          path="riwayat-menanam/list-tanaman"
+          element={<RiwayatListTanaman />}
+        />
+        <Route
+          path="riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman"
+          element={<InfoDetailRiwayatTanaman />}
+        />
 
-          <Route path="menanam-tanaman" element={<TableTanaman/>} />
-          <Route path="/" element={<TestPage />} />
-          <Route path="/menanam-tanaman/tambah-tanaman" element={<TambahTanaman />} />
-          <Route path="/" element={<TestPage />} />
-          <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
-          <Route path="/testpage" element={<TestPage />} />
-          <Route path="/" element={<Dashboard/>} />
-          <Route path="/dashboard" element={<Dashboard/>} />
-          <Route path="/landingpage" element={<LandingPage/>} />
-
-        </Routes>
+        <Route path="menanam-tanaman" element={<TableTanaman />} />
+        <Route
+          path="/menanam-tanaman/detail-menanam-tanaman"
+          element={<DetailTanaman />}
+        />
+        <Route path="/" element={<TestPage />} />
+        <Route
+          path="/menanam-tanaman/tambah-tanaman"
+          element={<TambahTanaman />}
+        />
+        <Route path="/" element={<TestPage />} />
+        <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
+        <Route path="/testpage" element={<TestPage />} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/landingpage" element={<LandingPage />} />
+      </Routes>
     </BrowserRouter>
   );
 }
