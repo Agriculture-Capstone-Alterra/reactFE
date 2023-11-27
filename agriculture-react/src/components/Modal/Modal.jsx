@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './Modal.module.css';
 
-const Modal = ({ id, icon-btn, title, bodyText, onCancel, onDelete }) => {
+const Modal = ({ id, iconBtn, title, bodyText, onCancel, onDelete }) => {
   useEffect(() => {
     const myModal = document.getElementById(id);
     const myInput = document.getElementById(`${id}-input`);
@@ -14,7 +14,7 @@ const Modal = ({ id, icon-btn, title, bodyText, onCancel, onDelete }) => {
   return (
     <div>
       <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={`#${id}`}>
-        {icon-btn}
+        {iconBtn}
       </button>
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal" id={id} tabIndex="-1">
