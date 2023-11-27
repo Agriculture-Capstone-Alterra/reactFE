@@ -15,17 +15,21 @@ const InfoDetailRiwayatTanaman = () => {
   const breadcrumbsobjectexample = [
     {
       crumbname: "Riwayat Menanam",
+      crumblink: "/riwayat-menanam",
       crumblink: "/riwayat-menanam/",
     },
     {
       crumbname: "List Tanaman",
       crumblink: "/riwayat-menanam/list-tanaman",
+      crumblink: "/riwayat-menanam/list-tanaman",
     },
     {
       crumbname: "Info Detail Riwayat Tanaman",
       crumblink: "/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman",
+      crumblink: "/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman",
     },
   ];
+
 
   return (
     <Layout
@@ -114,7 +118,6 @@ const InfoDetailRiwayatTanaman = () => {
             <BarChart />
 
             <h4 className="g-col-6">Perkembangan Tumbuhan</h4>
-            <SliderImg />
 
             <InfoCard
               title="Informasi Penanganan Hama"
