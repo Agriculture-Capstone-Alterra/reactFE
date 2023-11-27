@@ -4,25 +4,25 @@ import Teknologi from "../../assets/Teknologi.svg";
 import jenisTanaman from "../../assets/jenisTanaman.svg";
 import "./Card.css";
 
-const Card = () => {
+const Card = ({ image, title, type, technology }) => {
   return (
     <div className="card" style={{ width: "274px" }}>
-      <img src={MawarPutih} style={{ height:"184px"}} className="card-img-top" alt="..." />
+      <img src={image} style={{ height: "184px" }} className="card-img-top" alt="..." />
       <div className="card-body">
-        <h5 className="card-title text-start fw-bold" >Mawar Putih</h5>
+        <h5 className="card-title text-start fw-bold">{title}</h5>
         <div className="content d-flex justify-content-between">
           <div className="text-center">
             <div className="">
               <img src={jenisTanaman} style={{ width: "50px", height: "50px" }} alt="teknologi" />
               <div className="fw-bold">Jenis Tanaman</div>
-              <p>Bunga</p>
+              <p>{type}</p>
             </div>
           </div>
           <div className="text-center">
             <div className="div-3">
               <img src={Teknologi} style={{ width: "50px", height: "50px" }} alt="teknologi" />
               <div className="fw-bold">Teknologi</div>
-              <p>Hidroponik</p>
+              <p>{technology}</p>
             </div>
           </div>
         </div>
