@@ -1,83 +1,57 @@
-import React, { useState } from "react";
-import Slider from "react-slick";
+import React from 'react';
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import ImgCard from "./ImgCard"
 
-const ImgCard = ({ img }) => {
-  const [showButtons, setShowButtons] = useState(false);
+const carouselItems = images.map((image, index) => (
+  <div key={index}>
+    <ImgCard alt={`Item ${index + 1}`} />
+  </div>
+));
 
-  const handleMouseEnter = () => {
-    setShowButtons(true);
-  };
-
-  const handleMouseLeave = () => {
-    setShowButtons(false);
-  };
-
-  return (
-    <div className="card" style={{ width: "104px", position: "relative" }}>
-      <img
-        src={img}
-        style={{ height: "104px" }}
-        className="card-img-top"
-        alt="..."
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      />
-
-      {showButtons && (
-        <div
-          className="overlay"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          }}
-        >
-          <button className="btn btn-primary">View</button>
-          <button className="btn btn-danger">Delete</button>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default class SliderImg {
-  constructor(props) {
-    super(props);
-    this.state = {
-      images: [
-        { src: "image1.jpg", alt: "Image 1" },
-        { src: "image2.jpg", alt: "Image 2" },
-        { src: "image3.jpg", alt: "Image 3" },
-        { src: "image4.jpg", alt: "Image 4" },
-        { src: "image5.jpg", alt: "Image 5" },
-      ],
-    };
-  }
-
+const SliderImg extends React.Component {
   render() {
-    const settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 3,
-      slidesToScroll: 3,
+    const responsive = {
+      desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 3,
+        slidesToSlide: 3 // optional, default to 1.
+      },
+      tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 2,
+        slidesToSlide: 2 // optional, default to 1.
+      },
+      mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1,
+        slidesToSlide: 1 // optional, default to 1.
+      }
     };
-
-    const { images } = this.state;
 
     return (
-      <div>
-        <Slider {...settings}>
-          {images.map((image, index) => (
-            <div key={index}>
-              <ImgCard img={image.src} alt={image.alt} />
-            </div>
-          ))}
-        </Slider>
-      </div>
+      <Carousel
+        swipeable={false}
+        draggable={false}
+        showDots={true}
+        responsive={responsive}
+        ssr={true} // means to render carousel on server-side.
+        infinite={true}
+        autoPlay={this.props.deviceType !== "mobile" ? true : false}
+        autoPlaySpeed={1000}
+        keyBoardControl={true}
+        customTransition="all .5"
+        transitionDuration={500}
+        containerClass="carousel-container"
+        removeArrowOnDeviceType={["tablet", "mobile"]}
+        deviceType={this.props.deviceType}
+        dotListClass="custom-dot-list-style"
+        itemClass="carousel-item-padding-40-px"
+      >
+        {carouselItems}
+      </Carousel>
     );
   }
 }
+
+export default SliderImg;
