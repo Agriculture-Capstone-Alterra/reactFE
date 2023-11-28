@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+// import Card from "../../../components/Card/Card";
 import Layout from "../../../layout/Layout";
 import bayam from "../../../assets/img/bayam.png";
 import varietas from "../../../assets/img/varietas-detail.png";
@@ -7,14 +8,21 @@ import technology from "../../../assets/img/technology-detail.png";
 import calendar from "../../../assets/img/icon-calendar.png";
 import image1 from "../../../assets/img/gambar1.png";
 import langkah1 from "../../../assets/img/langkah1.png";
+// import Slider from "react-slick";
 import styles from "./style.module.css";
-import { useEffect, useRef, useState } from "react";
-import Accordion from "../../../components/Accordion";
-import { motion } from "framer-motion";
-import Modal from "../../../components/Modal/Modal";
-import ModalTrigger from "../../../components/Modal/ModalTrigger";
+import { useEffect, useState } from "react";
 
 const DetailTanaman = () => {
+  const settings = {
+    className: "slider variable-width",
+    dots: true,
+    infinite: true,
+    centerMode: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    variableWidth: true,
+  };
+
   const [isShowNutrisi, setIsShowNutrisi] = useState(false);
   const [isShowDeskripsi, setIsShowDeskripsi] = useState(false);
   const [isShowPanduan, setIsShowPanduan] = useState(false);
@@ -22,46 +30,6 @@ const DetailTanaman = () => {
   const [isShowLangkah, setIsShowLangkah] = useState(false);
   const [isShowMenanam, setIsShowMenanam] = useState(false);
   const [isShowPenanganan, setIsShowPenanganan] = useState(false);
-
-  const [widthScroll, setWithScroll] = useState(0);
-  const scroll = useRef(null);
-  const deleteModalName = "deletaDataTanaman";
-
-  const alat = [
-    {
-      name: "Rockwool",
-      description:
-        "Rockwool/media tanaman yang bagus digunakan untuk tanaman hidroponik",
-    },
-    {
-      name: "Rockwool",
-      description:
-        "Rockwool/media tanaman yang bagus digunakan untuk tanaman hidroponik",
-    },
-    {
-      name: "Rockwool",
-      description:
-        "Rockwool/media tanaman yang bagus digunakan untuk tanaman hidroponik",
-    },
-  ];
-  const langkah = [
-    {
-      name: "Tahap 1",
-      description: "Potong rockwool bentuk dadu ukuran 2,5cm x 2,5cm x2,5cm",
-    },
-    {
-      name: "Tahap 1",
-      description: "Potong rockwool bentuk dadu ukuran 2,5cm x 2,5cm x2,5cm",
-    },
-    {
-      name: "Tahap 1",
-      description: "Potong rockwool bentuk dadu ukuran 2,5cm x 2,5cm x2,5cm",
-    },
-  ];
-
-  useEffect(() => {
-    setWithScroll(scroll.current.scrollWidth - scroll.current.offsetWidth);
-  }, []);
 
   const breadcrumbsobjectexample = [
     {
@@ -77,6 +45,14 @@ const DetailTanaman = () => {
       crumbname: "Nama Page Final",
     },
   ];
+
+  // useEffect(() => {
+  //   console.log(isShowNutrisi);
+  // }, [isShowNutrisi]);
+
+  const onClickCollapse = (e) => {
+    // const target = e.target.dataset.target;
+  };
   return (
     <>
       <Layout pagetitle={"Nama Header"} breadcrumbs={breadcrumbsobjectexample}>
@@ -157,57 +133,129 @@ const DetailTanaman = () => {
                     </div>
                   </div>
                 </div>
-                <div className="d-flex flex-wrap gap-4 px-4 mt-4">
-                  <Accordion
-                    title="Deskripsi Tananman"
-                    onClick={() => setIsShowDeskripsi(!isShowDeskripsi)}
-                    isShowAccordion={isShowDeskripsi}
+                <div className="d-flex flex-wrap gap-5 px-4 mt-4">
+                  <div
+                    className="card"
+                    style={{
+                      backgroundColor: "#F3F4F6",
+                      width: "100%",
+                      borderColor: "#6B72801A",
+                    }}
                   >
-                    <p
-                      className="mt-2"
-                      style={{
-                        color: "#4B5563",
-                        fontSize: "16px",
-                        fontWeight: 400,
-                        // width: "90%",
-                        paddingRight: "22px",
-                      }}
-                    >
-                      Tanaman Bayam merupakan jenis sayuran semusim tergolong ke
-                      dalam famili Amaranthaceae beriklim tropis dengan penamaan
-                      ilmiah Amaranthus spp. Dominan dimanfaatkan dan dikonsumsi
-                      sebagai sayuran hijau dan banyak mengandung vitamin serta
-                      mineral yang baik bagi kesehatan untuk dibudidayakan.
-                    </p>
-                  </Accordion>
-                  <Accordion
-                    title="Panduan Menanam"
-                    onClick={() => setIsShowPanduan(!isShowPanduan)}
-                    isShowAccordion={isShowPanduan}
-                  >
-                    <p
-                      className="mt-2"
-                      style={{
-                        color: "#111827",
-                        fontSize: "16px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      Alat Yang Dibutuhkan
-                    </p>
-                    <motion.div
-                      ref={scroll}
-                      className={`mt-2 ${styles.cardScrollContainer}`}
-                    >
-                      <motion.div
-                        drag="x"
-                        dragConstraints={{ right: 0, left: -widthScroll }}
-                        className={styles.cardScroll}
+                    <div className="card-body">
+                      <div
+                        className="d-flex justify-content-between"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setIsShowDeskripsi(!isShowDeskripsi)}
                       >
-                        {alat.map((item, index) => (
-                          <motion.div
+                        <p
+                          className="user-select-none"
+                          style={{
+                            color: "#111827",
+                            fontWeight: 600,
+                            fontSize: "20px",
+                          }}
+                        >
+                          Deskripsi Tanaman
+                        </p>
+                        <p className="d-flex align-items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width={16}
+                            height={16}
+                            fill="#4B5563"
+                            className="bi bi-dash-lg"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"
+                            />
+                          </svg>
+                        </p>
+                      </div>
+                      <div
+                        className={
+                          isShowDeskripsi ? styles.expand : styles.collapse
+                        }
+                      >
+                        <p
+                          style={{
+                            color: "#4B5563",
+                            fontSize: "16px",
+                            fontWeight: 400,
+                            // width: "90%",
+                            paddingRight: "22px",
+                          }}
+                        >
+                          Tanaman Bayam merupakan jenis sayuran semusim
+                          tergolong ke dalam famili Amaranthaceae beriklim
+                          tropis dengan penamaan ilmiah Amaranthus spp. Dominan
+                          dimanfaatkan dan dikonsumsi sebagai sayuran hijau dan
+                          banyak mengandung vitamin serta mineral yang baik bagi
+                          kesehatan untuk dibudidayakan.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="card"
+                    style={{
+                      backgroundColor: "#F3F4F6",
+                      width: "100%",
+                      borderColor: "#6B72801A",
+                    }}
+                  >
+                    <div className="card-body">
+                      <div
+                        className="d-flex justify-content-between"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setIsShowPanduan(!isShowPanduan)}
+                      >
+                        <p
+                          className="user-select-none"
+                          style={{
+                            color: "#111827",
+                            fontWeight: 600,
+                            fontSize: "20px",
+                          }}
+                        >
+                          Panduan Menanam
+                        </p>
+                        <p className="d-flex align-items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width={16}
+                            height={16}
+                            fill="#4B5563"
+                            className="bi bi-dash-lg"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"
+                            />
+                          </svg>
+                        </p>
+                      </div>
+                      <div
+                        className={
+                          isShowPanduan ? styles.expand : styles.collapse
+                        }
+                      >
+                        <p
+                          style={{
+                            color: "#111827",
+                            fontSize: "16px",
+                            fontWeight: 400,
+                          }}
+                        >
+                          Alat Yang Dibutuhkan
+                        </p>
+                        <div className={styles.cardScroll}>
+                          <div
                             className={`d-flex bg-white ${styles.cardInfo}`}
-                            key={index}
+                            // style={{ width: "348px", borderRadius: "16px" }}
                           >
                             <img src={image1} alt="" />
                             <div className="px-3">
@@ -219,7 +267,7 @@ const DetailTanaman = () => {
                                   margin: 0,
                                 }}
                               >
-                                {item.name}
+                                Rockwool
                               </p>
                               <span
                                 style={{
@@ -228,53 +276,183 @@ const DetailTanaman = () => {
                                   fontWeight: 400,
                                 }}
                               >
-                                {item.description}
+                                Rockwool/media tanaman yang bagus digunakan
+                                untuk tanaman hidroponik
                               </span>
                             </div>
-                          </motion.div>
-                        ))}
-                      </motion.div>
-                    </motion.div>
-                  </Accordion>
-                  <Accordion
-                    title="Saran Untuk Tempat Penanaman"
-                    onClick={() => setIsShowSaran(!isShowSaran)}
-                    isShowAccordion={isShowSaran}
-                  >
-                    <p
-                      className="mt-2"
-                      style={{
-                        color: "#4B5563",
-                        fontSize: "16px",
-                        fontWeight: 400,
-                        // width: "90%",
-                        paddingRight: "22px",
-                      }}
-                    >
-                      Sebaiknya bayam ditempatkan didalam pot yang dengan
-                      teknologi hidroponik. Untuk penyimpanan dari tanaman bayam
-                      bisa disimpan pada tempat yang teduh, agar bayam tidak
-                      layu. Perlu diketahui kalau bayam merupakan tanaman sering
-                      layu.
-                    </p>
-                  </Accordion>
-                  <Accordion
-                    title="Langkah Penanaman"
-                    onClick={() => setIsShowLangkah(!isShowLangkah)}
-                    isShowAccordion={isShowLangkah}
-                  >
-                    <motion.div
-                      className={`mt-2 ${styles.cardScrollContainer}`}
-                    >
-                      <motion.div
-                        drag="x"
-                        dragConstraints={{ right: 0, left: -widthScroll }}
-                        className={`mt-2 ${styles.cardScroll}`}
-                      >
-                        {langkah.map((item, index) => (
-                          <motion.div
+                          </div>
+                          <div
                             className={`d-flex bg-white ${styles.cardInfo}`}
-                            key={index}
+                            // style={{ width: "348px", borderRadius: "16px" }}
+                          >
+                            <img src={image1} alt="" />
+                            <div className="px-3">
+                              <p
+                                style={{
+                                  color: "#374151",
+                                  fontWeight: 600,
+                                  fontSize: "16px",
+                                  margin: 0,
+                                }}
+                              >
+                                Rockwool
+                              </p>
+                              <span
+                                style={{
+                                  color: "#6B7280",
+                                  fontSize: "12px",
+                                  fontWeight: 400,
+                                }}
+                              >
+                                Rockwool/media tanaman yang bagus digunakan
+                                untuk tanaman hidroponik
+                              </span>
+                            </div>
+                          </div>
+                          <div
+                            className={`d-flex bg-white ${styles.cardInfo}`}
+                            // style={{ width: "348px", borderRadius: "16px" }}
+                          >
+                            <img src={image1} alt="" />
+                            <div className="px-3">
+                              <p
+                                style={{
+                                  color: "#374151",
+                                  fontWeight: 600,
+                                  fontSize: "16px",
+                                  margin: 0,
+                                }}
+                              >
+                                Rockwool
+                              </p>
+                              <span
+                                style={{
+                                  color: "#6B7280",
+                                  fontSize: "12px",
+                                  fontWeight: 400,
+                                }}
+                              >
+                                Rockwool/media tanaman yang bagus digunakan
+                                untuk tanaman hidroponik
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="card"
+                    style={{
+                      backgroundColor: "#F3F4F6",
+                      width: "100%",
+                      borderColor: "#6B72801A",
+                    }}
+                  >
+                    <div className="card-body">
+                      <div
+                        className="d-flex justify-content-between"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setIsShowSaran(!isShowSaran)}
+                      >
+                        <p
+                          className="user-select-none"
+                          style={{
+                            color: "#111827",
+                            fontWeight: 600,
+                            fontSize: "20px",
+                          }}
+                        >
+                          Saran Untuk Tempat Penanaman
+                        </p>
+                        <p className="d-flex align-items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width={16}
+                            height={16}
+                            fill="#4B5563"
+                            className="bi bi-dash-lg"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"
+                            />
+                          </svg>
+                        </p>
+                      </div>
+                      <div
+                        className={
+                          isShowSaran ? styles.expand : styles.collapse
+                        }
+                      >
+                        <p
+                          style={{
+                            color: "#4B5563",
+                            fontSize: "16px",
+                            fontWeight: 400,
+                            // width: "90%",
+                            paddingRight: "22px",
+                          }}
+                        >
+                          Sebaiknya bayam ditempatkan didalam pot yang dengan
+                          teknologi hidroponik. Untuk penyimpanan dari tanaman
+                          bayam bisa disimpan pada tempat yang teduh, agar bayam
+                          tidak layu. Perlu diketahui kalau bayam merupakan
+                          tanaman sering layu.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="card"
+                    style={{
+                      backgroundColor: "#F3F4F6",
+                      width: "100%",
+                      borderColor: "#6B72801A",
+                    }}
+                  >
+                    <div className="card-body">
+                      <div
+                        className="d-flex justify-content-between"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setIsShowLangkah(!isShowLangkah)}
+                      >
+                        <p
+                          className="user-select-none"
+                          style={{
+                            color: "#111827",
+                            fontWeight: 600,
+                            fontSize: "20px",
+                          }}
+                        >
+                          Langkah Penanaman
+                        </p>
+                        <p className="d-flex align-items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width={16}
+                            height={16}
+                            fill="#4B5563"
+                            className="bi bi-dash-lg"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"
+                            />
+                          </svg>
+                        </p>
+                      </div>
+                      <div
+                        className={
+                          isShowLangkah ? styles.expand : styles.collapse
+                        }
+                      >
+                        <div className={styles.cardScroll}>
+                          <div
+                            className={`d-flex bg-white ${styles.cardInfo}`}
+                            // style={{ width: "348px", borderRadius: "16px" }}
                           >
                             <img src={langkah1} alt="" />
                             <div className="px-3">
@@ -286,7 +464,7 @@ const DetailTanaman = () => {
                                   margin: 0,
                                 }}
                               >
-                                {item.name}
+                                Tahap 1
                               </p>
                               <span
                                 style={{
@@ -295,39 +473,138 @@ const DetailTanaman = () => {
                                   fontWeight: 400,
                                 }}
                               >
-                                {item.description}
+                                Potong rockwool bentuk dadu ukuran 2,5cm x 2,5cm
+                                x 2,5cm
                               </span>
                             </div>
-                          </motion.div>
-                        ))}
-                      </motion.div>
-                    </motion.div>
-                  </Accordion>
-                  <Accordion
-                    title="Cara Menanam Tanaman"
-                    onClick={() => setIsShowMenanam(!isShowMenanam)}
-                    isShowAccordion={isShowMenanam}
+                          </div>
+                          <div
+                            className={`d-flex bg-white ${styles.cardInfo}`}
+                            // style={{ width: "348px", borderRadius: "16px" }}
+                          >
+                            <img src={langkah1} alt="" />
+                            <div className="px-3">
+                              <p
+                                style={{
+                                  color: "#374151",
+                                  fontWeight: 600,
+                                  fontSize: "16px",
+                                  margin: 0,
+                                }}
+                              >
+                                Tahap 1
+                              </p>
+                              <span
+                                style={{
+                                  color: "#6B7280",
+                                  fontSize: "12px",
+                                  fontWeight: 400,
+                                }}
+                              >
+                                Potong rockwool bentuk dadu ukuran 2,5cm x 2,5cm
+                                x 2,5cm
+                              </span>
+                            </div>
+                          </div>
+                          <div
+                            className={`d-flex bg-white ${styles.cardInfo}`}
+                            // style={{ width: "348px", borderRadius: "16px" }}
+                          >
+                            <img src={langkah1} alt="" />
+                            <div className="px-3">
+                              <p
+                                style={{
+                                  color: "#374151",
+                                  fontWeight: 600,
+                                  fontSize: "16px",
+                                  margin: 0,
+                                }}
+                              >
+                                Tahap 1
+                              </p>
+                              <span
+                                style={{
+                                  color: "#6B7280",
+                                  fontSize: "12px",
+                                  fontWeight: 400,
+                                }}
+                              >
+                                Potong rockwool bentuk dadu ukuran 2,5cm x 2,5cm
+                                x 2,5cm
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="card"
+                    style={{
+                      backgroundColor: "#F3F4F6",
+                      width: "100%",
+                      borderColor: "#6B72801A",
+                    }}
                   >
-                    <p
-                      className="mt-2"
-                      style={{
-                        color: "#4B5563",
-                        fontSize: "16px",
-                        fontWeight: 400,
-                        // width: "90%",
-                        paddingRight: "22px",
-                      }}
-                    >
-                      Merawat bayam dengan baik melibatkan penyiraman yang
-                      cukup, tanah subur, pemupukan teratur, pencahayaan yang
-                      memadai, suhu sejuk, pemangkasan teratur, pencegahan hama
-                      dan penyakit, rotasi tanaman, dan pemanenan pada waktu
-                      yang tepat. Dengan perhatian pada detail ini, Anda dapat
-                      menikmati panen bayam yang lezat dan sehat.
-                    </p>
-                  </Accordion>
+                    <div className="card-body">
+                      <div
+                        className="d-flex justify-content-between"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setIsShowMenanam(!isShowMenanam)}
+                      >
+                        <p
+                          className="user-select-none"
+                          style={{
+                            color: "#111827",
+                            fontWeight: 600,
+                            fontSize: "20px",
+                          }}
+                        >
+                          Cara Menanam Tanaman
+                        </p>
+                        <p className="d-flex align-items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width={16}
+                            height={16}
+                            fill="#4B5563"
+                            className="bi bi-dash-lg"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"
+                            />
+                          </svg>
+                        </p>
+                      </div>
+                      <div
+                        className={
+                          isShowMenanam ? styles.expand : styles.collapse
+                        }
+                      >
+                        <p
+                          style={{
+                            color: "#4B5563",
+                            fontSize: "16px",
+                            fontWeight: 400,
+                            // width: "90%",
+                            paddingRight: "22px",
+                          }}
+                        >
+                          Merawat bayam dengan baik melibatkan penyiraman yang
+                          cukup, tanah subur, pemupukan teratur, pencahayaan
+                          yang memadai, suhu sejuk, pemangkasan teratur,
+                          pencegahan hama dan penyakit, rotasi tanaman, dan
+                          pemanenan pada waktu yang tepat. Dengan perhatian pada
+                          detail ini, Anda dapat menikmati panen bayam yang
+                          lezat dan sehat.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="d-flex justify-content-center gap-4 p-4">
+                <div className="d-flex justify-content-center gap-5 p-4">
                   <button
                     type="button"
                     style={{
@@ -340,7 +617,7 @@ const DetailTanaman = () => {
                   >
                     Edit Tanaman
                   </button>
-                  {/* <button
+                  <button
                     type="button"
                     style={{
                       border: "none",
@@ -351,21 +628,7 @@ const DetailTanaman = () => {
                     }}
                   >
                     Hapus Tanaman
-                  </button> */}
-                  <ModalTrigger
-                    modalTarget={deleteModalName}
-                    className={``}
-                    style={{
-                      border: "none",
-                      backgroundColor: "#DC2626",
-                      color: "#F9FAFB",
-                      borderRadius: "6px",
-                      padding: "6px 12px",
-                    }}
-                    onClick={() => {}}
-                  >
-                    Hapus Tanaman
-                  </ModalTrigger>
+                  </button>
                 </div>
               </div>
               <div className="col-md-5 ps-4">
@@ -382,7 +645,6 @@ const DetailTanaman = () => {
                   <div>
                     <div>
                       <p
-                        className="mt-3"
                         style={{
                           color: "#111827",
                           fontSize: "16px",
@@ -391,7 +653,7 @@ const DetailTanaman = () => {
                       >
                         Musim Kemarau
                       </p>
-                      <div className="d-flex gap-2 align-items-center mt-2">
+                      <div className="d-flex gap-2 align-items-center">
                         <img src={calendar} alt="" />
                         <span
                           style={{
@@ -414,7 +676,7 @@ const DetailTanaman = () => {
                       >
                         Musim Hujan
                       </p>
-                      <div className="d-flex gap-2 align-items-center mt-2">
+                      <div className="d-flex gap-2 align-items-center">
                         <img src={calendar} alt="" />
                         <span
                           style={{
@@ -430,50 +692,128 @@ const DetailTanaman = () => {
                   </div>
                 </div>
                 <div className="d-flex flex-wrap gap-4 mt-5">
-                  <Accordion
-                    title="Informasi Penanganan Hama"
-                    onClick={() => setIsShowPenanganan(!isShowPenanganan)}
-                    isShowAccordion={isShowPenanganan}
+                  <div
+                    className="card"
                     style={{ width: "100%", borderColor: "#6B72801A" }}
                   >
-                    <p
-                      className="mt-2"
-                      style={{
-                        color: "#4B5563",
-                        fontSize: "16px",
-                        fontWeight: 400,
-                        paddingRight: "22px",
-                      }}
-                    >
-                      Tanaman Bayam merupakan jenis sayuran semusim tergolong ke
-                      dalam famili Amaranthaceae beriklim tropis dengan penamaan
-                      ilmiah Amaranthus spp. Dominan dimanfaatkan dan dikonsumsi
-                      sebagai sayuran hijau dan banyak mengandung vitamin serta
-                      mineral yang baik bagi kesehatan untuk dibudidayakan.
-                    </p>
-                  </Accordion>
-                  <Accordion
-                    title="Informasi Nutrisi dan Pupuk"
-                    onClick={() => setIsShowNutrisi(!isShowNutrisi)}
-                    isShowAccordion={isShowNutrisi}
+                    <div className="card-body">
+                      <div
+                        className="d-flex justify-content-between"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setIsShowPenanganan(!isShowPenanganan)}
+                      >
+                        <p
+                          className="user-select-none"
+                          style={{
+                            color: "#111827",
+                            fontWeight: 600,
+                            fontSize: "20px",
+                          }}
+                        >
+                          Informasi Penanganan Hama
+                        </p>
+                        <p className="d-flex align-items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width={16}
+                            height={16}
+                            fill="#4B5563"
+                            className="bi bi-dash-lg"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"
+                            />
+                          </svg>
+                        </p>
+                      </div>
+                      <div
+                        className={
+                          isShowPenanganan ? styles.expand : styles.collapse
+                        }
+                      >
+                        <p
+                          style={{
+                            color: "#4B5563",
+                            fontSize: "16px",
+                            fontWeight: 400,
+                            paddingRight: "22px",
+                          }}
+                        >
+                          Tanaman Bayam merupakan jenis sayuran semusim
+                          tergolong ke dalam famili Amaranthaceae beriklim
+                          tropis dengan penamaan ilmiah Amaranthus spp. Dominan
+                          dimanfaatkan dan dikonsumsi sebagai sayuran hijau dan
+                          banyak mengandung vitamin serta mineral yang baik bagi
+                          kesehatan untuk dibudidayakan.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="card"
                     style={{ width: "100%", borderColor: "#6B72801A" }}
                   >
-                    <p
-                      className="mt-2"
-                      style={{
-                        color: "#4B5563",
-                        fontSize: "16px",
-                        fontWeight: 400,
-                        paddingRight: "22px",
-                      }}
-                    >
-                      Tanaman Bayam merupakan jenis sayuran semusim tergolong ke
-                      dalam famili Amaranthaceae beriklim tropis dengan penamaan
-                      ilmiah Amaranthus spp. Dominan dimanfaatkan dan dikonsumsi
-                      sebagai sayuran hijau dan banyak mengandung vitamin serta
-                      mineral yang baik bagi kesehatan untuk dibudidayakan.
-                    </p>
-                  </Accordion>
+                    <div className="card-body">
+                      <div
+                        className="d-flex justify-content-between"
+                        data-target="#collapse7"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setIsShowNutrisi(!isShowNutrisi)}
+                      >
+                        <p
+                          className="user-select-none"
+                          style={{
+                            color: "#111827",
+                            fontWeight: 600,
+                            fontSize: "20px",
+                          }}
+                          data-target="#collapse7"
+                        >
+                          Informasi Nutrisi dan Pupuk
+                        </p>
+                        <p className="d-flex align-items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width={16}
+                            height={16}
+                            fill="#4B5563"
+                            className="bi bi-dash-lg"
+                            viewBox="0 0 16 16"
+                            data-target="#collapse7"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"
+                            />
+                          </svg>
+                        </p>
+                      </div>
+                      <div
+                        className={
+                          isShowNutrisi ? styles.expand : styles.collapse
+                        }
+                        // style={{ display: "none" }}
+                      >
+                        <p
+                          style={{
+                            color: "#4B5563",
+                            fontSize: "16px",
+                            fontWeight: 400,
+                            paddingRight: "22px",
+                          }}
+                        >
+                          Tanaman Bayam merupakan jenis sayuran semusim
+                          tergolong ke dalam famili Amaranthaceae beriklim
+                          tropis dengan penamaan ilmiah Amaranthus spp. Dominan
+                          dimanfaatkan dan dikonsumsi sebagai sayuran hijau dan
+                          banyak mengandung vitamin serta mineral yang baik bagi
+                          kesehatan untuk dibudidayakan.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -481,18 +821,6 @@ const DetailTanaman = () => {
         </div>
         {/* end main content */}
       </Layout>
-      <Modal
-        id={deleteModalName}
-        title="Hapus Data Tanaman"
-        content={
-          <p className="text-center">
-            Apakah anda yakin akan mengapus data tanaman?
-          </p>
-        }
-        onCancel={() => {}}
-        onSubmit={() => {}}
-        type="delete"
-      />
     </>
   );
 };

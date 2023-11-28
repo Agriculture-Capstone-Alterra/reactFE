@@ -4,13 +4,6 @@ import Persentase from "../../components/Persentase/Persentase";
 import Layout from "../../layout/Layout"
 import "./Dashboard.css"
 import { FaAngleDown } from "react-icons/fa6";
-import CardDashboard from "../../components/dashboard card/CardPenggunaBaru/indeks";
-import card1 from '../../assets/DashboardCardImg/card1.svg'
-import card from '../../assets/DashboardCardImg/card.svg'
-import card2 from '../../assets/DashboardCardImg/card2.svg'
-import cloud from '../../assets/DashboardCardImg/cloud.svg'
-import CardCuaca from "../../components/CardCuaca/indeks";
-import { Plant } from "../../assets";
 
 
 export default function Dashboard(){
@@ -51,61 +44,16 @@ export default function Dashboard(){
             color: '#847042',
         },
     ];
-    const [datacard, setDataCard] = useState({
-        penggunabaru: {
-            nama: "Pengguna Baru",
-            jumlah: 1000,
-            img: card
-        },
-        tanamanbaru:{
-            nama: "Tanaman Baru",
-            jumlah: 130,
-            img: card1
-        },
-        riwayattanam:{
-            nama: "Riwayat Tanam",
-            jumlah: 420,
-            img: card2
-        }
-    })
-    const breadcrumbsobjectexample = [
-    {
-      crumblink: "/dashboard",
-      crumbname: "Dashboard",
-    }]
-    const [datasuhu, setDataSuhu] = useState({
-        suhunama: "Sedikit Awan",
-        suhu: 25,
-        suhupic: cloud
-    })
+    //  end : dummy data untuk data pada chart
 
-    const [datafarmer, setDatafarmer] = useState([
-        // {
-        //     nama: "Farmer 1",
-        //     farmerpic: "/",
-        //     leavepoint: 4
-        // },
-        // {
-        //     nama: "Farmer 4",
-        //     farmerpic: "/",
-        //     leavepoint: 3
-        // },
-        // {
-        //     nama: "Farmer 2",
-        //     farmerpic: "/",
-        //     leavepoint: 5
-        // },
-    ])
+
 
     return (
         <>
-            <Layout pagetitle={"Dashboard"} breadcrumbs={breadcrumbsobjectexample}>
+            <Layout pagetitle={"Dashboard"} >
                 <div className="dashboard-container">
-                    <div className="dashboard-toppart d-flex align-items-center">
-                        <CardDashboard data={datacard.penggunabaru} />
-                        <CardDashboard data={datacard.tanamanbaru} />
-                        <CardDashboard data={datacard.riwayattanam} />
-                        <CardCuaca data={datasuhu}/>
+                    <div className="dashboard-toppart">
+                    
                     </div>
                     <div className="dashboard-middlepart">
                         <div className="dashboard-middle-leftpart">
@@ -138,38 +86,41 @@ export default function Dashboard(){
                             <div className="dashboard-topfarmer">
                                 <div className="d-flex dashboard-topfarmer-toppart">
                                     <p className="fonts20 fontw600 text-removemargin">Top Farmer</p>
-                                    <button className="dashboard-btn fonts12 fontw400" type="button" data-bs-toggle="dropdown">Bulan <FaAngleDown /></button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                    </ul>
+                                    <button className="dashboard-btn fonts12 fontw400">Bulan <FaAngleDown /></button>
                                 </div>
                                 {/* begin: kemungkinaan ada hover effect */}
-                                {
-                                    datafarmer.length!=0 ?
-                                    datafarmer.map((item)=>{
-                                        return(
-                                            <div className="d-flex align-items-center justify-content-between dashboard-topfarmer-farmerdiv">
-                                                <div className="d-flex align-items-center dashboard-farmerdiv-leftpart">
-                                                    {/* <object data={item.farmerpic} type="image/png"> */}
-                                                        <img src={"..//assets/img/avatar/avatar (5).png"} className="dashboard-farmerimg" width={64} height={64} />
-                                                    {/* </object> */}
-                                                    <p className="fonts14 fontw600 text-removemargin dashboard-farmername">{item.nama}</p>
-                                                </div>
-                                                <div className="d-flex align-items-center justify-content-center dashboard-farmerdiv-rightpart">
-                                                    <img className="dashboard-leavelogofarmer" src={Plant} width={18} height={18} />
-                                                    <p className="fonts14 fontw600 text-removemargin">{item.leavepoint}</p>
-                                                </div>
-                                            </div>
-                                        )
-                                    }) :
-                                    <div className="d-flex align-items-center justify-content-between dashboard-topfarmer-farmerdiv">
-                                        <p>No Farmer Found...</p>
+                                <div className="d-flex align-items-center justify-content-between dashboard-topfarmer-farmerdiv">
+                                    <div className="d-flex align-items-center dashboard-farmerdiv-leftpart">
+                                        <img src="/" className="dashboard-farmerimg" width={64} height={64} />
+                                        <p className="fonts14 fontw600 text-removemargin dashboard-farmername">Nama Farmer</p>
                                     </div>
-                                }
+                                    <div className="d-flex align-items-center justify-content-center dashboard-farmerdiv-rightpart">
+                                        <img className="dashboard-leavelogofarmer" src="/" width={18} height={18} />
+                                        <p className="fonts14 fontw600 text-removemargin">0</p>
+                                    </div>
+                                </div>
                                 {/* end : kemungkinaan ada hover effect */}
 
+                                <div className="d-flex align-items-center justify-content-between dashboard-topfarmer-farmerdiv">
+                                    <div className="d-flex align-items-center dashboard-farmerdiv-leftpart">
+                                        <img src="/" className="dashboard-farmerimg" width={64} height={64} />
+                                        <p className="fonts14 fontw600 text-removemargin dashboard-farmername">Nama Farmer</p>
+                                    </div>
+                                    <div className="d-flex align-items-center justify-content-center dashboard-farmerdiv-rightpart">
+                                        <img className="dashboard-leavelogofarmer" src="/" width={18} height={18} />
+                                        <p className="fonts14 fontw600 text-removemargin">0</p>
+                                    </div>
+                                </div>
+                                <div className="d-flex align-items-center justify-content-between dashboard-topfarmer-farmerdiv">
+                                    <div className="d-flex align-items-center dashboard-farmerdiv-leftpart">
+                                        <img src="/" className="dashboard-farmerimg" width={64} height={64} />
+                                        <p className="fonts14 fontw600 text-removemargin dashboard-farmername">Nama Farmer</p>
+                                    </div>
+                                    <div className="d-flex align-items-center justify-content-center dashboard-farmerdiv-rightpart">
+                                        <img className="dashboard-leavelogofarmer" src="/" width={18} height={18} />
+                                        <p className="fonts14 fontw600 text-removemargin">0</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

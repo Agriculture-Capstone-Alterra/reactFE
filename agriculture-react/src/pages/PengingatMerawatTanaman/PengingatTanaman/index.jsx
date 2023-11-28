@@ -1,265 +1,241 @@
 import React, { useState, useEffect } from 'react';
-import Table from '../../../components/Table/Table';
-import Layout from '../../../layout/Layout';
-import { TbDots } from 'react-icons/tb';
-import { BsPlus } from 'react-icons/bs';
-import styles from './style.module.css';
-import EditIcon from '../../../assets/icons/edit.svg';
-import TrashIcon from '../../../assets/icons/trash.svg';
-import data from './data.js';
-import { Link, useLocation } from 'react-router-dom';
-import ToastNotification from '../../../components/ToastNotification/ToastNotification.jsx';
-import Pagination from '../../../components/Pagination/Pagination.jsx';
-import Modal from '../../../components/Modal/Modal.jsx';
-import ModalTrigger from '../../../components/Modal/ModalTrigger.jsx';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'; // Import SweetAlert2
+import Table from "../../../components/Table/Table";
+import Layout from "../../../layout/Layout";
+import { TbDots, TbRuler } from "react-icons/tb";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
+import { BsPlus } from "react-icons/bs";
+import styles from "./style.module.css";
+import EditIcon from "../../../assets/icons/edit.svg";
+import TrashIcon from "../../../assets/icons/trash.svg";
+import data from "./data.js";
+import { useLocation } from 'react-router-dom';
 
 
-// start dokumentasi komponen
-// untuk memanggil komponen ini, ketika ingin menampilkan toast notif setelah menyimpan data, lihat contoh berikut :
-// <Link
-// to={`/pengingat-tanaman`} state={{savedData:true}}> test link </Link> 
-// link diatas digunakan untuk contoh navigasi ke halaman komponen ini sambil menampilkan toast notif
-// end dokumentasi komponen
+
+// start dokumentasi penggunaan 
+{/* 
+    <Link
+        to={`/pengingat-tanaman`}
+        state={{savedData:true}}
+    >
+        test link
+    </Link> 
+    agar dapat menampilkan notif toast ketika selesai menambahkan data, gunakan referensi diatas untuk meng trigger
+    toast agar ditampilkan ketika sudah menambah data
+*/}
+// end dokumentasi penggunaan
 
 const PengingatTanaman = () => {
-  const itemsPerPage = 5;
-  const [dataPenyiramanList, setDataPenyiramanList] = useState(data);
-  const [currentDataPenyiraman, setCurrentDataPenyiraman] = useState([]);
-  const [dataPemupukanList, setDataPemupukanList] = useState(data);
-  const [currentDataPemupukan, setCurrentDataPemupukan] = useState([]);
-  const [modalData, setModalData] = useState({});
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const location = useLocation();
-  const penyiramanModalName = "deleteDataPenyiraman";
-  const pemupukanModalName = "deleteDataPemupukan";
+    const itemsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(1);
+    const [dataList, setDataList] = useState(data);
+    const location = useLocation();
 
-  useEffect(() => {
-    const urlState = location.state;
-    if (urlState && urlState.savedData) {
-      setToastMessage("Data tanaman berhasil ditambahkan");
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
-    }
-  }, [location.state]);
+    const totalItems = dataList.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentData = dataList.slice(startIndex, endIndex);
 
-  const headers = [
-    'No',
-    'Jenis Tanaman',
-    'Nama Pengingat',
-    'Waktu',
-    'pengulangan',
-    '',
-  ];
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "bottom-left",
+        showCloseButton: true,
+        showConfirmButton: false,
+        icon: null,
+        timer: 3000,
+        background: "#A7F3D0",
+        width: 400,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+      
+    useEffect(() => {
+        const urlState = location.state;
+        console.log(location);
+        if (urlState && urlState.savedData) {
+            Toast.fire({
+                title: "Data tanaman berhasil ditambahkan"
+            }).then(() => {
+                window.history.replaceState(null, null, window.location.pathname);
+            });
+        }
+    }, []);
+    
 
-  const crumbs = [
-    { crumblink: '/pengingat-tanaman', crumbname: 'Pengingat Tanaman' }
-  ];
+      const headers = [
+          "No",
+        "Nama Tanaman",
+        "Penyiraman",
+        "Waktu Penyiraman",
+        "Pemberian Pupuk",
+        "Waktu Pemberian Pupuk",
+        <TbDots className={`fs-4 ms-3`} />
+    ];
 
-  const handleDeleteClick = (data) => {
-    setModalData({ ...data });
-  }
+    const crumbs = [
+        { crumblink: "/pengingat-tanaman", crumbname: "Pengingat Tanaman", }
+    ];
 
-  const executeDeletePenyiraman = (item) => {
-    const updatedData = dataPenyiramanList.filter((dataItem) => dataItem.id !== item.id);
-    setDataPenyiramanList(updatedData);
-    setModalData({});
-    setToastMessage('Data Penyiraman Berhasil dihapus');
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
-  };
-  
-  const executeDeletePemupukan = (item) => {
-    const updatedData = dataPemupukanList.filter((dataItem) => dataItem.id !== item.id);
-    setDataPemupukanList(updatedData);
-    setModalData({});
-    setToastMessage('Data Pemupukan Berhasil dihapus');
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
-  };
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prevPage) => prevPage - 1);
+        }
+    };
 
-  return (
-    <>
-      <Layout pagetitle={'Pengingat Tanaman'} breadcrumbs={crumbs}>
-          {/* table penyiraman */}
-          <div className="ps-3 pe-3">
-            <div className={`ps-4 pe-4 pb-4 ${styles.customCard}`}>
-              <div className="card-body">
-                <div className={`d-flex justify-content-between align-items-center pb-4 pt-4`}>
-                  <p className={`fonts24 fontw600 mb-0`}>Data Penyiraman Tanaman</p>
-                  <Link to='/pengingat-tanaman/tambah-pengingat'
-                    className={`fonts16 btn btn-success btn-sm fw-light d-flex align-items-center ${styles.btnPrimary}`}
-                  >
-                    <BsPlus fontSize={20} className="mr-2 mt-0" /> Tambah Data
-                  </Link>
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage((prevPage) => prevPage + 1);
+        }
+    };
+
+    const handleEllipsisClick = (direction) => {
+        if (direction === 'left' && currentPage > 2) {
+            setCurrentPage((prevPage) => prevPage - 2);
+        } else if (direction === 'right' && currentPage < totalPages - 1) {
+            setCurrentPage((prevPage) => prevPage + 2);
+        }
+    };
+
+    const generatePageNumbers = () => {
+        const pageNumbers = [];
+        const totalPagesToShow = Math.min(totalPages, 4);
+
+        if (totalPages <= 6) {
+            for (let i = 1; i <= totalPages; i++) {
+                pageNumbers.push(i);
+            }
+        } else if (currentPage <= 3) {
+            for (let i = 1; i <= Math.min(totalPagesToShow, totalPages); i++) {
+                pageNumbers.push(i);
+            }
+            if (totalPages > totalPagesToShow) {
+                pageNumbers.push('...');
+                pageNumbers.push(totalPages);
+            }
+        } else if (currentPage > 3 && currentPage <= totalPages - 2) {
+            pageNumbers.push(1);
+            pageNumbers.push('...');
+            for (let i = currentPage - 1; i <= Math.min(currentPage + 1, totalPages); i++) {
+                pageNumbers.push(i);
+            }
+            if (totalPages > currentPage + 1) {
+                pageNumbers.push('...');
+                pageNumbers.push(totalPages);
+            }
+        } else {
+            pageNumbers.push(1);
+            pageNumbers.push('...');
+            for (let i = Math.max(totalPages - totalPagesToShow + 2, 2); i <= totalPages; i++) {
+                pageNumbers.push(i);
+            }
+        }
+
+        return pageNumbers;
+    };
+
+    return (
+        <>
+            <Layout pagetitle={"Pengingat Tanaman"} breadcrumbs={crumbs} >
+                <div className="container-fluid">
+                    <div className="ps-3 pe-3">
+                        <div className={`card ps-4 pe-4 ${styles.customCard}`}>
+                            <div className="card-body">
+                                <div className={`d-flex justify-content-between align-items-center pb-4 pt-4`}>
+                                    <p className={`fs-4 fw-bold mb-0`}>Pengingat Tanaman</p>
+                                    <button className={`btn btn-success btn-sm fs-5 fw-light d-flex align-items-center ${styles.btnPrimary}`}>
+                                        <BsPlus fontSize={26} className="mr-2 mt-1" /> Tambah Data
+                                    </button>
+                                </div>
+                                <Table headers={headers}>
+                                    {currentData.length > 0 ? (
+                                        currentData.map((item, index) => (
+                                            <tr key={startIndex + index}>
+                                                <td>{startIndex + index + 1}</td>
+                                                <td>{item.namaTanaman}</td>
+                                                <td>{item.penyiraman}</td>
+                                                <td>{item.waktuPenyiraman}</td>
+                                                <td>{item.pemberianPupuk}</td>
+                                                <td>{item.waktuPemberianPupuk}</td>
+                                                <td>
+                                                    <div className="p-2 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <TbDots className="fw-bold fs-4 ms-1" />
+                                                    </div>
+                                                    <ul className="dropdown-menu">
+                                                        <li className="d-grid mb-2 ps-3 pe-3">
+                                                            <button className={`btn ${styles.btnAction}`} style={{ display: 'flex', alignItems: 'center' }}>
+                                                                <img src={EditIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
+                                                                <span>Edit</span>
+                                                            </button>
+                                                        </li>
+                                                        <li className="d-grid mb-2 ps-3 pe-3">
+                                                            <button className={`btn ${styles.btnAction}`} style={{ display: 'flex', alignItems: 'center' }}>
+                                                                <img src={TrashIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
+                                                                <span>Hapus</span>
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan={headers.length} className="text-center">
+                                                No data available
+                                            </td>
+                                        </tr>
+                                    )}
+                                </Table>
+                                <div className="d-flex justify-content-center mt-4 gap-2">
+                                    <button
+                                        className={`btn d-flex align-items-center justify-content-around ${styles.btnPagination}`}
+                                        onClick={handlePrevPage}
+                                        disabled={currentPage === 1}
+                                    >
+                                        <FaChevronLeft className="me-2 pt-1" />
+                                        <span className={`${styles.paginationButtonText}`}>Prev</span>
+                                    </button>
+                                    <div className="pagination d-flex">
+                                        {generatePageNumbers().map((pageNumber, index) => (
+                                            <div
+                                                key={index}
+                                                className={`btn ${styles.paginationButtonText} ${currentPage === pageNumber && 'active'}`}
+                                                onClick={() => (pageNumber === '...' ? null : setCurrentPage(pageNumber))}
+                                            >
+                                                {pageNumber === '...' ? (
+                                                    <div
+                                                        className={styles.ellipsis}
+                                                        onClick={() => handleEllipsisClick(index === 1 ? 'left' : 'right')}
+                                                    >
+                                                        ...
+                                                    </div>
+                                                ) : (
+                                                    pageNumber
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <button
+                                        className={`btn d-flex align-items-center justify-content-around ${styles.btnPagination}`}
+                                        onClick={handleNextPage}
+                                        disabled={currentPage === totalPages}
+                                    >
+                                        <span className={`${styles.paginationButtonText}`}>Next</span>
+                                        <FaChevronRight className="ms-2 pt-1" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <Table headers={headers}>
-                  {currentDataPenyiraman.length > 0 ? (
-                    currentDataPenyiraman.map((item, index) => (
-                      <tr key={index}>
-                        <td>{item.number}</td>
-                        <td>{item.jenisTanaman}</td>
-                        <td>{item.namaPengingat}</td>
-                        <td>{item.waktu}</td>
-                        <td>{item.pengulangan}</td>
-                        <td>
-                          <div
-                            className="p-2 dropdown-toggle-split"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <TbDots className="fw-bold fs-4 ms-1" />
-                          </div>
-                          <ul className="dropdown-menu">
-                            <li className="d-grid mb-2 ps-3 pe-3">
-                              <Link
-                                to={`/pengingat-tanaman/edit-pengingat`}
-                                className={`btn ${styles.btnAction}`}
-                                style={{ display: 'flex', alignItems: 'center' }}
-                              >
-                                <img src={EditIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
-                                <span>Edit</span>
-                              </Link>
-                            </li>
-                            <li className="d-grid mb-2 ps-3 pe-3">
-                              <ModalTrigger
-                                modalTarget={penyiramanModalName}
-                                className={`btn ${styles.btnAction}`}
-                                style={{ display: 'flex', alignItems: 'center' }}
-                                onClick={() => handleDeleteClick(item)}
-                              >
-                                <img src={TrashIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
-                                <span>Hapus</span>
-                              </ModalTrigger>
-                            </li>
-                          </ul>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={headers.length} className="text-center">
-                        No data available
-                      </td>
-                    </tr>
-                  )}
-                </Table>
-              </div>
-            </div>
-            {/* Pagination component Penyiraman */}
-            <Pagination
-              dataList={dataPenyiramanList}
-              itemsPerPage={itemsPerPage}
-              setCurrentData={setCurrentDataPenyiraman}
-              numberingData={true}
-            />
-          </div>
-          {/* end table penyiraman */}
-          {/* start table pemupukan */}
-          <div className="ps-3 pe-3">
-            <div className={`ps-4 pe-4 pb-4 ${styles.customCard}`}>
-              <div className="card-body">
-                <div className={`d-flex justify-content-between align-items-center pb-4 pt-4`}>
-                  <p className={`fonts24 fontw600 mb-0`}>Data Pemupukan Tanaman</p>
-                  <Link to='/pengingat-tanaman/tambah-pengingat'
-                    className={`fonts16 btn btn-success btn-sm fw-light d-flex align-items-center ${styles.btnPrimary}`}
-                  >
-                    <BsPlus fontSize={20} className="mr-2 mt-0" /> Tambah Data
-                  </Link>
-                </div>
-                <Table headers={headers}>
-                  {currentDataPemupukan.length > 0 ? (
-                    currentDataPemupukan.map((item, index) => (
-                      <tr key={index}>
-                        <td>{item.number}</td>
-                        <td>{item.jenisTanaman}</td>
-                        <td>{item.namaPengingat}</td>
-                        <td>{item.waktu}</td>
-                        <td>{item.pengulangan}</td>
-                        <td>
-                          <div
-                            className="p-2 dropdown-toggle-split"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <TbDots className="fw-bold fs-4 ms-1" />
-                          </div>
-                          <ul className="dropdown-menu">
-                            <li className="d-grid mb-2 ps-3 pe-3">
-                              <Link
-                                to={`/pengingat-tanaman/edit-pengingat`}
-                                className={`btn ${styles.btnAction}`}
-                                style={{ display: 'flex', alignItems: 'center' }}
-                              >
-                                <img src={EditIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
-                                <span>Edit</span>
-                              </Link>
-                            </li>
-                            <li className="d-grid mb-2 ps-3 pe-3">
-                              <ModalTrigger
-                                modalTarget={pemupukanModalName}
-                                className={`btn ${styles.btnAction}`}
-                                style={{ display: 'flex', alignItems: 'center' }}
-                                onClick={() => handleDeleteClick(item)}
-                              >
-                                <img src={TrashIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
-                                <span>Hapus</span>
-                              </ModalTrigger>
-                            </li>
-                          </ul>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={headers.length} className="text-center">
-                        No data available
-                      </td>
-                    </tr>
-                  )}
-                </Table>
-              </div>
-            </div>
-          {/* Pagination component pemupukan */}
-          <Pagination
-            dataList={dataPemupukanList}
-            itemsPerPage={itemsPerPage}
-            setCurrentData={setCurrentDataPemupukan}
-            numberingData={true}
-          />
-          </div>
-          {/* end table pemupukan */}
-      </Layout>
-      {/* call ToastNotification component */}
-      {showToast && (
-        <ToastNotification
-          position="bottom-left"
-          text={toastMessage}
-          onClose={() => {
-            setShowToast(false);
-            window.history.replaceState(null, null, window.location.pathname);
-          }}
-        />
-      )}
-      <Modal
-        id={penyiramanModalName}
-        title="Hapus Data Tanaman"
-        content={<p className='text-center'>Apakah anda yakin akan mengapus data tanaman?</p>}
-        onCancel= {() => {}}
-        onSubmit= {() => executeDeletePenyiraman(modalData)}
-        type="delete"
-      />
-      <Modal
-        id={pemupukanModalName}
-        title="Edit Data"
-        content={<p className='text-center'>Apakah anda yakin akan mengedit data tanaman?</p>}
-        onCancel= {() => {}}
-        onSubmit= {() => executeDeletePemupukan(modalData)}
-        type="delete"
-      />
-    </>
-  );
+            </Layout>
+        </>
+    );
 };
 
 export default PengingatTanaman;

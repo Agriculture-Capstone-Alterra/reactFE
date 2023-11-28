@@ -22,8 +22,6 @@ import Avatar4 from "./img/avatar/avatar (4).png"
 import Avatar5 from "./img/avatar/avatar (5).png"
 import GetitGplay from "./img/Get it on Gplay.png"
 import DownloadonAppStore from "./img/Download on the Appstore.png"
-import BGLogin from "./img/Bg Login 1.png"
-import Plant from "./img/Plant.png"
 
 
 
@@ -51,7 +49,5 @@ Avatar3,
 Avatar4,
 Avatar5,
 GetitGplay,
-DownloadonAppStore,
-BGLogin,
-Plant
+DownloadonAppStore
 };

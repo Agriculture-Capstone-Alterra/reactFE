@@ -4,14 +4,12 @@ import Table from "../../../components/Table/Table";
 import styles from "./riwayatMenanam.module.css";
 import { MdArrowBackIos, MdArrowForwardIos, MdSearch } from "react-icons/md";
 import { FaUsersSlash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const RiwayatMenanam = () => {
   const [dataPengguna, setDataPengguna] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate();
 
   // Pagination table
   const indexOfLastItem = currentPage * 10;
@@ -68,7 +66,7 @@ const RiwayatMenanam = () => {
     console.log("Row clicked:", namaPengguna);
 
     //Link ke halaman List Tanaman dari Nama Pengguna
-    navigate(`/riwayat-menanam/list-tanaman/`);
+    window.location.href = "/list-tanaman";
   };
 
   return (
@@ -96,15 +94,10 @@ const RiwayatMenanam = () => {
               </div>
               {filteredData.length === 0 ? (
                 <Table headers={tableHeaders}>
-                  <tr />
-                  <tr>
-                    <td colSpan={4}>
-                      <div className={styles.noDataContainer}>
-                        <FaUsersSlash className={styles.noDataIcon} />
-                        <p>Data Pengguna Belum Tersedia</p>
-                      </div>
-                    </td>
-                  </tr>
+                  <div className={styles.noDataContainer}>
+                    <FaUsersSlash className={styles.noDataIcon} />
+                    <p>Data Pengguna Belum Tersedia</p>
+                  </div>
                 </Table>
               ) : (
                 <Table headers={tableHeaders}>
