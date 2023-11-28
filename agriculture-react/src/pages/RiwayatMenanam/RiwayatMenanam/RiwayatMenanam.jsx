@@ -96,10 +96,15 @@ const RiwayatMenanam = () => {
               </div>
               {filteredData.length === 0 ? (
                 <Table headers={tableHeaders}>
-                  <div className={styles.noDataContainer}>
-                    <FaUsersSlash className={styles.noDataIcon} />
-                    <p>Data Pengguna Belum Tersedia</p>
-                  </div>
+                  <tr />
+                  <tr>
+                    <td colSpan={4}>
+                      <div className={styles.noDataContainer}>
+                        <FaUsersSlash className={styles.noDataIcon} />
+                        <p>Data Pengguna Belum Tersedia</p>
+                      </div>
+                    </td>
+                  </tr>
                 </Table>
               ) : (
                 <Table headers={tableHeaders}>

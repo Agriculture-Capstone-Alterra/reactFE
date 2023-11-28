@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 import "./essentials/essentialcss.css";
 import TableTanaman from "./pages/MenanamTanaman/TableTanaman/indeks";
 import TestPage from "./pages/TestPage/TestPage";
-
 import PengingatTanaman from "./pages/PengingatMerawatTanaman/PengingatTanaman";
 import TambahTanaman from "./pages/MenanamTanaman/TambahTanaman";
 import RiwayatMenanam from "./pages/RiwayatMenanam/RiwayatMenanam/RiwayatMenanam";
