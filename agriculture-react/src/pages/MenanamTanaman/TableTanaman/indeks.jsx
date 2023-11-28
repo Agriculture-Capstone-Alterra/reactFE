@@ -8,13 +8,21 @@ import TrashIcon from '../../../assets/icons/trash.svg';
 import { TbDots } from 'react-icons/tb';
 import Pagination from '../../../components/Pagination/Pagination';
 import Filter from '../../../components/Filter';
-import './style.css'
+import Modal from '../../../components/Modal/Modal';
+import ModalTrigger from '../../../components/Modal/ModalTrigger'; 
+import ToastNotification from '../../../components/ToastNotification/ToastNotification';
+import './style.css';
 
 const TableTanaman = () => {
   const itemsPerPage = 10;
   const [bookData, setBookData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [modalData, setModalData] = useState({});
+  const deleteModalName = "deleteDataTanaman";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,11 +41,21 @@ const TableTanaman = () => {
     console.log(`Edit button clicked for ID ${id}`);
   };
 
-  const handleDelete = async (id) => {
+ 
+  const handleDeleteClick = (data) => {
+    setModalData({ ...data });
+    setSelectedItemId(data.id); 
+  }
+  
+
+  const handleDeleteConfirm = async () => {
     try {
-      await axios.delete(`https://653f52299e8bd3be29e0431e.mockapi.io/book/${id}`);
-      // After successful delete, update the state to reflect the changes
-      setBookData((prevData) => prevData.filter((book) => book.id !== id));
+      await axios.delete(`https://653f52299e8bd3be29e0431e.mockapi.io/book/${selectedItemId}`);
+      setBookData((prevData) => prevData.filter((book) => book.id !== selectedItemId));
+      setModalData({});
+      setShowToast(true);
+      setToastMessage("Data tanaman berhasil dihapus");
+      setTimeout(() => setShowToast(false), 3000);
     } catch (error) {
       console.error('Error deleting data:', error);
     }
@@ -81,17 +99,13 @@ const TableTanaman = () => {
                 {currentData.length > 0 ? (
                   currentData.map((book, index) => (
                     <tr key={index}>
-                      <td>{index + 1}</td>
+                      <td>{book.number}</td>
                       <td>{book.namatanaman}</td>
                       <td>{book.jenistanaman}</td>
                       <td>{book.varietas}</td>
                       <td>{book.teknologi}</td>
                       <td>
-                        <div
-                          className="p-2 dropdown-toggle-split"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
+                        <div className="p-2 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                           <TbDots className="fw-bold fs-4 ms-1" />
                         </div>
                         <ul className="dropdown-menu">
@@ -109,17 +123,18 @@ const TableTanaman = () => {
                             </button>
                           </li>
                           <li className="d-grid mb-2 ps-3 pe-3">
-                            <button
+                          <ModalTrigger
+                              modalTarget={deleteModalName}
                               className="btn"
                               style={{
                                 display: 'flex',
                                 alignItems: 'center',
                               }}
-                              onClick={() => handleDelete(book.id)}
+                              onClick={(e) => handleDeleteClick(book, e)}
                             >
-                              <img src={TrashIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
-                              <span>Hapus</span>
-                            </button>
+                            <img src={TrashIcon} alt="Delete Icon" className="me-2" width="20" height="20" />
+                            <span>Hapus</span>
+                          </ModalTrigger>
                           </li>
                         </ul>
                       </td>
@@ -132,6 +147,24 @@ const TableTanaman = () => {
           </div>
           <Filter />
         </div>
+        {showToast && (
+        <ToastNotification
+          position="bottom-left"
+          text={toastMessage}
+          onClose={() => {
+            setShowToast(false);
+            window.history.replaceState(null, null, window.location.pathname);
+          }}
+        />
+      )}
+          <Modal
+            id= {deleteModalName}
+            title="Hapus Data Tanaman"
+            content={<p className='text-center'>Apakah anda yakin akan menghapus data tanaman?</p>}
+            onCancel= {() => {}}
+            onSubmit={handleDeleteConfirm}
+            type="delete"
+          />
       </Layout>
     </>
   );
