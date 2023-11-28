@@ -86,7 +86,7 @@ const Modal = ({id, title, content, onCancel, onSubmit, type, cancelClassname, s
                         <button type="button" className={`btn ${cancelClassButton} rounded px-5`} data-bs-dismiss="modal" onClick={onCancel}>
                           {cancelText}
                         </button>
-                        <button type="button" className={`btn ${submitClassButton} rounded px-5`} onClick={onSubmit}>
+                        <button type="button" className={`btn ${submitClassButton} rounded px-5`} data-bs-dismiss="modal" onClick={onSubmit}>
                           {submitText}
                         </button>
                   </div>
