@@ -10,15 +10,15 @@ function InfoCard(props) {
   };
 
   return (
-    <div className="card p-3 w-auto">
+    <div className="card p-2">
       <div className="d-flex justify-content-between font-style" onClick={handleCollapse}>
-        <h4>{title}</h4> 
-        <h4>{isCollapsed ? '+' : '-'}</h4>
+        <h6>{title}</h6> 
+        <h6>{isCollapsed ? '+' : '-'}</h6>
       </div>
       {!isCollapsed && (
-        <p className="info-card-content">
+        <div className="mx-auto info-card-content">
           {content}
-        </p>
+        </div>
       )}
     </div>
   );

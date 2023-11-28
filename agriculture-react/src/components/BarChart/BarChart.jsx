@@ -20,7 +20,7 @@ ChartJS.register(
   Legend
 );
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November','December'];
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September'];
 
 const generateRandomData = () => {
   return labels.map(() => faker.datatype.number({ min: 0, max: 20 }));
@@ -30,22 +30,14 @@ const options = {
   responsive: true,
   plugins: {
     legend: {
-      display: false,
+        display: false,
     },
     title: {
-      display: true,
-      position: 'bottom',
-      rotation: 90,
-      text: 'Tinggi Pohon Bayam Perbulan',
-    },
-  },
-  scales: {
-    y: {
-      title: {
         display: true,
+        position: 'left',
+        rotation: 90,
         text: 'Tinggi Tanaman (cm)',
       },
-    },
   },
 };
 
