@@ -11,7 +11,7 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 export const SidebarData = [
   {
     title: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icon: <MdOutlineDashboard />,
   },
   {
@@ -21,7 +21,7 @@ export const SidebarData = [
   },
   {
     title: "Remainder",
-    path: "/remainder",
+    path: "/pengingat-tanaman",
     icon: <IoMdStopwatch />,
   },
   {

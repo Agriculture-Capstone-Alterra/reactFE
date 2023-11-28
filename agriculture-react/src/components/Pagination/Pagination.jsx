@@ -1,31 +1,44 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaChevronRight, FaChevronLeft } from 'react-icons/fa6';
 import styles from './style.module.css';
 
-const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) => {
+// start dokumentasi penggunaan
+// contoh : 
+
+{/* 
+  <Pagination
+    dataList={dataList}
+    itemsPerPage={`10`}
+    setCurrentData={setCurrentData}
+    numberingData={true}
+  /> 
+*/}
+
+// dimana props dataList merupakan data raw, atau data mentah berupa array dari objek,
+// props itemsPerPage digunakan untuk mengatur dalam satu page tabel, akan menampilkan berapa banyak item
+// props setCurrentData digunakan untuk set data yang akan di render di komponent parent, jadi parent perlu data mentah, dan currentData untuk dirender
+// props numberingData merupakan opsional true false apabila memang ingin menampilkan numbering data di tabel, set props ini menjadi true
+// CATATAN PENTING : apabila menggunakan component ini, artinya data yang di render harus currentData yang dimana setCurrentDatanya dikirim ke component ini sebagai props
+// untuk contoh penggunaan secara lengkap, merujuk / lihat ke pages pengingat tanaman
+// end dokumentasi penggunaan 
+
+
+const Pagination = ({ dataList, itemsPerPage, setCurrentData, numberingData }) => {
+  const totalItems = dataList.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const [currentPage, setCurrentPage] = React.useState(1);
 
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prevPage) => prevPage - 1);
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    let currentData = dataList.slice(startIndex, endIndex);
+    if (numberingData) {
+      currentData = currentData.map((item, index) => ({ ...item, number: startIndex + index + 1 }));
     }
-  };
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
-  };
-
-  const handleEllipsisClick = (direction) => {
-    if (direction === 'left' && currentPage > 2) {
-      setCurrentPage((prevPage) => prevPage - 2);
-    } else if (direction === 'right' && currentPage < totalPages - 1) {
-      setCurrentPage((prevPage) => prevPage + 2);
-    }
-  };
-
+    setCurrentData(currentData);
+  }, [currentPage, dataList, itemsPerPage, setCurrentData, numberingData]);
+  
   const generatePageNumbers = () => {
     const pageNumbers = [];
     const totalPagesToShow = Math.min(totalPages, 4);
@@ -62,19 +75,38 @@ const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) =
 
     return pageNumbers;
   };
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handleEllipsisClick = (direction) => {
+    if (direction === 'left' && currentPage > 2) {
+      setCurrentPage((prevPage) => prevPage - 2);
+    } else if (direction === 'right' && currentPage < totalPages - 1) {
+      setCurrentPage((prevPage) => prevPage + 2);
+    }
+  };
 
   return (
-    <div className="d-flex justify-content-center mt-4 gap-2">
+    <div className="d-flex justify-content-center mt-4 mb-4 gap-2">
       <button
-        className={`btn d-flex align-items-center justify-content-around ${styles.btnPagination}`}
+        className={`btn d-flex align-items-center justify-content-around mt-2 mb-2 ${styles.btnPagination}`}
         onClick={handlePrevPage}
         disabled={currentPage === 1}
       >
         <FaChevronLeft className="me-2 pt-1" fontSize={16} />
-        <span className={`${styles.paginationButtonText}`}>Prev</span>
+        <p className={`${styles.paginationButtonText} p-0`}>Prev</p>
       </button>
-      <div className="pagination d-flex">
-        {generatePageNumbers().map((pageNumber, index) => (
+      <div className={`${styles.pagination} d-flex`}>
+      {generatePageNumbers().map((pageNumber, index) => (
           <div
             key={index}
             className={`btn ${styles.paginationButtonText} ${currentPage === pageNumber && 'active'}`}
@@ -88,13 +120,12 @@ const Pagination = ({ totalItems, itemsPerPage, currentPage, setCurrentPage }) =
           </div>
         ))}
       </div>
-
       <button
-        className={`btn d-flex align-items-center justify-content-around ${styles.btnPagination}`}
+        className={`btn d-flex align-items-center justify-content-around mt-2 mb-2 ${styles.btnPagination}`}
         onClick={handleNextPage}
         disabled={currentPage === totalPages}
       >
-        <span className={`${styles.paginationButtonText}`}>Next</span>
+        <p className={`${styles.paginationButtonText}`}>Next</p>
         <FaChevronRight className="ms-2 pt-1" />
       </button>
     </div>

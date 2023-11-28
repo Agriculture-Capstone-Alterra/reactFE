@@ -1,18 +1,17 @@
-// Begin : dokumentasi ModalTrigger
-// Komponen ini memiliki base button sebagai trigger untuk membuka modal, jadi jika anda ingin menggunakan modal,
+// Begin : dokumentasi ModalTrigger 
+// Komponen ini memiliki base button sebagai trigger untuk membuka modal, jadi jika anda ingin menggunakan modal, 
 // disarankan untuk menggunakan komponen modal trigger ini, dimana id akan menjadi patokan modal target yang ingin anda tampilkan
 // ketika component ini di klik.
 // classname digunakan agar tombol ini memiliki styling yang sesuai dengan keinginan dan bersifat dynamic
 // modal target diisi dengan id dari modal yang ingin anda tampikan ketika component ini diklik
 // children merupakan isi dari button, dimana nanti bisa menyesuaikan kebutuhan, apakah ingin menambahkan suatu icon atau tidak
 // style merupakan opsional apabila memang diperlukan adanya inline-styling
-// End : dokumentasi ModalTrigger
+// End : dokumentasi ModalTrigger 
 
-// begin : contoh penggunaan lengkap dengan modalnya :
+// begin : contoh penggunaan lengkap dengan modalnya : 
 // ModalTrigger :
 
-{
-  /* 
+{/* 
     // trigger modal 1
     <ModalTrigger
         modalTarget={'editData'}
@@ -31,11 +30,9 @@
     >
         <img src={TrashIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
         <span>Hapus</span>
-    </ModalTrigger> */
-}
-// modal :
-{
-  /* 
+    </ModalTrigger> */}
+// modal : 
+{/* 
     // modal 2
     <Modal
         id="deleteData"
@@ -54,27 +51,22 @@
         onSubmit= {() => {}}
         type="edit"
     /> 
-*/
+*/}
+// end : contoh penggunaan lengkap dengan modalnya : 
+const ModalTrigger = ({ className, modalTarget, children, style, disabled, onClick}) => {
+    // console.log(modalTarget);
+    return ( 
+        <button 
+            className={className} 
+            style={style} 
+            data-bs-toggle="modal" 
+            data-bs-target={`#${modalTarget}`} 
+            onClick={onClick}
+            disabled={disabled} 
+        >
+            {children}
+        </button>
+     );
 }
-// end : contoh penggunaan lengkap dengan modalnya :
-const ModalTrigger = ({
-  className,
-  modalTarget,
-  children,
-  style,
-  disabled,
-}) => {
-  console.log(modalTarget);
-  return (
-    <button
-      disabled={disabled}
-      className={className}
-      style={style}
-      data-bs-toggle="modal"
-      data-bs-target={`#${modalTarget}`}>
-      {children}
-    </button>
-  );
-};
-
+ 
 export default ModalTrigger;

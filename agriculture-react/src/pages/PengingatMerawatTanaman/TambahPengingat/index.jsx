@@ -1,17 +1,32 @@
-import Layout from "../../layout/Layout";
-import Select from "../../components/Select";
-import Input from "../../components/Input";
-import "./editPengingat.css";
+import Layout from "../../../layout/Layout";
+import Select from "../../../components/Select";
+import "./tambahPengingat.css";
+import styles from "../../components/Modal/styles.module.css";
 import { useState } from "react";
+import Input from "../../components/Input";
 import { Link } from "react-router-dom";
-import { SlArrowDown, SlArrowUp } from "react-icons/sl";
+import Modal from "../../components/Modal/Modal";
+import ModalTrigger from "../../components/Modal/ModalTrigger";
+import { SlArrowUp, SlArrowDown } from "react-icons/sl";
 
-const editPengingat = () => {
+const tambahPengingat = () => {
   const [radio, setRadio] = useState("");
+  const [modalRadio, setModalRadio] = useState("");
   const [selectedTanaman, setSelectedTanaman] = useState("");
-  const [pilihHari, setPilihHari] = useState("");
-  const [hitung, setHitung] = useState(0);
-  const [menambah, setMenambah] = useState(0);
+  const [selectedHari, setSelectedHari] = useState("");
+  const [number, setNumber] = useState(0);
+  const [counter, setCounter] = useState(0);
+
+  const breadcrumbsobjectexample = [
+    {
+      crumbname: "Pengingat Menanam Tanaman",
+      crumblink: "/tambah-pengingat",
+    },
+    {
+      crumbname: "Tambah Pengingat Tanaman",
+      crumblink: "/tambah-pengingat",
+    },
+  ];
 
   const namaTanaman = [
     {
@@ -23,18 +38,8 @@ const editPengingat = () => {
       value: "Sawi",
     },
   ];
-  const breadcrumbsobjectexample = [
-    {
-      crumbname: "Pengingat Menanam Tanaman",
-      crumblink: "/edit-tanaman",
-    },
-    {
-      crumbname: "Edit Pengingat Tanaman",
-      crumblink: "/edit-tanaman",
-    },
-  ];
 
-  const pilihanHari = [
+  const namaHari = [
     {
       label: "Minggu",
       value: "Minggu",
@@ -69,38 +74,37 @@ const editPengingat = () => {
     setSelectedTanaman(selectedOption.value);
   };
 
+  const handleSelectHari = (selectedOption) => {
+    setSelectedHari(selectedOption.value);
+  };
+
   const handleRadioChange = (e) => {
     setRadio(e.target.value);
   };
 
-  const handleModalRadio = (e) => {
-    setPilihHari(e.target.value);
+  const handleRadioModal = (e) => {
+    setModalRadio(e.target.value);
   };
 
-  const handlePilihHari = (selectedOption) => {
-    setPilihHari(selectedOption.value);
-  };
-
-  const plus = (e) => {
+  const increment = (e) => {
     e.preventDefault();
-    setHitung(hitung + 1);
+    setNumber(number + 1);
   };
 
-  const minus = (e) => {
+  const decrement = (e) => {
     e.preventDefault();
-    setHitung(hitung > 0 ? hitung - 1 : 0);
+    setNumber(number > 0 ? number - 1 : 0);
   };
 
-  const atas = (e) => {
+  const tambah = (e) => {
     e.preventDefault();
-    setMenambah(menambah + 1);
+    setCounter(counter + 1);
   };
 
-  const bawah = (e) => {
+  const kurang = (e) => {
     e.preventDefault();
-    setMenambah(menambah > 0 ? menambah - 1 : 0);
+    setCounter(number > 0 ? number - 1 : 0);
   };
-
   return (
     <>
       <Layout
@@ -108,25 +112,25 @@ const editPengingat = () => {
         breadcrumbs={breadcrumbsobjectexample}>
         <form className="container ms-3 mt-4">
           <div className="mb-4">
-            <label className="editPengingat-label d-flex mb-2">
+            <label className="tambahPengingat-label d-flex mb-2">
               Jenis Tanaman
             </label>
             <Select
               value={selectedTanaman}
-              className={"form-select editPengingat-select"}
+              className={"form-select tambahPengingat-select"}
               options={namaTanaman}
-              title={"Pilih nama tanaman"}
               onChange={handleSelectChange}
+              title={"Pilih nama tanaman"}
             />
           </div>
           <div className="mb-4">
-            <label className="editPengingat-label d-flex mb-2">
+            <label className="tambahPengingat-label d-flex mb-2">
               Nama Pengingat Tanaman
             </label>
             <input
               value={radio}
               disabled={true}
-              className={"editPengingat-Input form-control"}
+              className={"tambahPengingat-Input form-control"}
             />
             <div className="d-flex gap-5 mt-3">
               <div className="form-check">
@@ -151,43 +155,63 @@ const editPengingat = () => {
               </div>
             </div>
           </div>
-          <label className="editPengingat-label d-flex mb-2">Waktu</label>
+          <label className="tambahPengingat-label d-flex mb-2">Waktu</label>
           <div className="d-flex gap-3 mb-1">
             <Input
               type={"date"}
-              className={"editPengingat-date form-control"}
+              className={"tambahPengingat-date form-control"}
             />
             <Input
               type={"time"}
-              className={"editPengingat-time form-control"}
+              className={"tambahPengingat-time form-control"}
             />
           </div>
+          {/* modalTrigger */}
           <button
-            className="btn btn-outline-primary editPengingat-kustom"
+            className="btn btn-outline-primary tambahPengingat-kustom"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
             data-bs-whatever="@getbootstrap">
             Kustom Pengulangan
           </button>
-          <div className="d-flex justify-content-center mt-5">
-            <Link to="" className={"btn me-3 editPengingat-btnOutline"}>
-              Batal
-            </Link>
-            <Link to="" className="btn btn-success editPengingat-btnPrimary">
+          <div className="text-center mt-5 d-flex justify-content-center">
+            <ModalTrigger
+              modalTarget={"tambahData"}
+              className={`btn me-3 tambahPengingat-btnOutline ${styles.btnAction}`}
+              style={{ display: "flex", alignItems: "center" }}>
+              Simpan dan Bagikan
+            </ModalTrigger>
+            <Link
+              to=""
+              className="btn btn-success tambahPengingat-btnPrimary ambahPengingat-btnOutline">
               Simpan
             </Link>
           </div>
         </form>
+        <Modal
+          id="tambahData"
+          title="Bagikan Ke Seluruh User"
+          content={
+            <p className="text-center">
+              Apakah anda yakin ingin membagikan ke seluruh user?
+            </p>
+          }
+          submitButtonText={"Ya"}
+          cancelButtonText={"Tidak"}
+          onCancel={() => {}}
+          onSubmit={() => {}}
+          type="edit"
+        />
         {/* modal */}
         <div
-          className="modal fade editPengingat-modal"
+          className="modal fade tambahPengingat-modal"
           id="exampleModal"
           tabindex="-1">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
                 <h1
-                  className="modal-title text-center editPengingat-modalTitle "
+                  className="modal-title text-center tambahPengingat-modalTitle "
                   id="exampleModalLabel">
                   Kostum Pengulangan
                 </h1>
@@ -197,31 +221,31 @@ const editPengingat = () => {
                   <div className="mb-3">
                     <label
                       for="recipient-name"
-                      className="col-form-label editPengingat-modalFormLabel">
+                      className="col-form-label tambahPengingat-modalFormLabel">
                       Ulangi Setiap
                     </label>
                     <div className="d-flex gap-1">
                       <input
-                        value={menambah}
-                        className="form-control editPengingat-modalInputnumber text-center"
+                        value={number}
+                        className="form-control tambahPengingat-modalInputnumber text-center"
                       />
-                      <div className="d-flex flex-column gap-2 editPengingat-modalInputnumberControl">
+                      <div className="d-flex flex-column gap-2 tambahPengingat-modalInputnumberControl">
                         <button
-                          className="editPengingat-modalControl"
-                          onClick={atas}>
+                          className="tambahPengingat-modalControl"
+                          onClick={increment}>
                           <SlArrowUp size={8} />
                         </button>
                         <button
-                          className="editPengingat-modalControl"
-                          onClick={bawah}>
+                          className="tambahPengingat-modalControl"
+                          onClick={decrement}>
                           <SlArrowDown size={8} />
                         </button>
                       </div>
                       <Select
-                        value={pilihHari}
-                        className={"form-select editPengingat-modalHari"}
-                        options={pilihanHari}
-                        onChange={handlePilihHari}
+                        value={selectedHari}
+                        className={"form-select tambahPengingat-modalHari"}
+                        options={namaHari}
+                        onChange={handleSelectHari}
                         title={"Hari"}
                       />
                     </div>
@@ -229,7 +253,7 @@ const editPengingat = () => {
                   <div className="mb-3">
                     <label
                       for="message-text"
-                      className="col-form-label editPengingat-modalFormLabel">
+                      className="col-form-label tambahPengingat-modalFormLabel">
                       Ulangi Setiap Hari
                     </label>
                     <input className="form-control" id="message-text" />
@@ -237,7 +261,7 @@ const editPengingat = () => {
                   <div className="mb-3">
                     <label
                       for="message-text"
-                      className="col-form-label editPengingat-modalFormLabel">
+                      className="col-form-label tambahPengingat-modalFormLabel">
                       Berakhir
                     </label>
                     <div className="mt-3">
@@ -247,7 +271,7 @@ const editPengingat = () => {
                           type="radio"
                           name="flexRadioDefault"
                           value="Tidak Pernah"
-                          onChange={handleModalRadio}
+                          onChange={handleRadioModal}
                         />
                         <label className="form-check-label">Tidak Pernah</label>
                       </div>
@@ -258,7 +282,7 @@ const editPengingat = () => {
                             type="radio"
                             name="flexRadioDefault"
                             value="Berlaku sampai"
-                            onChange={handleModalRadio}
+                            onChange={handleRadioModal}
                           />
                           <label className="form-check-label">
                             Berlaku Sampai
@@ -270,31 +294,31 @@ const editPengingat = () => {
                       </div>
                     </div>
                     <div>
-                      <div className="d-flex editpPengingat-modalGap mt-2">
+                      <div className="d-flex tambahpPengingat-modalGap mt-2">
                         <div className="form-check  mt-2">
                           <Input
                             className="form-check-input"
                             type="radio"
                             name="flexRadioDefault"
                             value="Setelah"
-                            onChange={handleModalRadio}
+                            onChange={handleRadioModal}
                           />
                           <label className="form-check-label">Setelah</label>
                         </div>
                         <div className="d-flex gap-1">
                           <input
-                            value={hitung}
-                            className="form-control editPengingat-modalInputnumber text-center"
+                            value={counter}
+                            className="form-control tambahPengingat-modalInputnumber text-center"
                           />
-                          <div className="d-flex flex-column gap-2 editPengingat-modalInputnumberControl">
+                          <div className="d-flex flex-column gap-2 tambahPengingat-modalInputnumberControl">
                             <button
-                              className="editPengingat-modalControl"
-                              onClick={plus}>
+                              className="tambahPengingat-modalControl"
+                              onClick={tambah}>
                               <SlArrowUp size={8} />
                             </button>
                             <button
-                              className="editPengingat-modalControl"
-                              onClick={minus}>
+                              className="tambahPengingat-modalControl"
+                              onClick={kurang}>
                               <SlArrowDown size={8} />
                             </button>
                           </div>
@@ -308,13 +332,13 @@ const editPengingat = () => {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn btn-outline-primary editPengingat-modalFormBtnCancel"
+                  className="btn btn-outline-primary tambahPengingat-modalFormBtnCancel"
                   data-bs-dismiss="modal">
                   Cancel
                 </button>
                 <button
                   type="button"
-                  className="btn btn-primary editPengingat-modalFormBtnDone">
+                  className="btn btn-primary tambahPengingat-modalFormBtnDone">
                   Done
                 </button>
               </div>
@@ -326,4 +350,4 @@ const editPengingat = () => {
   );
 };
 
-export default editPengingat;
+export default tambahPengingat;

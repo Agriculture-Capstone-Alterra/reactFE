@@ -2,6 +2,8 @@
     box-sizing: border-box;
     color: #6B7280 !important;
     border-color: #E5E7EB;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
 }
 
 .btnPagination:hover {
@@ -12,5 +14,8 @@
 
 .paginationButtonText {
     font-size: 20px;
-    font-weight: lighter;
+}
+
+.pagination{
+    padding: var(--corner-radius-l, 10px) 5px;
 }
