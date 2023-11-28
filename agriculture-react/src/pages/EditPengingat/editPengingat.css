@@ -79,3 +79,78 @@
   background-color: #51ab8c;
   border-color: #51ab8c;
 }
+
+.editPengingat-modalTitle {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.editPengingat-modalFormLabel {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+.editPengingat-modalFormBtnDone {
+  background-color: #60a5fa;
+  border-color: #60a5fa;
+  font-size: 16px;
+}
+
+.editPengingat-modalFormBtnDone:hover {
+  background-color: #60a5fa;
+  border-color: #60a5fa;
+}
+
+.editPengingat-modalFormBtnCancel {
+  color: #60a5fa;
+  border: none;
+}
+.editPengingat-modalFormBtnCancel:hover {
+  background-color: #fff;
+  color: #60a5fa;
+  border: none;
+}
+
+.editPengingat-modalInputnumber {
+  width: 52px;
+  height: 38px;
+  background-color: #f3f4f6;
+  border: #e5e7eb;
+}
+
+.editPengingat-modalInputnumberControl {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.editPengingat-modalControl {
+  background-color: #fff;
+  border: none;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editPengingat-modalHari {
+  width: 125px;
+  height: 38px;
+  background-color: #f3f4f6;
+  border: #e5e7eb;
+}
+
+.editpPengingat-modalGap {
+  gap: 75px;
+}

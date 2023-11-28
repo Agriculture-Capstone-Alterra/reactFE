@@ -1,4 +1,3 @@
-import LineChart from "../../components/LineChart/LineChart";
 import Layout from "../../layout/Layout";
 export default function TestPage() {
   const headers = ["Ngetest ioni satu", "kedua", "Ketiga", "keempat"];
