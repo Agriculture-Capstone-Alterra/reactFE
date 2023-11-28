@@ -114,6 +114,7 @@ const ListTanaman = () => {
                   cards.map((card) => (
                     <Card
                       key={card.index}
+                      cardHover={styles.cardItem}
                       image={card.image}
                       title={card.title}
                       type={card.type}
