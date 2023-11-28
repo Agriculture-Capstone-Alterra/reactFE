@@ -105,7 +105,7 @@ const Pagination = ({ dataList, itemsPerPage, setCurrentData, numberingData }) =
         <FaChevronLeft className="me-2 pt-1" fontSize={16} />
         <p className={`${styles.paginationButtonText} p-0`}>Prev</p>
       </button>
-      <div className="pagination d-flex">
+      <div className={`${styles.pagination} d-flex`}>
       {generatePageNumbers().map((pageNumber, index) => (
           <div
             key={index}

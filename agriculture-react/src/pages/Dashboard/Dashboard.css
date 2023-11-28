@@ -58,7 +58,12 @@
     border-style: none;
     gap: 4px;
 }
-
+.dashboard-btn:hover{
+    background-color: rgb(95, 181, 153);
+}
+.dashboard-btn:active{
+    background-color: rgb(58, 124, 102);
+}
 
 .dashboard-topfarmer-farmerdiv{
     padding: 10px 20px;
@@ -67,6 +72,7 @@
 .dashboard-farmerimg{
     border-radius: 99px;
     margin-right: 10px;
+    background-color: grey;
 }
 .dashboard-farmername{
     word-break: break-word;
