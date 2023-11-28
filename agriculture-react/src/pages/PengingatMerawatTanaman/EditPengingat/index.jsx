@@ -1,6 +1,6 @@
-import Layout from "../../layout/Layout";
-import Select from "../../components/Select";
-import Account from "../../components/Account";
+import Layout from "../../../layout/Layout";
+import Select from "../../../components/Select";
+import Account from "../../../components/Account";
 import "./editPengingat.css";
 import { useState } from "react";
 

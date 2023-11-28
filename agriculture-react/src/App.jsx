@@ -3,6 +3,8 @@ import "./essentials/essentialcss.css";
 import TableTanaman from "./pages/MenanamTanaman/TableTanaman/indeks";
 import TestPage from "./pages/TestPage/TestPage";
 import PengingatTanaman from "./pages/PengingatMerawatTanaman/PengingatTanaman";
+import TambahPengingat from "./pages/PengingatMerawatTanaman/TambahPengingat";
+import EditPengingat from "./pages/PengingatMerawatTanaman/EditPengingat";
 import TambahTanaman from "./pages/MenanamTanaman/TambahTanaman";
 import RiwayatMenanam from "./pages/RiwayatMenanam/RiwayatMenanam/RiwayatMenanam";
 import RiwayatListTanaman from "./pages/RiwayatMenanam/ListTanaman/ListTanaman";
@@ -49,8 +51,8 @@ function App() {
           element={<DetailTanaman />}
         />
         <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
-        <Route path="/pengignat-tanaman/tambah-pengingat" element={<PengingatTanaman />}/>
-        <Route path="/pengignat-tanaman/edit-pengingat" element={<PengingatTanaman />}/>
+        <Route path="/pengingat-tanaman/tambah-pengingat" element={<TambahPengingat />}/>
+        <Route path="/pengingat-tanaman/edit-pengingat" element={<EditPengingat />}/>
 
 
         <Route path="/testpage" element={<TestPage />} />
