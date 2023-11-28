@@ -1,19 +1,19 @@
 .btnSecondary:hover,
 .btnDanger:hover {
-    background-color: #155724;
-    border-color: #155724;
+  background-color: #155724;
+  border-color: #155724;
 }
 
-.btnOutlinePrimary:hover{
+.btnOutlinePrimary:hover {
   color: white;
-  background: #60A5FA !important;
+  background: #60a5fa !important;
 }
-.btnPrimary{
-  background: #60A5FA !important;
-  border: 1px solid #60A5FA !important;
+.btnPrimary {
+  background: #60a5fa !important;
+  border: 1px solid #60a5fa !important;
   color: white;
 }
-.btnPrimary:hover{
+.btnPrimary:hover {
   background: #5089cf !important;
   border: 1px solid #5089cf !important;
   color: white;

@@ -1,55 +1,21 @@
-.page-table{
-    display: flex;
-    padding: var(--spacing-space-0, 0px);
-    align-items: flex-start;
-    gap: 20px;
-    align-self: stretch;
-}
-
-.page-table-pagination{
-    display: flex;
-    height: 849px;
-    padding: padding: 8px;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    flex: 1 0 0;
-}
-
 .table {
     display: flex;
     flex-direction: column;
-    padding: 12px 16px;
+    padding: var(--corner-radius-l, 10px) 20px;
     align-items: flex-start;
-    gap: 20px;
+    gap: var(--spacing-space-4, 16px);
+    flex: 1 0 0;
     align-self: stretch;
-    width: 980px;  
+    width: 806px;  
     height: 719px; 
-
     border-radius: 20px;
     border: 1px solid var(--stroke-10, rgba(107, 114, 128, 0.10));
-    background: var(--netral-50, #f9fafb);
+    background: var(--netral-50, #F9FAFB);
 }
-  
-.table td {
-    padding: 5px; 
-    height: 10px; 
-    font-size: 12px; 
-    border-bottom: 1px solid var(--stroke-10, rgba(107, 114, 128, 0.10));
-  }
-  
-  .table td:last-child {
-    border-bottom: none;
-    padding: 5px;
-  }
-  
-  .table tr {
-    height: 0px;
-  }
 
 .table-list {
     display: flex;
-    padding: 8px 4px;
+    padding: var(--spacing-space-3, 12px) 20px;
     justify-content: space-between; 
     align-items: center;
     gap: var(--corner-radius-l, 10px);
@@ -81,12 +47,11 @@
     border: 1px solid var(--btn-primary-default, #51AB8C);
     background: var(--btn-primary-default, #51AB8C);
     color: var(--netral-50, #F9FAFB);
-    text-decoration: none;
     transition: background-color 0.3s ease;
 }
 
 .tambah-tanaman:hover {
-    background-color: #3e856d 
+    background-color: #388e3c; 
   }
 
 
@@ -97,7 +62,6 @@
     align-items: center;
     gap: var(--spacing-space-4, 16px);
     align-self: stretch;
-    flex: 1 1 auto;
 }
 
 .button-page {
