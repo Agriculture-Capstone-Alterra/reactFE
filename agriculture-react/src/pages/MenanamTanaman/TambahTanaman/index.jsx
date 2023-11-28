@@ -1,5 +1,3 @@
-import Trash from '../../../assets/trash.svg'
-import Add from '../../../assets/addBlack.svg'
 import './style.css'
 import FormLayout from '../../../components/FormLayout'
 import Input from '../../../components/Input'
@@ -8,9 +6,12 @@ import Select from '../../../components/Select'
 import Invalid from '../../../components/Invalid'
 import Layout from '../../../layout/Layout'
 import DragFile from '../../../components/DragFile'
-import DropFile from '../../../components/DropFile'
+import { Link, useNavigate } from 'react-router-dom'
+import FormCardTambah from '../../../components/FormCardTambah'
+import { useState } from 'react'
 
 const TambahTanaman = () => {
+    const navigate = useNavigate();
     const jenisTanamanOptions = [
         { value: 'Bunga', label: 'Bunga' },
         { value: 'Tanaman Hias', label: 'Tanaman Hias' },
@@ -33,8 +34,95 @@ const TambahTanaman = () => {
             crumbname : "Tambah Tanaman",
         }
     ];
-    const handleSubmit = () => {
+    const [namaTanaman, setNamaTanaman] = useState('');
+    const [jenisTanaman, setJenisTanaman] = useState('');
+    const [deskTanaman, setDeskTanaman] = useState('');
+    const [gambarTanaman, setGambarTanaman] = useState([]);
+    const [varietasTanaman, setVarietasTanaman] = useState('');
+    const [teknoTanaman, setTeknoTanaman] = useState('');
+    const [kemarauAwal, setKemarauAwal] = useState('');
+    const [hujanAwal, setHujanAwal] = useState('');
+    const [kemarauAkhir, setKemarauAkhir] = useState('');
+    const [hujanAkhir, setHujanAkhir] = useState('');
+    const [hama, setHama] = useState('');
+    const [pupuk, setPupuk] = useState('');
+    const [alatPenanaman, setAlatPenanaman] = useState([
+        { id: 1, namaAlat: '', gambarAlat: null, deskripsiAlat: '' },
+    ]);
+    const [saran, setSaran] = useState('');
+    const [gambarSaran, setGambarSaran] = useState([]);
+    const [langkahPenanaman, setLangkahPenanaman] = useState([
+        { id: 1, namaLangkah: '', gambarLangkah: null, deskripsiLangkah: '' },
+    ]);
+    const [rawat, setRawat] = useState('');
+    
+    const tambahkanLangkahPenanaman = () => {
+        setLangkahPenanaman((prevLangkah) => [
+        ...prevLangkah,
+        {
+            id: prevLangkah.length + 1,
+            namaLangkah: '',
+            gambarLangkah: null,
+            deskripsiLangkah: '',
+        },
+        ]);
+    };
+    const tambahkanAlatPenanaman = () => {
+        setAlatPenanaman((prevAlat) => [
+        ...prevAlat,
+        {
+            id: prevAlat.length + 1,
+            namaAlat: '',
+            gambarAlat: null,
+            deskripsiAlat: '',
+        },
+        ]);
+    };
+    const hapusLangkahPenanaman = (id) => {
+        setLangkahPenanaman((prevLangkah) =>
+        prevLangkah.filter((langkah) => langkah.id !== id)
+        );
+    };
+    const hapusAlatPenanaman = (id) => {
+        setAlatPenanaman((prevAlat) =>
+        prevAlat.filter((alat) => alat.id !== id)
+        );
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('Form Data:', 
+        { langkahPenanaman,
+        alatPenanaman,
+        namaTanaman,
+        jenisTanaman,
+        deskTanaman,
+        gambarTanaman,
+        varietasTanaman,
+        teknoTanaman,
+        kemarauAwal,
+        kemarauAkhir,
+        hujanAwal,
+        hujanAkhir,
+        hama, pupuk, saran, gambarSaran, rawat});
+        navigate('/menanam-tanaman')
     }
+    const handleAlatPenanamanChange = (index, field, value) => {
+        const updatedData = [...alatPenanaman];
+        updatedData[index] = {
+        ...updatedData[index],
+        [field]: value,
+        };
+        setAlatPenanaman(updatedData);
+    };
+    
+    const handleLangkahPenanamanChange = (index, field, value) => {
+        const updatedData = [...langkahPenanaman];
+        updatedData[index] = {
+        ...updatedData[index],
+        [field]: value,
+        };
+        setLangkahPenanaman(updatedData);
+    };
     return (
         <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={breadcrumTambahTanaman}>
         <div className='mt-2' style={{ padding:'0px 0px 30px 30px', marginRight:'0'}}>
@@ -47,6 +135,8 @@ const TambahTanaman = () => {
                     <Input
                     id="namatanaman"
                     name="namatanaman"
+                    value={namaTanaman}
+                    onChange={(e) => setNamaTanaman(e.target.value)}
                     placeholder='Masukkan nama tanaman'
                     />
                     <Invalid errormsg={"Tolong masukkan nama tanaman."} />
@@ -56,6 +146,8 @@ const TambahTanaman = () => {
                     <Select
                         id="jenistanaman"
                         name="jenistanaman"
+                        value={jenisTanaman}
+                        onChange={(e) => setJenisTanaman(e.target.value)}
                         options={jenisTanamanOptions}
                         title="Pilih Jenis Tanaman"
                     />
@@ -66,6 +158,8 @@ const TambahTanaman = () => {
                     <TextArea
                     id="deskripsitanaman"
                     name="deskripsitanaman"
+                    value={deskTanaman}
+                    onChange={(e) => setDeskTanaman(e.target.value)}
                     placeholder='Masukkan deskripsi tanaman'
                     rows={2}
                     />
@@ -74,12 +168,16 @@ const TambahTanaman = () => {
                 <label className="form-label fontw600" htmlFor="gambartanaman">Gambar Tanaman</label> 
                 <DragFile 
                     name={'gambartanaman'}
+                    value={gambarTanaman}
+                    onChange={(e) => setGambarTanaman(e.target.value)}
                 /> 
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="varietastanaman">Varietas Tanaman</label>
                     <Input
                     id="varietastanaman"
                     name="varietastanaman"
+                    value={varietasTanaman}
+                    onChange={(e) => setVarietasTanaman(e.target.value)}
                     placeholder='Masukkan varietas tanaman'
                     />
                     <Invalid errormsg={"Tolong masukkan varietas tanaman."}/>
@@ -89,6 +187,8 @@ const TambahTanaman = () => {
                     <Select
                         id="teknologitanaman"
                         name="teknologitanaman"
+                        value={teknoTanaman}
+                        onChange={(e) => setTeknoTanaman(e.target.value)}
                         options={teknologiTanamanOptions}
                         title="Pilih Teknologi Tanaman"
                     />
@@ -103,6 +203,8 @@ const TambahTanaman = () => {
                             type="date"
                             id="awalkemarau"
                             name="awalkemarau"
+                            value={kemarauAwal}
+                            onChange={(e) => setKemarauAwal(e.target.value)}
                         />
                         <Invalid errormsg={"Tolong masukkan tanggal."}/>
                     </div>
@@ -112,6 +214,8 @@ const TambahTanaman = () => {
                             type="date"
                             id="akhirkemarau"
                             name="akhirkemarau"
+                            value={kemarauAkhir}
+                            onChange={(e) => setKemarauAkhir(e.target.value)}
                         />
                         <Invalid errormsg={"Tolong masukkan tanggal."}/>
                     </div>
@@ -124,6 +228,8 @@ const TambahTanaman = () => {
                             type="date"
                             id="awalhujan"
                             name="awalhujan"
+                            value={hujanAwal}
+                            onChange={(e) => setHujanAwal(e.target.value)}
                         />
                         <Invalid errormsg={"Tolong masukkan tanggal."}/>
                     </div>
@@ -133,6 +239,8 @@ const TambahTanaman = () => {
                             type="date"
                             id="akhirhujan"
                             name="akhirhujan"
+                            value={hujanAkhir}
+                            onChange={(e) => setHujanAkhir(e.target.value)}
                         />
                         <Invalid errormsg={"Tolong masukkan tanggal."}/>
                     </div>
@@ -142,6 +250,8 @@ const TambahTanaman = () => {
                     <TextArea
                     id="informasihama"
                     name="informasihama"
+                    value={hama}
+                    onChange={(e) => setHama(e.target.value)}
                     placeholder='Masukkan informasi hama dan penanggulangan tanaman'
                     rows={2}
                     />
@@ -152,6 +262,8 @@ const TambahTanaman = () => {
                     <TextArea
                     id="informasinutrisi"
                     name="informasinutrisi"
+                    value={pupuk}
+                    onChange={(e) => setPupuk(e.target.value)}
                     placeholder='Masukkan informasi nutrisi dan pupuk'
                     rows={2}
                     />
@@ -159,55 +271,23 @@ const TambahTanaman = () => {
                 </div>
                 <div className='form-label fontw600'>Panduan Menanam</div>
                 <p className='p-label'>Alat yang Dibutuhkan</p>
-                <div>
-                    <div className='card px-4 py-3 mb-3'>
-                        <div className='row'>
-                            <div className='col container'>
-                                <div className='row'>
-                                    <div className='col-sm'>
-                                        <div className="form-group mb-3">
-                                            <label className="form-label fontw600" htmlFor="namaalat">Nama Alat</label>
-                                            <Input
-                                            id="namaalat"
-                                            name="namaalat"
-                                            placeholder='Masukkan nama alat'
-                                            />
-                                            <Invalid errormsg={"Tolong masukkan nama alat."} />
-                                        </div>
-                                    </div>
-                                    <div className='col-sm'>
-                                        <div className="form-group mb-3"> 
-                                            <label className="form-label fontw600" htmlFor="gambaralat">Gambar Alat</label>
-                                            <DropFile name={"gambaralat"} />
-                                        </div>
-                                    </div>
-                                    <div className="form-group mb-3">
-                                        <label className="form-label fontw600" htmlFor="deskripsialat">Deskripsi Alat</label>
-                                        <TextArea
-                                        id="deskripsialat"
-                                        name="deskripsialat"
-                                        placeholder='Masukkan deskripsi alat'
-                                        rows={2}
-                                        />
-                                        <Invalid errormsg={"Tolong masukkan deskripsi alat."}/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='col-auto d-center'>
-                                <button className='btn btn-danger'><img src={Trash}/></button>
-                            </div>
-                        </div>
-                    </div> 
-                    <button className='b-none p-label mb-3'><img src={Add}/>Tambahkan Alat Lain</button>
-                    <hr className='m-0'/>
-                </div>
+                <FormCardTambah
+                    data={alatPenanaman}
+                    onTambah={tambahkanAlatPenanaman}
+                    onHapus={hapusAlatPenanaman}
+                    onChange={handleAlatPenanamanChange}
+                    label="Alat Penanaman"
+                    name='alatpenanaman'
+                />
                 <div className='form-label fontw600 mt-3'>Saran Untuk Tempat Penanaman</div>
-                <div className='card px-4 py-3 mb-3'>
+                <div className='card card-n px-4 py-3 mb-3'>
                     <div className="form-group mb-3">
                         <label className="form-label fontw600" htmlFor="saranpenanaman">Deskripsi</label>
                         <TextArea
                         id="saranpenanaman"
                         name="saranpenanaman"
+                        value={saran}
+                        onChange={(e) => setSaran(e.target.value)}
                         placeholder='Masukkan saran untuk tempat penanaman'
                         rows={2}
                         />
@@ -216,66 +296,38 @@ const TambahTanaman = () => {
                     <label className="form-label fontw600" htmlFor="gambarsaran">Foto</label>
                     <DragFile 
                         name={'gambarsaran'}
+                        value={gambarSaran}
+                        onChange={(e) => setGambarSaran(e.target.value)}
                     />
                 </div>
                 <div className='form-label fontw600'>Langkah Penanaman</div>
-                <div>
-                    <div className='card px-4 py-3 mb-3'>
-                        <div className='row'>
-                            <div className='col container'>
-                                <div className='row'>
-                                    <div className='col-sm'>
-                                        <div className="form-group mb-3">
-                                            <label className="form-label fontw600" htmlFor="namalangkah">Nama Langkah</label>
-                                            <Input
-                                            id="namalangkah"
-                                            name="namalangkah"
-                                            placeholder='Masukkan nama langkah'
-                                            />
-                                            <Invalid errormsg={"Tolong masukkan nama langkah-langkah penanaman."} />
-                                        </div>
-                                    </div>
-                                    <div className='col-sm'>
-                                        <div className="form-group mb-3">
-                                            <label className="form-label fontw600" htmlFor="gambarlangah">Foto</label>
-                                            <DropFile name={"gambarlangkah"} />
-                                        </div>
-                                    </div>
-                                    <div className="form-group mb-3">
-                                        <label className="form-label fontw600" htmlFor="deskripsilangkah">Deskripsi Langkah</label>
-                                        <TextArea
-                                        id="deskripsilangkah"
-                                        name="deskripsilangkah"
-                                        placeholder='Masukkan deskripsi langkah penanaman'
-                                        rows={2}
-                                        />
-                                        <Invalid errormsg={"Tolong masukkan deskripsi langkah penanaman."}/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='col-auto d-center'>
-                                <button className='btn btn-danger'><img src={Trash}/></button>
-                            </div>
-                        </div>
-                    </div>
-                    <button className='b-none p-label mb-3'><img src={Add}/>Tambahkan Langkah Penanaman</button>
-                    <hr className='m-0'/>
-                </div>
+                <FormCardTambah
+                    data={langkahPenanaman}
+                    onTambah={tambahkanLangkahPenanaman}
+                    onHapus={hapusLangkahPenanaman}
+                    onChange={handleLangkahPenanamanChange}
+                    label="Langkah Penanaman"
+                    name='langkahpenanaman'
+                />
                 <div className="form-group mb-3 mt-3">
                     <label className="form-label fontw600" htmlFor="caramerawat">Cara merawat tanaman</label>
                     <TextArea
                     id="caramerawat"
                     name="caramerawat"
+                    value={rawat}
+                    onChange={(e) => setRawat(e.target.value)}
                     placeholder='Masukkan cara merawat tanaman'
                     rows={2}
                     />
                     <Invalid errormsg={"Tolong masukkan cara merawat tanaman."}/>
                 </div>
                 <div className="form-group row justify-content-end">
-                    <button type="submit" className="btn btn-outline-green col-auto m12">
-                        Batal
-                    </button>
-                    <button type="submit" className="btn btn-green col-auto m12">
+                    <div className='col-auto m12'>
+                    <Link to={"/menanam-tanaman"}>
+                    <button type="button" className="btn btn-outline-green">Batal</button>
+                    </Link>
+                    </div>
+                    <button type='submit' className="btn btn-green col-auto m12">
                         Tambah
                     </button>
                 </div>

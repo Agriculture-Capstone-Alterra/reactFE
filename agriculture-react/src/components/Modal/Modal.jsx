@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import style from './styles.module.css';
 
+
 // begin : dokumentasi penggunaan modal
 // untuk menggunakan modul, silahkan gunakan komponen ModalTrigger
 // contoh pemanggilan / penggunaan komponen modal : 
