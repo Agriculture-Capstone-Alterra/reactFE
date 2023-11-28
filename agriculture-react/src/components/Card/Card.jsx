@@ -4,9 +4,13 @@ import Teknologi from "../../assets/Teknologi.svg";
 import jenisTanaman from "../../assets/jenisTanaman.svg";
 import "./Card.css";
 
-const Card = ({ image, title, type, technology, onClick }) => {
+const Card = ({ image, title, type, technology, cardHover, onClick }) => {
   return (
-    <div className="card" style={{ width: "274px" }} onClick={onClick}>
+    <div
+      className={`card ${cardHover}`}
+      style={{ width: "274px" }}
+      onClick={onClick}
+    >
       <img
         src={image}
         style={{ height: "184px" }}
