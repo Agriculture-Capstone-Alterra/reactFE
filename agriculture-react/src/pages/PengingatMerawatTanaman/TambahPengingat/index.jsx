@@ -1,12 +1,12 @@
 import Layout from "../../../layout/Layout";
 import Select from "../../../components/Select";
 import "./tambahPengingat.css";
-import styles from "../../components/Modal/styles.module.css";
+import styles from "../../../components/Modal/styles.module.css";
+import Input from "../../../components/Input";
 import { useState } from "react";
-import Input from "../../components/Input";
 import { Link } from "react-router-dom";
-import Modal from "../../components/Modal/Modal";
-import ModalTrigger from "../../components/Modal/ModalTrigger";
+import Modal from "../../../components/Modal/Modal";
+import ModalTrigger from "../../../components/Modal/ModalTrigger";
 import { SlArrowUp, SlArrowDown } from "react-icons/sl";
 
 const tambahPengingat = () => {
