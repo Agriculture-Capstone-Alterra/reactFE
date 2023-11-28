@@ -4,14 +4,10 @@ import axios from 'axios';
 import Table from '../../../components/Table/Table';
 import Layout from '../../../layout/Layout';
 import Button from '../../../components/Button/Button';
-import EditIcon from '../../../assets/icons/edit.svg';
-import TrashIcon from '../../../assets/icons/trash.svg';
-import { TbDots } from 'react-icons/tb';
-import Pagination from '../../../components/Pagination/Pagination';
-import Filter from '../../../components/Filter';
-import styles from './style.css';
+import EditIcon from "../../../assets/icons/EditIcon.svg";
+import TrashIcon from "../../../assets/icons/trash.svg";
+import { TbDots, TbRuler } from "react-icons/tb";
 import './style.css';
-
 
 const TableTanaman = () => {
   const itemsPerPage = 10;

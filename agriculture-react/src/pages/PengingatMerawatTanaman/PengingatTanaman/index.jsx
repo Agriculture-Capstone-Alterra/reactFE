@@ -7,11 +7,12 @@ import styles from './style.module.css';
 import EditIcon from '../../../assets/icons/edit.svg';
 import TrashIcon from '../../../assets/icons/trash.svg';
 import data from './data.js';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ToastNotification from '../../../components/ToastNotification/ToastNotification.jsx';
 import Pagination from '../../../components/Pagination/Pagination.jsx';
 import Modal from '../../../components/Modal/Modal.jsx';
 import ModalTrigger from '../../../components/Modal/ModalTrigger.jsx';
+import Swal from 'sweetalert2';
 
 
 // start dokumentasi komponen
@@ -27,12 +28,17 @@ const PengingatTanaman = () => {
   const [currentDataPenyiraman, setCurrentDataPenyiraman] = useState([]);
   const [dataPemupukanList, setDataPemupukanList] = useState(data);
   const [currentDataPemupukan, setCurrentDataPemupukan] = useState([]);
+  const [modalData, setModalData] = useState({});
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const location = useLocation();
+  const penyiramanModalName = "deleteDataPenyiraman";
+  const pemupukanModalName = "deleteDataPemupukan";
 
   useEffect(() => {
     const urlState = location.state;
     if (urlState && urlState.savedData) {
+      setToastMessage("Data tanaman berhasil ditambahkan");
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
     }
@@ -51,6 +57,28 @@ const PengingatTanaman = () => {
     { crumblink: '/pengingat-tanaman', crumbname: 'Pengingat Tanaman' }
   ];
 
+  const handleDeleteClick = (data) => {
+    setModalData({ ...data });
+  }
+
+  const executeDeletePenyiraman = (item) => {
+    const updatedData = dataPenyiramanList.filter((dataItem) => dataItem.id !== item.id);
+    setDataPenyiramanList(updatedData);
+    setModalData({});
+    setToastMessage('Data Penyiraman Berhasil dihapus');
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+  
+  const executeDeletePemupukan = (item) => {
+    const updatedData = dataPemupukanList.filter((dataItem) => dataItem.id !== item.id);
+    setDataPemupukanList(updatedData);
+    setModalData({});
+    setToastMessage('Data Pemupukan Berhasil dihapus');
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
   return (
     <>
       <Layout pagetitle={'Pengingat Tanaman'} breadcrumbs={crumbs}>
@@ -60,11 +88,11 @@ const PengingatTanaman = () => {
               <div className="card-body">
                 <div className={`d-flex justify-content-between align-items-center pb-4 pt-4`}>
                   <p className={`fonts24 fontw600 mb-0`}>Data Penyiraman Tanaman</p>
-                  <button
+                  <Link to='/pengingat-tanaman/tambah-pengingat'
                     className={`fonts16 btn btn-success btn-sm fw-light d-flex align-items-center ${styles.btnPrimary}`}
                   >
                     <BsPlus fontSize={20} className="mr-2 mt-0" /> Tambah Data
-                  </button>
+                  </Link>
                 </div>
                 <Table headers={headers}>
                   {currentDataPenyiraman.length > 0 ? (
@@ -85,34 +113,21 @@ const PengingatTanaman = () => {
                           </div>
                           <ul className="dropdown-menu">
                             <li className="d-grid mb-2 ps-3 pe-3">
-                              {/* <button
+                              <Link
+                                to={`/pengingat-tanaman/edit-pengingat`}
                                 className={`btn ${styles.btnAction}`}
                                 style={{ display: 'flex', alignItems: 'center' }}
                               >
                                 <img src={EditIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
                                 <span>Edit</span>
-                              </button> */}
-                              <ModalTrigger
-                                modalTarget={'editData'}
-                                className={`btn ${styles.btnAction}`}
-                                style={{ display: 'flex', alignItems: 'center' }}
-                              >
-                                <img src={EditIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
-                                <span>Edit</span>
-                              </ModalTrigger>
+                              </Link>
                             </li>
                             <li className="d-grid mb-2 ps-3 pe-3">
-                              {/* <button
-                                className={`btn ${styles.btnAction}`}
-                                style={{ display: 'flex', alignItems: 'center' }}
-                              >
-                                <img src={TrashIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
-                                <span>Hapus</span>
-                              </button> */}
                               <ModalTrigger
-                                modalTarget={'deleteData'}
+                                modalTarget={penyiramanModalName}
                                 className={`btn ${styles.btnAction}`}
                                 style={{ display: 'flex', alignItems: 'center' }}
+                                onClick={() => handleDeleteClick(item)}
                               >
                                 <img src={TrashIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
                                 <span>Hapus</span>
@@ -140,18 +155,18 @@ const PengingatTanaman = () => {
               numberingData={true}
             />
           </div>
-          {/* end table penyiaman */}
+          {/* end table penyiraman */}
           {/* start table pemupukan */}
           <div className="ps-3 pe-3">
             <div className={`ps-4 pe-4 pb-4 ${styles.customCard}`}>
               <div className="card-body">
                 <div className={`d-flex justify-content-between align-items-center pb-4 pt-4`}>
                   <p className={`fonts24 fontw600 mb-0`}>Data Pemupukan Tanaman</p>
-                  <button
+                  <Link to='/pengingat-tanaman/tambah-pengingat'
                     className={`fonts16 btn btn-success btn-sm fw-light d-flex align-items-center ${styles.btnPrimary}`}
                   >
                     <BsPlus fontSize={20} className="mr-2 mt-0" /> Tambah Data
-                  </button>
+                  </Link>
                 </div>
                 <Table headers={headers}>
                   {currentDataPemupukan.length > 0 ? (
@@ -172,22 +187,25 @@ const PengingatTanaman = () => {
                           </div>
                           <ul className="dropdown-menu">
                             <li className="d-grid mb-2 ps-3 pe-3">
-                              <button
+                              <Link
+                                to={`/pengingat-tanaman/edit-pengingat`}
                                 className={`btn ${styles.btnAction}`}
                                 style={{ display: 'flex', alignItems: 'center' }}
                               >
                                 <img src={EditIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
                                 <span>Edit</span>
-                              </button>
+                              </Link>
                             </li>
                             <li className="d-grid mb-2 ps-3 pe-3">
-                              <button
+                              <ModalTrigger
+                                modalTarget={pemupukanModalName}
                                 className={`btn ${styles.btnAction}`}
                                 style={{ display: 'flex', alignItems: 'center' }}
+                                onClick={() => handleDeleteClick(item)}
                               >
                                 <img src={TrashIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
                                 <span>Hapus</span>
-                              </button>
+                              </ModalTrigger>
                             </li>
                           </ul>
                         </td>
@@ -217,7 +235,7 @@ const PengingatTanaman = () => {
       {showToast && (
         <ToastNotification
           position="bottom-left"
-          text="Data tanaman berhasil ditambahkan"
+          text={toastMessage}
           onClose={() => {
             setShowToast(false);
             window.history.replaceState(null, null, window.location.pathname);
@@ -225,20 +243,20 @@ const PengingatTanaman = () => {
         />
       )}
       <Modal
-        id="deleteData"
+        id={penyiramanModalName}
         title="Hapus Data Tanaman"
         content={<p className='text-center'>Apakah anda yakin akan mengapus data tanaman?</p>}
         onCancel= {() => {}}
-        onSubmit= {() => {}}
+        onSubmit= {() => executeDeletePenyiraman(modalData)}
         type="delete"
       />
       <Modal
-        id="editData"
+        id={pemupukanModalName}
         title="Edit Data"
         content={<p className='text-center'>Apakah anda yakin akan mengedit data tanaman?</p>}
         onCancel= {() => {}}
-        onSubmit= {() => {}}
-        type="edit"
+        onSubmit= {() => executeDeletePemupukan(modalData)}
+        type="delete"
       />
     </>
   );

@@ -21,6 +21,9 @@ body {
 #gambartanaman {
     border-radius: 0.375rem!important;
 }
+.card-n {
+    width: auto!important;
+}
 
 .input-group-text {
     display: inline-flex;
@@ -59,7 +62,7 @@ body {
     border-radius: 10px;
 }
 
-.btn-green:hover {
+.btn-green:hover{
     background: #356c5a;
     color: #F9FAFB;
 }
@@ -81,9 +84,17 @@ body {
     border: 1px solid #D1D5DB;
 }
 
-.btn-outline-green:hover {
+.btn-outline-green:hover{
     border: 1px solid #448E75;
     color: #448E75;
+}
+.btn-green a {
+    color: #F9FAFB!important;
+    text-decoration: none;
+}
+.btn-outline-green a {
+    color: #448E75!important;
+    text-decoration: none;
 }
 @media (min-width:800px) {
     .btn-green{
