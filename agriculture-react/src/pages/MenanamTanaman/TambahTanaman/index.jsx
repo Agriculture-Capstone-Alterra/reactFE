@@ -6,11 +6,12 @@ import Select from '../../../components/Select'
 import Invalid from '../../../components/Invalid'
 import Layout from '../../../layout/Layout'
 import DragFile from '../../../components/DragFile'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import FormCardTambah from '../../../components/FormCardTambah'
 import { useState } from 'react'
 
 const TambahTanaman = () => {
+    const navigate = useNavigate();
     const jenisTanamanOptions = [
         { value: 'Bunga', label: 'Bunga' },
         { value: 'Tanaman Hias', label: 'Tanaman Hias' },
@@ -103,6 +104,7 @@ const TambahTanaman = () => {
         hujanAwal,
         hujanAkhir,
         hama, pupuk, saran, gambarSaran, rawat});
+        navigate('/menanam-tanaman')
     }
     const handleAlatPenanamanChange = (index, field, value) => {
         const updatedData = [...alatPenanaman];
@@ -113,7 +115,6 @@ const TambahTanaman = () => {
         setAlatPenanaman(updatedData);
     };
     
-    // For Langkah Penanaman
     const handleLangkahPenanamanChange = (index, field, value) => {
         const updatedData = [...langkahPenanaman];
         updatedData[index] = {
@@ -321,13 +322,12 @@ const TambahTanaman = () => {
                     <Invalid errormsg={"Tolong masukkan cara merawat tanaman."}/>
                 </div>
                 <div className="form-group row justify-content-end">
-                        
-                    <button type="button" className="btn btn-outline-green col-auto m12">
-                        <Link to={"/menanam-tanaman"}>
-                            Batal
-                        </Link>
-                    </button>
-                    <button type="submit" className="btn btn-green col-auto m12">
+                    <div className='col-auto m12'>
+                    <Link to={"/menanam-tanaman"}>
+                    <button type="button" className="btn btn-outline-green">Batal</button>
+                    </Link>
+                    </div>
+                    <button type='submit' className="btn btn-green col-auto m12">
                         Tambah
                     </button>
                 </div>
