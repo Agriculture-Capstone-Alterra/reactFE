@@ -170,7 +170,9 @@ const editPengingat = () => {
             Kustom Pengulangan
           </button>
           <div className="d-flex justify-content-center mt-5">
-            <Link to="" className={"btn me-3 editPengingat-btnOutline"}>
+            <Link
+              to="/pengingat-tanaman"
+              className={"btn me-3 editPengingat-btnOutline"}>
               Batal
             </Link>
             <Link to="" className="btn btn-success editPengingat-btnPrimary">
