@@ -10,7 +10,6 @@ import { TbDots } from 'react-icons/tb';
 import Pagination from '../../../components/Pagination/Pagination';
 import Filter from '../../../components/Filter';
 import styles from './style.css';
-import './style.css';
 
 
 const TableTanaman = () => {
