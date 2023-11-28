@@ -49,6 +49,10 @@ function App() {
           element={<DetailTanaman />}
         />
         <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
+        <Route path="/pengignat-tanaman/tambah-pengingat" element={<PengingatTanaman />}/>
+        <Route path="/pengignat-tanaman/edit-pengingat" element={<PengingatTanaman />}/>
+
+
         <Route path="/testpage" element={<TestPage />} />
 
         <Route path="/login" element={<Login />} />

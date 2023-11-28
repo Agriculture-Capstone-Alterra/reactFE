@@ -1,5 +1,5 @@
-import Layout from "../../layout/Layout";
-import Select from "../../components/Select";
+import Layout from "../../../layout/Layout";
+import Select from "../../../components/Select";
 import "./tambahPengingat.css";
 
 const tambahPengingat = () => {
