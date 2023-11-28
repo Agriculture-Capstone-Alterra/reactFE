@@ -16,7 +16,7 @@ export const SidebarData = [
   },
   {
     title: "Informasi Cuaca",
-    path: "#",
+    path: "/informasi-cuaca",
     icon: <MdCloudQueue />,
   },
   {
@@ -36,12 +36,12 @@ export const SidebarData = [
   },
   {
     title: "Pertumbuhan",
-    path: "#",
+    path: "/pertumbuhan",
     icon: <FaArrowTrendUp />,
   },
   {
     title: "Produk Lokal",
-    path: "#",
+    path: "/produk-lokal",
     icon: <MdOutlineShoppingCart />,
   },
 ];

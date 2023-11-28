@@ -5,26 +5,39 @@ import styles from "./ListTanaman.module.css";
 import Filter from "../../../components/Filter";
 import { useNavigate } from "react-router-dom";
 import { PiGrainsSlashFill } from "react-icons/pi";
+import MawarPutih from "../../../assets/img/mawarputih.jpg";
+import Bayam from "../../../assets/img/bayam.png";
+import Bonsai from "../../../assets/img/bonsai.png";
 
 const ListTanaman = () => {
-  const navigate = useNavigate();
-
-  const cardExample = [
-    // {
-    //   name: "Mawar Putih",
-    //   index: 1,
-    // },
-    // {
-    //   name: "Mawar Merah",
-    //   index: 2,
-    // },
-    // {
-    //   name: "Anggrek Ungu",
-    //   index: 3,
-    // },
+  // Dummy Data Card
+  const cardData = [
+    {
+      index: 1,
+      image: MawarPutih,
+      title: "Mawar Putih",
+      type: "Bunga",
+      technology: "Hidroponik",
+    },
+    {
+      index: 2,
+      image: Bayam,
+      title: "Bayam",
+      type: "Sayuran",
+      technology: "Hidroponik",
+    },
+    {
+      index: 3,
+      image: Bonsai,
+      title: "Bonsai",
+      type: "Tanaman Hias",
+      technology: "Hidroponik",
+    },
   ];
 
-  const [cards, setCards] = useState(cardExample);
+  const navigate = useNavigate();
+  const [cards, setCards] = useState(cardData);
+  const [selectedSortOption, setSelectedSortOption] = useState("");
 
   const breadcrumbsobjectexample = [
     {
@@ -37,10 +50,38 @@ const ListTanaman = () => {
     },
   ];
 
+  // handle card click
   const handleCardClick = (index) => {
-    console.log("Card clicked:", index);
+    console.log(`Card ${index} clicked`);
 
     navigate(`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman`);
+  };
+
+  // handle sort change
+  const handleSortChange = (e) => {
+    const selectedOption = e.target.value;
+    setSelectedSortOption(selectedOption);
+
+    // sorting card logic
+    let sortedCards = [...cards];
+    switch (selectedOption) {
+      case "oldest":
+        sortedCards.sort((a, b) => a.index - b.index);
+        break;
+      case "newest":
+        sortedCards.sort((a, b) => b.index - a.index);
+        break;
+      case "ascending":
+        sortedCards.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "descending":
+        sortedCards.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      default:
+        break;
+    }
+
+    setCards(sortedCards);
   };
 
   return (
@@ -53,8 +94,8 @@ const ListTanaman = () => {
           <div className={styles.contentContainer}>
             <select
               className={styles.selectBox}
-              // onChange={}
-              // value={}
+              onChange={handleSortChange}
+              value={selectedSortOption}
             >
               <option value="">Urutkan dalam</option>
               <option value="oldest">Paling lama</option>
@@ -70,12 +111,13 @@ const ListTanaman = () => {
                     <p>Data Tanaman Tidak Tersedia</p>
                   </div>
                 ) : (
-                  cards.map((card, index) => (
+                  cards.map((card) => (
                     <Card
-                      key={index}
-                      className={styles.cardItem}
-                      index={card.index}
-                      name={card.name}
+                      key={card.index}
+                      image={card.image}
+                      title={card.title}
+                      type={card.type}
+                      technology={card.technology}
                       onClick={() => handleCardClick(card.index)}
                     />
                   ))
