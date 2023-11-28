@@ -3,14 +3,12 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Table from '../../../components/Table/Table';
 import Layout from '../../../layout/Layout';
-import Button from '../../../components/Button/Button';
 import EditIcon from '../../../assets/icons/edit.svg';
 import TrashIcon from '../../../assets/icons/trash.svg';
 import { TbDots } from 'react-icons/tb';
 import Pagination from '../../../components/Pagination/Pagination';
 import Filter from '../../../components/Filter';
-import styles from './style.css';
-
+import './style.css'
 
 const TableTanaman = () => {
   const itemsPerPage = 10;
@@ -99,8 +97,11 @@ const TableTanaman = () => {
                         <ul className="dropdown-menu">
                           <li className="d-grid mb-2 ps-3 pe-3">
                             <button
-                              className={`btn ${styles.btnAction}`}
-                              style={{ display: 'flex', alignItems: 'center' }}
+                              className="btn"
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                              }}
                               onClick={() => handleEdit(book.id)}
                             >
                               <img src={EditIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
@@ -109,8 +110,11 @@ const TableTanaman = () => {
                           </li>
                           <li className="d-grid mb-2 ps-3 pe-3">
                             <button
-                              className={`btn ${styles.btnAction}`}
-                              style={{ display: 'flex', alignItems: 'center' }}
+                              className="btn"
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                              }}
                               onClick={() => handleDelete(book.id)}
                             >
                               <img src={TrashIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
