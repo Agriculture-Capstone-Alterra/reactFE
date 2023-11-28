@@ -24,10 +24,10 @@ const DropFile = ({ value, onChange, name }) => {
     handleFiles(files);
   };
 
-  const handleFileInputChange = () => {
+  const handleFileInputChange = (e) => {
     const files = fileInputRef.current.files;
     handleFiles(files);
-    onChange();
+    onChange(e);
   };
 
   const handleFiles = (files) => {
