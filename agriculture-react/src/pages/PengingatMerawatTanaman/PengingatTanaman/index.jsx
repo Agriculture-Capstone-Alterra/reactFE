@@ -88,7 +88,7 @@ const PengingatTanaman = () => {
               <div className="card-body">
                 <div className={`d-flex justify-content-between align-items-center pb-4 pt-4`}>
                   <p className={`fonts24 fontw600 mb-0`}>Data Penyiraman Tanaman</p>
-                  <Link to='/pengingat-tanaman/tambahPengingat'
+                  <Link to='/pengingat-tanaman/tambah-pengingat'
                     className={`fonts16 btn btn-success btn-sm fw-light d-flex align-items-center ${styles.btnPrimary}`}
                   >
                     <BsPlus fontSize={20} className="mr-2 mt-0" /> Tambah Data
@@ -162,11 +162,11 @@ const PengingatTanaman = () => {
               <div className="card-body">
                 <div className={`d-flex justify-content-between align-items-center pb-4 pt-4`}>
                   <p className={`fonts24 fontw600 mb-0`}>Data Pemupukan Tanaman</p>
-                  <button
+                  <Link to='/pengingat-tanaman/tambah-pengingat'
                     className={`fonts16 btn btn-success btn-sm fw-light d-flex align-items-center ${styles.btnPrimary}`}
                   >
                     <BsPlus fontSize={20} className="mr-2 mt-0" /> Tambah Data
-                  </button>
+                  </Link>
                 </div>
                 <Table headers={headers}>
                   {currentDataPemupukan.length > 0 ? (
