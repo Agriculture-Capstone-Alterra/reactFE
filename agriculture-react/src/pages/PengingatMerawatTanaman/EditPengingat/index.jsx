@@ -181,11 +181,8 @@ const editPengingat = () => {
           </div>
         </form>
         {/* modal */}
-        <div
-          className="modal fade editPengingat-modal"
-          id="exampleModal"
-          tabindex="-1">
-          <div className="modal-dialog">
+        <div className="modal fade " id="exampleModal" tabindex="-1">
+          <div className="modal-dialog editPengingat-modal">
             <div className="modal-content">
               <div className="modal-header">
                 <h1
@@ -234,7 +231,50 @@ const editPengingat = () => {
                       className="col-form-label editPengingat-modalFormLabel">
                       Ulangi Setiap Hari
                     </label>
-                    <input className="form-control" id="message-text" />
+                    <div className="weekDays-selector">
+                      <input
+                        type="checkbox"
+                        id="weekday-mon"
+                        className="weekday"
+                      />
+                      <label for="weekday-mon">S</label>
+                      <input
+                        type="checkbox"
+                        id="weekday-tue"
+                        className="weekday"
+                      />
+                      <label for="weekday-tue">S</label>
+                      <input
+                        type="checkbox"
+                        id="weekday-wed"
+                        className="weekday"
+                      />
+                      <label for="weekday-wed">R</label>
+                      <input
+                        type="checkbox"
+                        id="weekday-thu"
+                        className="weekday"
+                      />
+                      <label for="weekday-thu">K</label>
+                      <input
+                        type="checkbox"
+                        id="weekday-fri"
+                        className="weekday"
+                      />
+                      <label for="weekday-fri">J</label>
+                      <input
+                        type="checkbox"
+                        id="weekday-sat"
+                        className="weekday"
+                      />
+                      <label for="weekday-sat">S</label>
+                      <input
+                        type="checkbox"
+                        id="weekday-sun"
+                        className="weekday"
+                      />
+                      <label for="weekday-sun">M</label>
+                    </div>
                   </div>
                   <div className="mb-3">
                     <label
