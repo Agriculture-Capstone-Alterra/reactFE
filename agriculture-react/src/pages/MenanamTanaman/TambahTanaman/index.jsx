@@ -172,7 +172,7 @@ const TambahTanaman = () => {
                 <DragFile 
                     name={'gambartanaman'}
                     value={gambarTanaman}
-                    onChange={(e) => setGambarTanaman(e.target.value)}
+                    setValue={setGambarTanaman}
                 /> 
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="varietastanaman">Varietas Tanaman</label>
@@ -276,11 +276,12 @@ const TambahTanaman = () => {
                 <p className='p-label'>Alat yang Dibutuhkan</p>
                 <FormCardTambah
                     data={alatPenanaman}
+                    setData={setAlatPenanaman}
                     onTambah={tambahkanAlatPenanaman}
                     onHapus={hapusAlatPenanaman}
                     onChange={handleAlatPenanamanChange}
                     label="Alat Penanaman"
-                    name='alatpenanaman'
+                    namelabel='Alat'
                 />
                 <div className='form-label fontw600 mt-3'>Saran Untuk Tempat Penanaman</div>
                 <div className='card card-n px-4 py-3 mb-3'>
@@ -300,17 +301,18 @@ const TambahTanaman = () => {
                     <DragFile 
                         name={'gambarsaran'}
                         value={gambarSaran}
-                        onChange={(e) => setGambarSaran(e.target.value)}
+                        setValue={setGambarSaran}
                     />
                 </div>
                 <div className='form-label fontw600'>Langkah Penanaman</div>
                 <FormCardTambah
                     data={langkahPenanaman}
+                    setData={setLangkahPenanaman}
                     onTambah={tambahkanLangkahPenanaman}
                     onHapus={hapusLangkahPenanaman}
                     onChange={handleLangkahPenanamanChange}
                     label="Langkah Penanaman"
-                    name='langkahpenanaman'
+                    namelabel='Langkah'
                 />
                 <div className="form-group mb-3 mt-3">
                     <label className="form-label fontw600" htmlFor="caramerawat">Cara merawat tanaman</label>
