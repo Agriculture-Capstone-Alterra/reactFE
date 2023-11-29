@@ -1,8 +1,11 @@
 import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 import "./essentials/essentialcss.css";
-import TableTanaman from "./pages/MenanamTanaman/TableTanaman/indeks";
 import TestPage from "./pages/TestPage/TestPage";
+
+import TableTanaman from "./pages/MenanamTanaman/TableTanaman/indeks";
 import PengingatTanaman from "./pages/PengingatMerawatTanaman/PengingatTanaman";
+import TambahPengingat from "./pages/PengingatMerawatTanaman/TambahPengingat";
+import EditPengingat from "./pages/PengingatMerawatTanaman/EditPengingat";
 import TambahTanaman from "./pages/MenanamTanaman/TambahTanaman";
 import RiwayatMenanam from "./pages/RiwayatMenanam/RiwayatMenanam/RiwayatMenanam";
 import RiwayatListTanaman from "./pages/RiwayatMenanam/ListTanaman/ListTanaman";
@@ -13,6 +16,7 @@ import Login from "./pages/Login/Login";
 import PrivateRoute from "./privateroute/PrivateRoute";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import DetailTanaman from "./pages/MenanamTanaman/DetailTanaman";
+import EditTanaman from "./pages/MenanamTanaman/EditTanaman";
 
 function App() {
   return (
@@ -44,11 +48,19 @@ function App() {
           path="/menanam-tanaman/tambah-tanaman"
           element={<TambahTanaman />}
         />
+         <Route
+          path="/menanam-tanaman/edit-tanaman"
+          element={<EditTanaman />}
+        />
         <Route
           path="/menanam-tanaman/detail-menanam-tanaman"
           element={<DetailTanaman />}
         />
         <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
+        <Route path="/pengingat-tanaman/tambah-pengingat" element={<TambahPengingat />}/>
+        <Route path="/pengingat-tanaman/edit-pengingat" element={<EditPengingat />}/>
+
+
         <Route path="/testpage" element={<TestPage />} />
 
         <Route path="/login" element={<Login />} />
