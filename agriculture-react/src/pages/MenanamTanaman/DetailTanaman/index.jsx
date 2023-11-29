@@ -13,6 +13,7 @@ import Accordion from "../../../components/Accordion";
 import { motion } from "framer-motion";
 import Modal from "../../../components/Modal/Modal";
 import ModalTrigger from "../../../components/Modal/ModalTrigger";
+import { useNavigate } from "react-router-dom";
 
 const DetailTanaman = () => {
   const [isShowNutrisi, setIsShowNutrisi] = useState(false);
@@ -22,7 +23,7 @@ const DetailTanaman = () => {
   const [isShowLangkah, setIsShowLangkah] = useState(false);
   const [isShowMenanam, setIsShowMenanam] = useState(false);
   const [isShowPenanganan, setIsShowPenanganan] = useState(false);
-
+  const navigate = useNavigate();
   const [widthScroll, setWithScroll] = useState(0);
   const scroll = useRef(null);
   const deleteModalName = "deletaDataTanaman";
@@ -65,21 +66,20 @@ const DetailTanaman = () => {
 
   const breadcrumbsobjectexample = [
     {
-      crumblink: "/linkpage1",
-      crumbname: "Nama Page1",
+      crumblink : "/menanam-tanaman",
+      crumbname : "Menanam Tanaman",
     },
     {
-      crumblink: "/linkpage2",
-      crumbname: "Nama Page2",
-    },
-    {
-      crumblink: "/linkpage3",
-      crumbname: "Nama Page Final",
-    },
+      crumblink : "/menanam-tanaman/detail-menanam-tanaman",
+      crumbname : "Detail Tanaman",
+    }
   ];
+  const handleOnClick = () => {
+    navigate(`/menanam-tanaman/edit-tanaman`);
+  };
   return (
     <>
-      <Layout pagetitle={"Nama Header"} breadcrumbs={breadcrumbsobjectexample}>
+      <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={breadcrumbsobjectexample}>
         {/* begin main content */}
         <div>
           <div className="mt-2 mb-2">
@@ -337,6 +337,7 @@ const DetailTanaman = () => {
                       borderRadius: "6px",
                       padding: "6px 12px",
                     }}
+                    onClick={() => handleOnClick()}
                   >
                     Edit Tanaman
                   </button>
