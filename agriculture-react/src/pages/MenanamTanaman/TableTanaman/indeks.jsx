@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Table from '../../../components/Table/Table';
 import Layout from '../../../layout/Layout';
@@ -14,6 +14,7 @@ import ToastNotification from '../../../components/ToastNotification/ToastNotifi
 import './style.css';
 
 const TableTanaman = () => {
+  const navigate = useNavigate();
   const itemsPerPage = 10;
   const [bookData, setBookData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
@@ -39,6 +40,7 @@ const TableTanaman = () => {
 
   const handleEdit = (id) => {
     console.log(`Edit button clicked for ID ${id}`);
+    navigate('/menanam-tanaman/edit-tanaman')
   };
 
  
@@ -82,10 +84,13 @@ const TableTanaman = () => {
     currentPage,
     setCurrentPage,
   };
+  const handleRowClick = () => {
+    navigate(`/menanam-tanaman/detail-menanam-tanaman`);
+  };
 
   return (
     <>
-      <Layout pagetitle={'Pengingat Tanaman'} breadcrumbs={crumbs}>
+      <Layout pagetitle={'Menanam Tanaman'} breadcrumbs={crumbs}>
         <div className="page-table">
           <div className="page-table-pagination">
             <div className="table">
@@ -99,11 +104,11 @@ const TableTanaman = () => {
                 {currentData.length > 0 ? (
                   currentData.map((book, index) => (
                     <tr key={index}>
-                      <td>{book.number}</td>
-                      <td>{book.namatanaman}</td>
-                      <td>{book.jenistanaman}</td>
-                      <td>{book.varietas}</td>
-                      <td>{book.teknologi}</td>
+                      <td onClick={() => handleRowClick()}>{book.number}</td>
+                      <td onClick={() => handleRowClick()}>{book.namatanaman}</td>
+                      <td onClick={() => handleRowClick()}>{book.jenistanaman}</td>
+                      <td onClick={() => handleRowClick()}>{book.varietas}</td>
+                      <td onClick={() => handleRowClick()}>{book.teknologi}</td>
                       <td>
                         <div className="p-2 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                           <TbDots className="fw-bold fs-4 ms-1" />
