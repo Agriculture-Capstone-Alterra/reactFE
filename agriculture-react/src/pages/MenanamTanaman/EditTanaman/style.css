@@ -88,6 +88,7 @@ body {
     border: 1px solid #448E75;
     color: #448E75;
 }
+
 @media (min-width:800px) {
     .btn-green{
         width: 245px;

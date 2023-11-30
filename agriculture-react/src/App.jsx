@@ -16,6 +16,7 @@ import Login from "./pages/Login/Login";
 import PrivateRoute from "./privateroute/PrivateRoute";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import DetailTanaman from "./pages/MenanamTanaman/DetailTanaman";
+import EditTanaman from "./pages/MenanamTanaman/EditTanaman";
 
 function App() {
   return (
@@ -47,6 +48,10 @@ function App() {
         <Route
           path="/menanam-tanaman/tambah-tanaman"
           element={<TambahTanaman />}
+        />
+         <Route
+          path="/menanam-tanaman/edit-tanaman"
+          element={<EditTanaman />}
         />
         <Route
           path="/menanam-tanaman/detail-menanam-tanaman"
