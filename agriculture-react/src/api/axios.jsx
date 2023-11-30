@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const axiosWithAuth = axios.create({
-    baseURL: "http://13.213.19.179:8000/",
+    baseURL: "http://service.api-agriplant.xyz/",
 })
 
 // dieksekusi ketika mau ngirim response
