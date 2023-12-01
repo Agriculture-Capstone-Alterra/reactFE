@@ -5,7 +5,7 @@ import styles from "./riwayatMenanam.module.css";
 import { MdArrowBackIos, MdArrowForwardIos, MdSearch } from "react-icons/md";
 import { FaUsersSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosWithAuth from "../../../api/axios";
 
 const RiwayatMenanam = () => {
   const [dataPengguna, setDataPengguna] = useState([]);
@@ -30,7 +30,7 @@ const RiwayatMenanam = () => {
 
   const fetchDataPengguna = async () => {
     try {
-      const response = await axios.get(
+      const response = await axiosWithAuth.get(
         "https://6554779c63cafc694fe680e6.mockapi.io/tableListPengguna"
       );
       const dataPengguna = response.data;

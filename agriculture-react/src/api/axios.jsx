@@ -21,7 +21,7 @@ axiosWithAuth.interceptors.request.use((config)=>{
     if(error.response.status === 404){
         console.log("from axios request interceptor : NOT FOUND 404")
     }
-    return Promis.reject(error)
+    return Promise.reject(error)
 })
 
 
