@@ -80,21 +80,21 @@ export default function Dashboard(){
     })
 
     const [datafarmer, setDatafarmer] = useState([
-        // {
-        //     nama: "Farmer 1",
-        //     farmerpic: "/",
-        //     leavepoint: 4
-        // },
-        // {
-        //     nama: "Farmer 4",
-        //     farmerpic: "/",
-        //     leavepoint: 3
-        // },
-        // {
-        //     nama: "Farmer 2",
-        //     farmerpic: "/",
-        //     leavepoint: 5
-        // },
+        {
+            nama: "Farmer 1",
+            farmerpic: "/",
+            leavepoint: 4
+        },
+        {
+            nama: "Farmer 4",
+            farmerpic: "/",
+            leavepoint: 3
+        },
+        {
+            nama: "Farmer 2",
+            farmerpic: "/",
+            leavepoint: 5
+        },
     ])
 
     return (
@@ -177,5 +177,14 @@ export default function Dashboard(){
                 </div>
             </Layout>
         </>
+    )
+}
+
+
+function GetCuaca(){
+    
+
+    return (
+        <></>
     )
 }

@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdLogout, MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import { SidebarData } from "./SidebarData";
 import "./Sidebar.css";
+// import Logout from "../../authentication/Logout/Logout";
 
 const Sidebar = () => {
   const [sidebarOpen, setsidebarOpen] = useState(true);
   const [activeLink, setActiveLink] = useState("/");
-
+  const navigate = useNavigate()
   const handleLinkClick = (path) => {
     setActiveLink(path);
   };
@@ -15,6 +16,11 @@ const Sidebar = () => {
   const toggleSidebar = () => {
     setsidebarOpen(!sidebarOpen);
   };
+
+  function handlelogout(){
+    localStorage.removeItem('usertoken')
+    navigate('/login')
+  }
 
   return (
     <div className={`sidebar ${sidebarOpen ? "open" : "closed"}`}>
@@ -45,11 +51,11 @@ const Sidebar = () => {
       <hr />
       <ul className="sidebar-list nav nav-pills flex-column mb-2">
         <li className="sidebar-item">
-          <Link to="/login" className="nav-link sidebar-text">
+          <button className="nav-link sidebar-text" onClick={handlelogout}>
             <MdLogout />
             <span className="sidebar-item-text">Logout</span>
             <span className="tooltip">Logout</span>
-          </Link>
+          </button>
         </li>
       </ul>
       <button

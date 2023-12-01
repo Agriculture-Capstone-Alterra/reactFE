@@ -10,7 +10,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import FormCardTambah from '../../../components/FormCardTambah'
 import { useState } from 'react'
 
-const TambahTanaman = () => {
+const EditTanaman = () => {
     const navigate = useNavigate();
     const jenisTanamanOptions = [
         { value: 'Bunga', label: 'Bunga' },
@@ -24,14 +24,14 @@ const TambahTanaman = () => {
         { value: 'Hidroponik', label: 'Hidroponik' },
         { value: 'Aeroponik', label: 'Aeroponik' },
     ];
-    const breadcrumTambahTanaman = [
+    const breadcrumEditTanaman = [
         {
             crumblink : "/menanam-tanaman",
             crumbname : "Menanam Tanaman",
         },
         {
-            crumblink : "/menanam-tanaman/tambah-tanaman",
-            crumbname : "Tambah Tanaman",
+            crumblink : "/menanam-tanaman/edit-tanaman",
+            crumbname : "Edit Tanaman",
         }
     ];
     const [namaTanaman, setNamaTanaman] = useState('');
@@ -127,11 +127,11 @@ const TambahTanaman = () => {
         navigate(`/menanam-tanaman`);
     };
     return (
-        <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={breadcrumTambahTanaman}>
+        <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={breadcrumEditTanaman}>
         <div className='mt-2' style={{ padding:'0px 0px 30px 30px', marginRight:'0'}}>
             <FormLayout onSubmit={handleSubmit}>
                 <h4 className='fontw800'>
-                    Tambah Tanaman
+                    Edit Tanaman
                 </h4>
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="namatanaman">Nama Tanaman</label>
@@ -329,7 +329,7 @@ const TambahTanaman = () => {
                     <button type="button" className="btn btn-outline-green" onClick={() => handleOnClick()}>Batal</button>
                     </div>
                     <button type='submit' className="btn btn-green col-auto m12">
-                        Tambah
+                        Edit
                     </button>
                 </div>
             </FormLayout>
@@ -338,4 +338,4 @@ const TambahTanaman = () => {
     )
 }
 
-export default TambahTanaman
+export default EditTanaman
