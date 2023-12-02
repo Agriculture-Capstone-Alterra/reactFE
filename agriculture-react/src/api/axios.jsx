@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const axiosWithAuth = axios.create({
-    baseURL: "http://service.api-agriplant.xyz/",
+    baseURL: "https://service.api-agriplant.xyz/",
 })
 
 // dieksekusi ketika mau ngirim response
