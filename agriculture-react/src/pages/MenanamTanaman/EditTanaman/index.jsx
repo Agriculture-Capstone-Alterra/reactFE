@@ -6,24 +6,13 @@ import Select from '../../../components/Select'
 import Invalid from '../../../components/Invalid'
 import Layout from '../../../layout/Layout'
 import DragFile from '../../../components/DragFile'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import FormCardTambah from '../../../components/FormCardTambah'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axiosWithAuth from '../../../api/axios'
 
 const EditTanaman = () => {
     const navigate = useNavigate();
-    const jenisTanamanOptions = [
-        { value: 'Bunga', label: 'Bunga' },
-        { value: 'Tanaman Hias', label: 'Tanaman Hias' },
-        { value: 'Umbi-umbian', label: 'Umbi-umbian' },
-        { value: 'Kacang-kacangan', label: 'Kacang-kacangan' },
-        { value: 'Pohon-pohonan', label: 'Pohon-pohonan' },
-        { value: 'Sayuran', label: 'Sayuran' },
-    ];
-    const teknologiTanamanOptions = [
-        { value: 'Hidroponik', label: 'Hidroponik' },
-        { value: 'Aeroponik', label: 'Aeroponik' },
-    ];
     const breadcrumEditTanaman = [
         {
             crumblink : "/menanam-tanaman",
@@ -34,6 +23,41 @@ const EditTanaman = () => {
             crumbname : "Edit Tanaman",
         }
     ];
+    const [jenisTanamanOptions, setJenisTanamanOptions] = useState([]);
+    const [teknologiTanamanOptions, setTeknologiTanamanOptions] = useState([]);
+    const getDataPlantType = async () => {
+        try {
+          const response = await axiosWithAuth.get('plant-types')
+          const dataFromApi = response.data.data;
+          const transformedData = dataFromApi.map(item => ({
+            value: item.id.toString(),
+            label: item.name,
+          }));
+          setJenisTanamanOptions(transformedData);
+          console.log('get type:', transformedData);
+        } catch (error) {
+          console.error('Error fetching data from API:', error);
+        }
+    };
+    const getDataPlantTech = async () => {
+        try {
+          const response = await axiosWithAuth.get('planting-techs')
+          const dataFromApi = response.data.data;
+          const transformedData = dataFromApi.map(item => ({
+            value: item.id.toString(),
+            label: item.name,
+          }));
+          setTeknologiTanamanOptions(transformedData);
+          console.log('get tech:', transformedData);
+        } catch (error) {
+          console.error('Error fetching data from API:', error);
+        }
+    };
+
+    useEffect(()=>{
+        getDataPlantType();
+        getDataPlantTech();
+    },[])
     const [namaTanaman, setNamaTanaman] = useState('');
     const [jenisTanaman, setJenisTanaman] = useState('');
     const [deskTanaman, setDeskTanaman] = useState('');

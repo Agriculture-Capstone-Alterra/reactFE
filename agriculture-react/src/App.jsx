@@ -29,6 +29,14 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/landingpage" element={<LandingPage />} />
           {/* end punya safutra */}
+          <Route
+          path="/menanam-tanaman/tambah-tanaman"
+          element={<TambahTanaman />}
+          />
+          <Route
+            path="/menanam-tanaman/edit-tanaman"
+            element={<EditTanaman />}
+          />
         </Route>
 
         {/* Start Riwayat Menanam Pages */}
@@ -45,14 +53,7 @@ function App() {
 
         <Route path="/menanam-tanaman" element={<TableTanaman />} />
         {/* <Route path="/" element={<TestPage />} /> */}
-        <Route
-          path="/menanam-tanaman/tambah-tanaman"
-          element={<TambahTanaman />}
-        />
-         <Route
-          path="/menanam-tanaman/edit-tanaman"
-          element={<EditTanaman />}
-        />
+        
         <Route
           path="/menanam-tanaman/detail-menanam-tanaman"
           element={<DetailTanaman />}
