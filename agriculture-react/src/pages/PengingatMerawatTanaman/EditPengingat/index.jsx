@@ -101,6 +101,10 @@ const editPengingat = () => {
     setMenambah(menambah > 0 ? menambah - 1 : 0);
   };
 
+  const handleCostumPengulangan = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <Layout
@@ -166,7 +170,8 @@ const editPengingat = () => {
             className="btn btn-outline-primary editPengingat-kustom"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
-            data-bs-whatever="@getbootstrap">
+            data-bs-whatever="@getbootstrap"
+            onClick={handleCostumPengulangan}>
             Kustom Pengulangan
           </button>
           <div className="d-flex justify-content-center mt-5">

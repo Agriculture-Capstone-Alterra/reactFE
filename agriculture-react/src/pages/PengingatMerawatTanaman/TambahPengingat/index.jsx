@@ -105,6 +105,11 @@ const tambahPengingat = () => {
     e.preventDefault();
     setCounter(number > 0 ? number - 1 : 0);
   };
+
+  const handleKostumPengulangan = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <Layout
@@ -171,7 +176,8 @@ const tambahPengingat = () => {
             className="btn btn-outline-primary tambahPengingat-kustom"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
-            data-bs-whatever="@getbootstrap">
+            data-bs-whatever="@getbootstrap"
+            onClick={handleKostumPengulangan}>
             Kustom Pengulangan
           </button>
           <div className="text-center mt-5 d-flex justify-content-center">
