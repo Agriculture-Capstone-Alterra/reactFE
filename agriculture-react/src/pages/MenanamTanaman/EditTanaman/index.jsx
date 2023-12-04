@@ -30,7 +30,7 @@ const EditTanaman = () => {
           const response = await axiosWithAuth.get('plant-types')
           const dataFromApi = response.data.data;
           const transformedData = dataFromApi.map(item => ({
-            value: item.id.toString(),
+            value: item.id,
             label: item.name,
           }));
           setJenisTanamanOptions(transformedData);
@@ -44,7 +44,7 @@ const EditTanaman = () => {
           const response = await axiosWithAuth.get('planting-techs')
           const dataFromApi = response.data.data;
           const transformedData = dataFromApi.map(item => ({
-            value: item.id.toString(),
+            value: item.id,
             label: item.name,
           }));
           setTeknologiTanamanOptions(transformedData);
@@ -128,7 +128,7 @@ const EditTanaman = () => {
         hujanAwal,
         hujanAkhir,
         hama, pupuk, saran, gambarSaran, rawat});
-        navigate('/menanam-tanaman')
+        // navigate('/menanam-tanaman')
     }
     const handleAlatPenanamanChange = (index, field, value) => {
         const updatedData = [...alatPenanaman];

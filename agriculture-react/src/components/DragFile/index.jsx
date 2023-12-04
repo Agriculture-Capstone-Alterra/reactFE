@@ -24,6 +24,7 @@ const DragFile = ({ value, name, setValue}) => {
 
   const handleFileInputChange = () => {
     const files = fileInputRef.current.files;
+    console.log("file, ", files)
     handleFiles(files);
   };
   const addImage = (imagePreview) => {
@@ -42,12 +43,14 @@ const DragFile = ({ value, name, setValue}) => {
             name: file.name,
           };
 
-          addImage(imagePreview);
+          // addImage(imagePreview);
+          addImage(files);
         };
 
         reader.readAsDataURL(file);
       }
     }
+    
   };
 
   const handleRemoveImage = (id) => {
