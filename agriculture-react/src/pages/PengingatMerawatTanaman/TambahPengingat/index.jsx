@@ -41,32 +41,20 @@ const tambahPengingat = () => {
 
   const namaHari = [
     {
-      label: "Minggu",
+      label: "Hari",
+      value: "Hari",
+    },
+    {
       value: "Minggu",
+      label: "Minggu",
     },
     {
-      label: "Senin",
-      value: "Senin",
+      label: "Bulan",
+      value: "Bulan",
     },
     {
-      label: "Selasa",
-      value: "Selasa",
-    },
-    {
-      label: "Rabu",
-      value: "Rabu",
-    },
-    {
-      label: "Kamis",
-      value: "Kamis",
-    },
-    {
-      label: "Jumat",
-      value: "Jumat",
-    },
-    {
-      label: "Sabtu",
-      value: "Sabtu",
+      label: "Tahun",
+      value: "Tahun",
     },
   ];
 
