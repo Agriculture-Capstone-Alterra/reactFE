@@ -25,7 +25,6 @@ function App() {
         <Route path="/" element={<PrivateRoute />}>
           {/* punya sfutra */}
           <Route path="/testpaage" element={<TestPage />} />
-          <Route path="/" element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/landingpage" element={<LandingPage />} />
           {/* end punya safutra */}
