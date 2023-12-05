@@ -4,7 +4,7 @@ import Teknologi from "../../assets/Teknologi.svg";
 import jenisTanaman from "../../assets/jenisTanaman.svg";
 import "./Card.css";
 
-const Card = ({ image, title, type, technology, cardHover, onClick }) => {
+const Card = ({ image, title, type, technology, cardHover, onClick, alt }) => {
   return (
     <div
       className={`card ${cardHover}`}
@@ -15,7 +15,7 @@ const Card = ({ image, title, type, technology, cardHover, onClick }) => {
         src={image}
         style={{ height: "184px" }}
         className="card-img-top"
-        alt="..."
+        alt={alt}
       />
       <div className="card-body">
         <h5 className="card-title text-start fw-bold">{title}</h5>

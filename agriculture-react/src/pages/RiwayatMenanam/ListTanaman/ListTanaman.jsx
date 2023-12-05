@@ -1,43 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../../../components/Card/Card";
 import Layout from "../../../layout/Layout";
 import styles from "./ListTanaman.module.css";
 import Filter from "../../../components/Filter";
 import { useNavigate } from "react-router-dom";
 import { PiGrainsSlashFill } from "react-icons/pi";
-import MawarPutih from "../../../assets/img/mawarputih.jpg";
-import Bayam from "../../../assets/img/bayam.png";
-import Bonsai from "../../../assets/img/bonsai.png";
+import axiosWithAuth from "../../../api/axios";
 
 const ListTanaman = () => {
-  // Dummy Data Card
-  const cardData = [
-    {
-      index: 1,
-      image: MawarPutih,
-      title: "Mawar Putih",
-      type: "Bunga",
-      technology: "Hidroponik",
-    },
-    {
-      index: 2,
-      image: Bayam,
-      title: "Bayam",
-      type: "Sayuran",
-      technology: "Hidroponik",
-    },
-    {
-      index: 3,
-      image: Bonsai,
-      title: "Bonsai",
-      type: "Tanaman Hias",
-      technology: "Hidroponik",
-    },
-  ];
-
   const navigate = useNavigate();
-  const [cards, setCards] = useState(cardData);
+  const [cards, setCards] = useState([]);
   const [selectedSortOption, setSelectedSortOption] = useState("");
+
+  const fetchPlantsData = async () => {
+    try {
+      const res = await axiosWithAuth.get("/plants");
+      const cards = res.data.data;
+      setCards(cards);
+      console.log("cards data => ", cards);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    }
+  };
+
+  // untuk debbugging
+
+  useEffect(() => {
+    fetchPlantsData();
+  }, []);
 
   const breadcrumbsobjectexample = [
     {
@@ -51,9 +41,10 @@ const ListTanaman = () => {
   ];
 
   // handle card click
-  const handleCardClick = (index) => {
-    console.log(`Card ${index} clicked`);
+  const handleCardClick = (id) => {
+    console.log(`Card ${id} clicked`);
 
+    //Link ke halaman List Tanaman dari Nama Pengguna
     navigate(`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman`);
   };
 
@@ -66,16 +57,16 @@ const ListTanaman = () => {
     let sortedCards = [...cards];
     switch (selectedOption) {
       case "oldest":
-        sortedCards.sort((a, b) => a.index - b.index);
+        sortedCards.sort((a, b) => a.id - b.id);
         break;
       case "newest":
-        sortedCards.sort((a, b) => b.index - a.index);
+        sortedCards.sort((a, b) => b.id - a.id);
         break;
       case "ascending":
-        sortedCards.sort((a, b) => a.title.localeCompare(b.title));
+        sortedCards.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
         break;
       case "descending":
-        sortedCards.sort((a, b) => b.title.localeCompare(a.title));
+        sortedCards.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
         break;
       default:
         break;
@@ -115,13 +106,14 @@ const ListTanaman = () => {
                 ) : (
                   cards.map((card) => (
                     <Card
-                      key={card.index}
+                      key={card.id}
                       cardHover={styles.cardItem}
-                      image={card.image}
-                      title={card.title}
-                      type={card.type}
-                      technology={card.technology}
-                      onClick={() => handleCardClick(card.index)}
+                      image={card.plant_image_thumbnail}
+                      alt={`Image of ${card.name}`}
+                      title={card.name}
+                      type={card.plant_type.name}
+                      technology={card.technology.name}
+                      onClick={() => handleCardClick(card.id)}
                     />
                   ))
                 )}
