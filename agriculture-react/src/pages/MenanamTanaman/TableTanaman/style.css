@@ -9,7 +9,7 @@
 .page-table-pagination{
     display: flex;
     height: 849px;
-    padding: padding: 8px;
+    padding: 8px;
     flex-direction: column;
     align-items: center;
     gap: 2px;
@@ -48,13 +48,12 @@
   }
 
 .table-list {
-    display: flex;
-    padding: 8px 4px;
-    justify-content: space-between; 
-    align-items: center;
-    gap: var(--corner-radius-l, 10px);
-    align-self: stretch;
-    border-radius: var(--spacing-space-0, 0px);
+  display: flex;
+  padding: var(--spacing-space-3, 12px) 20px;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--corner-radius-l, 10px);
+  align-self: stretch;
 }
 
 .table-text-title{

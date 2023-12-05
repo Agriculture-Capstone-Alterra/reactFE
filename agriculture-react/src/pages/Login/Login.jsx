@@ -6,41 +6,39 @@ import { useNavigate } from "react-router-dom"
 
 export default function Login(){
     const [form, setForm] = useState({
-        username: "",
+        email: "",
         password: "",
         ingatcheck: false,
     })
     const [alert, setAlert] = useState({
-        alertusername: "",
-        alertpassword: "",
+        alertemail: {message : "", classes:"form-control fontw400 fonts20 login-inputtext"},
+        alertpassword: {message : "", classes:"form-control fontw400 fonts20 login-inputtext"},
         alertnearsubmit: ""
     })
     const navigate = useNavigate()
     async function LoginTokenAuth(){
         try {
             const resp = await axiosWithAuth.get('users')
-            console.log("resp from login: ", resp)
+            // console.log("resp from login: ", resp)
             if(resp.status === 200){
                 navigate("/dashboard")
             }
         } catch (error) {
-            console.log("err login (??): ", error.response.status)
+            // console.log("err login (??): ", error.response.status)
             // buat case dia unauthorized sama no page
         }
     }
 
     useEffect(()=>{
         LoginTokenAuth();
-    })
+    },[])
 
 
-    function handleUsername(e){
-        setForm({...form, username: e.target.value})
-        console.log(form.username)
+    function handleEmail(e){
+        setForm({...form, email: e.target.value})
     }
     function handlePassword(e){
         setForm({...form, password: e.target.value})
-        console.log(form.password)
     }
     function handleIngat(e){
         setForm({...form,
@@ -48,18 +46,49 @@ export default function Login(){
         console.log("ingat is ",form.ingatcheck)
     }
 
+    async function LoginUser(){
+        await axiosWithAuth.post('/auth/login',{
+            email: form.email,
+            password: form.password
+        }).then((resp)=>{
+            // console.log("what",resp)
+            if(typeof resp.response != 'undefined'){
+                if(resp.response.data.message == 'Password Invalid'){
+                    setAlert({...alert, alertpassword: {...alert.alertpassword, message: "Password is invalid", classes: "danger form-control fontw400 fonts20 login-inputtext"},
+                    alertemail: {message : "", classes:"form-control fontw400 fonts20 login-inputtext"},
+                    alertnearsubmit: ""})
+                }else if(resp.response.data.message == 'Email not found'){
+                    setAlert({alertemail: {...alert.alertemail, message: "Email not found.", classes: "danger form-control fontw400 fonts20 login-inputtext"},
+                    alertpassword: {message : "", classes:"form-control fontw400 fonts20 login-inputtext"},
+                    alertnearsubmit: ""})
+                }
+            }else{
+                localStorage.setItem('usertoken', resp.data.data.token)
+                navigate("/dashboard")
+            }
+            
+        })
+        
+        
+    }
+
     function handleSubmit(e){
         e.preventDefault()
         console.log(form)
 
         // validasi
-        if(form.username == ""){
-            setAlert({...alert, alertusername: "Please enter a username."})
+        if(form.email == ""){
+            setAlert({alertemail: {...alert.alertemail, message: "Please enter a email.", classes: "danger form-control fontw400 fonts20 login-inputtext"},
+            alertpassword: {message : "", classes:"form-control fontw400 fonts20 login-inputtext"},
+            alertnearsubmit: ""})
         }else if(form.password == ""){
-            setAlert({...alert, alertpassword: "Please enter a password."})
+            setAlert({...alert, alertpassword: {...alert.alertpassword, message: "Please enter a password.", classes: "danger form-control fontw400 fonts20 login-inputtext"},
+            alertemail: {message : "", classes:"form-control fontw400 fonts20 login-inputtext"},
+            alertnearsubmit: ""})
+
         }else{
             // kalau valid formatnya, validasi kedb
-
+            LoginUser()
 
             console.log("Berhasil ig..")
         }
@@ -98,12 +127,14 @@ export default function Login(){
                     </div>
                     <form className="login-form" onSubmit={handleSubmit}>
                         <div className="login-formpart">
-                            <label htmlFor="username" className="form-label fonts24 fontw800">Username</label>
-                            <input value={form.username} onChange={handleUsername} type="text" id="username" className="form-control fontw400 fonts20 login-inputtext" placeholder="Masukkan Username"/>
+                            <label htmlFor="email" className="form-label fonts24 fontw800">Email</label>
+                            <input value={form.email} onChange={handleEmail} type="text" id="email" className={alert.alertemail.classes} placeholder="Masukkan Email"/>
+                            <p className="text-danger fonts12 fontw400">{alert.alertemail.message}</p>
                         </div>
                         <div className="login-formpart ">
                             <label htmlFor="password" className="form-label fonts24 fontw800">Password</label>
-                            <input value={form.password} onChange={handlePassword} type="text" id="password" className="form-control fontw400 fonts20 login-inputtext" placeholder="Masukkan Password"/>
+                            <input value={form.password} onChange={handlePassword} type="password" id="password" className={alert.alertpassword.classes} placeholder="Masukkan Password"/>
+                            <p className="text-danger fonts12 fontw400">{alert.alertpassword.message}</p>
                         </div>
                         {/* <div className="login-formpart"> */}
                             <div className="form-check">
