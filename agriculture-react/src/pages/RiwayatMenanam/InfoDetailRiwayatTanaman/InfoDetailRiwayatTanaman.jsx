@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Layout from "../../../layout/Layout";
 import MawarPutih from "../../../assets/img/mawarputih.jpg";
@@ -12,7 +12,11 @@ import Accordion from "../../../components/Accordion";
 import "./style.css";
 import SliderImg from "../../../components/SliderImg/SliderImg";
 import ImgCard from "../../../components/SliderImg/ImgCard";
-
+import axiosWithAuth from "../../../api/axios";
+import { useNavigate, useParams } from "react-router-dom";
+import Modal from "../../../components/Modal/Modal";
+import { format } from "date-fns";
+import idLocale from "date-fns/locale/id";
 
 const InfoDetailRiwayatTanaman = () => {
   const breadcrumbsobjectexample = [
@@ -32,7 +36,24 @@ const InfoDetailRiwayatTanaman = () => {
   const [isShowDeskripsi, setIsShowDeskripsi] = useState(false);
   const [isShowNutrisi, setIsShowNutrisi] = useState(false);
   const [isShowPenanganan, setIsShowPenanganan] = useState(false);
+  
+  const { id } = useParams();
+  const [tanaman, setTanaman] = useState({});
+  function handleDeleteClick(id) {
+    console.log(id);
+  }
 
+  useEffect(() => {
+    axiosWithAuth
+      .get(`plants/${id}`)
+      .then((result) => {
+        setTanaman(result.data.data);
+        // console.log(result.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [id]);
 
   return (
     <Layout
@@ -52,7 +73,7 @@ const InfoDetailRiwayatTanaman = () => {
                 alt="..."
               />
               <div className="card-body">
-                <h5 className="card-title text-center fw-bold">Mawar Putih</h5>
+                <h5 className="card-title text-center fw-bold">{tanaman.name}</h5>
                 <div
                   className="content d-flex justify-content-between"
                   style={{ gap: "32px" }}
@@ -68,7 +89,7 @@ const InfoDetailRiwayatTanaman = () => {
                     <div className="">
                       <img src={Varietas} alt="" />
                       <div className="fw-bold">Varietas</div>
-                      <p>Hidroponik</p>
+                      <p>{tanaman.variety}</p>
                     </div>
                   </div>
                   <div className="text-center">
@@ -112,7 +133,7 @@ const InfoDetailRiwayatTanaman = () => {
               </div>
             </div>
           </div>
-          <div className="col" style={{ width: "436px"}}>
+          <div className="col" style={{ width: "436px", rowGap:"20px"}}>
             <h4 className="">Tanggal Mulai Menanam</h4>
             <h6 className="">
               <img src={Calendar} />
@@ -134,7 +155,12 @@ const InfoDetailRiwayatTanaman = () => {
             <BarChart />
 
             <h4 className="g-col-6">Perkembangan Tumbuhan</h4>
-            <ImgCard/>
+            <Modal
+            id="modalDelete"
+            content={"Apakah anda yakin ingin menghapus gambar ini?"} 
+            onSubmit={() => handleDeleteClick(1)}
+          />
+            <ImgCard images={MawarPutih} deleteImgModalName="modalDelete" />
             <Accordion
                     title="Informasi Penanganan Hama"
                     onClick={() => setIsShowPenanganan(!isShowPenanganan)}
