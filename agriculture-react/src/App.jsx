@@ -53,15 +53,19 @@ function App() {
 
         <Route path="/menanam-tanaman" element={<TableTanaman />} />
         {/* <Route path="/" element={<TestPage />} /> */}
-        
         <Route
-          path="/menanam-tanaman/detail-menanam-tanaman"
+          path="/menanam-tanaman/detail-menanam-tanaman/:id"
           element={<DetailTanaman />}
         />
         <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
-        <Route path="/pengingat-tanaman/tambah-pengingat" element={<TambahPengingat />}/>
-        <Route path="/pengingat-tanaman/edit-pengingat" element={<EditPengingat />}/>
-
+        <Route
+          path="/pengingat-tanaman/tambah-pengingat"
+          element={<TambahPengingat />}
+        />
+        <Route
+          path="/pengingat-tanaman/edit-pengingat"
+          element={<EditPengingat />}
+        />
 
         <Route path="/testpage" element={<TestPage />} />
 
