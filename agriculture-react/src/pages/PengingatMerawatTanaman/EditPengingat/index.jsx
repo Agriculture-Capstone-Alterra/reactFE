@@ -26,11 +26,11 @@ const editPengingat = () => {
   const breadcrumbsobjectexample = [
     {
       crumbname: "Pengingat Menanam Tanaman",
-      crumblink: "/edit-tanaman",
+      crumblink: "/pengingat-tanaman",
     },
     {
       crumbname: "Edit Pengingat Tanaman",
-      crumblink: "/edit-tanaman",
+      crumblink: "/pengingat-tanaman/edit-pengingat",
     },
   ];
 
@@ -125,21 +125,31 @@ const editPengingat = () => {
                 <Input
                   className="form-check-input"
                   type="radio"
+                  id={"penyiramanRadioEdit"}
                   name="flexRadioDefault"
                   value="Penyiraman"
                   onChange={handleRadioChange}
                 />
-                <label className="form-check-label">Penyiraman</label>
+                <label
+                  className="form-check-label"
+                  htmlFor="penyiramanRadioEdit">
+                  Penyiraman
+                </label>
               </div>
               <div className="form-check">
                 <Input
                   className="form-check-input"
                   type="radio"
+                  id={"pemupukanRadioEdit"}
                   name="flexRadioDefault"
                   value="Pemupukan"
                   onChange={handleRadioChange}
                 />
-                <label className="form-check-label">Pemupukan</label>
+                <label
+                  className="form-check-label"
+                  htmlFor="pemupukanRadioEdit">
+                  Pemupukan
+                </label>
               </div>
             </div>
           </div>
