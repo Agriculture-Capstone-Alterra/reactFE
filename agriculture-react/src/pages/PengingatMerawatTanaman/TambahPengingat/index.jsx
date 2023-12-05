@@ -41,32 +41,20 @@ const tambahPengingat = () => {
 
   const namaHari = [
     {
-      label: "Minggu",
+      label: "Hari",
+      value: "Hari",
+    },
+    {
       value: "Minggu",
+      label: "Minggu",
     },
     {
-      label: "Senin",
-      value: "Senin",
+      label: "Bulan",
+      value: "Bulan",
     },
     {
-      label: "Selasa",
-      value: "Selasa",
-    },
-    {
-      label: "Rabu",
-      value: "Rabu",
-    },
-    {
-      label: "Kamis",
-      value: "Kamis",
-    },
-    {
-      label: "Jumat",
-      value: "Jumat",
-    },
-    {
-      label: "Sabtu",
-      value: "Sabtu",
+      label: "Tahun",
+      value: "Tahun",
     },
   ];
 
@@ -105,6 +93,11 @@ const tambahPengingat = () => {
     e.preventDefault();
     setCounter(number > 0 ? number - 1 : 0);
   };
+
+  const handleKostumPengulangan = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <Layout
@@ -171,7 +164,8 @@ const tambahPengingat = () => {
             className="btn btn-outline-primary tambahPengingat-kustom"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
-            data-bs-whatever="@getbootstrap">
+            data-bs-whatever="@getbootstrap"
+            onClick={handleKostumPengulangan}>
             Kustom Pengulangan
           </button>
           <div className="text-center mt-5 d-flex justify-content-center">
@@ -202,12 +196,9 @@ const tambahPengingat = () => {
           onSubmit={() => {}}
           type="edit"
         />
-        {/* modal */}
-        <div
-          className="modal fade tambahPengingat-modal"
-          id="exampleModal"
-          tabindex="-1">
-          <div className="modal-dialog">
+        {/* modal k*/}
+        <div className="modal fade" id="exampleModal" tabindex="-1">
+          <div className="modal-dialog tambahPengingat-modal">
             <div className="modal-content">
               <div className="modal-header">
                 <h1
@@ -256,7 +247,50 @@ const tambahPengingat = () => {
                       className="col-form-label tambahPengingat-modalFormLabel">
                       Ulangi Setiap Hari
                     </label>
-                    <input className="form-control" id="message-text" />
+                    <div className="weekDays-selector">
+                      <input
+                        type="checkbox"
+                        id="weekday-mon"
+                        className="weekday"
+                      />
+                      <label for="weekday-mon">S</label>
+                      <input
+                        type="checkbox"
+                        id="weekday-tue"
+                        className="weekday"
+                      />
+                      <label for="weekday-tue">S</label>
+                      <input
+                        type="checkbox"
+                        id="weekday-wed"
+                        className="weekday"
+                      />
+                      <label for="weekday-wed">R</label>
+                      <input
+                        type="checkbox"
+                        id="weekday-thu"
+                        className="weekday"
+                      />
+                      <label for="weekday-thu">K</label>
+                      <input
+                        type="checkbox"
+                        id="weekday-fri"
+                        className="weekday"
+                      />
+                      <label for="weekday-fri">J</label>
+                      <input
+                        type="checkbox"
+                        id="weekday-sat"
+                        className="weekday"
+                      />
+                      <label for="weekday-sat">S</label>
+                      <input
+                        type="checkbox"
+                        id="weekday-sun"
+                        className="weekday"
+                      />
+                      <label for="weekday-sun">M</label>
+                    </div>
                   </div>
                   <div className="mb-3">
                     <label

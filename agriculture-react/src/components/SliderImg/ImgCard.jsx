@@ -1,14 +1,10 @@
 import React, { useState } from "react";
-import img from "../../assets/img/mawarputih.jpg";
 import ModalTrigger from "../Modal/ModalTrigger";
-import TrashIcon from "../../assets/img/icons/trash.svg";
+import TrashIcon from "../../assets/trash.svg";
+import ViewIcon from "../../assets/view-icon.svg";
+import Modal from "../Modal/Modal";
 
-const handleDeleteClick = (data) => {
-    setModalData({ ...data });
-  };
-
-
-const ImgCard = ({ img }) => {
+const ImgCard = ({ images, deleteImgModalName, handleDeleteClick }) => {
   const [showButtons, setShowButtons] = useState(false);
 
   const handleMouseEnter = () => {
@@ -20,17 +16,18 @@ const ImgCard = ({ img }) => {
   };
 
   return (
-    <div className="card" style={{ width: "104px", position: "relative" }}>
+    <div className="card" style={{ width: "104px", position: "relative",}}>
       <img
-        src={img}
-        style={{ height: "104px" }}
+        src={images} // Gunakan props 'images' sebagai sumber gambar
+        style={{ height: "104px",}}
         className="card-img-top"
         alt="..."
         onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        
+        
       />
 
-      {showButtons && (
+      {/* {showButtons && (
         <div
           className="overlay"
           style={{
@@ -45,27 +42,80 @@ const ImgCard = ({ img }) => {
             alignItems: "center",
           }}
         >
-          <button
-            className="btn btn-primary"
-            onClick={() => console.log("View clicked")}
+         <ModalTrigger
+            modalTarget={deleteImgModalName} // Pastikan variabel ini didefinisikan dan diteruskan dari komponen induk
+            style={{ display: "flex", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0)", borderStyle: "none" }}
+            onClick={() => handleDeleteClick(item)} // Perhatikan 'item', pastikan variabel ini didefinisikan dan diteruskan dari komponen induk
           >
-            View
-          </button>
+            <img
+              src={ViewIcon}
+              alt="View Icon"
+              className="ml-2"
+              width="16"
+              height="16"
+            />
+          </ModalTrigger>
           <ModalTrigger
-            modalTarget={deleteImgModalName}
-            style={{ display: "flex", alignItems: "center" }}
-            onClick={() => handleDeleteClick(item)}
+            modalTarget={deleteImgModalName} // Pastikan variabel ini didefinisikan dan diteruskan dari komponen induk
+            style={{ display: "flex", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0)", borderStyle: "none"}}
+            onClick={() => handleDeleteClick(item)} // Perhatikan 'item', pastikan variabel ini didefinisikan dan diteruskan dari komponen induk
           >
             <img
               src={TrashIcon}
-              alt="Edit Icon"
-              className="me-2"
-              width="20"
-              height="20"
+              alt="Delete Icon"
+              className="ml-2"
+              width="16"
+              height="16"
             />
           </ModalTrigger>
         </div>
-      )}
+      )} */}
+      {showButtons ? 
+      <div
+          className="overlay"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onMouseLeave={handleMouseLeave}
+        >
+         <ModalTrigger
+            modalTarget={deleteImgModalName} // Pastikan variabel ini didefinisikan dan diteruskan dari komponen induk
+            style={{ display: "flex", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0)", borderStyle: "none" }}
+            onClick={() => handleDeleteClick(id)} // Perhatikan 'item', pastikan variabel ini didefinisikan dan diteruskan dari komponen induk
+          >
+            <img
+              src={ViewIcon}
+              alt="View Icon"
+              className="ml-2"
+              width="16"
+              height="16"
+            />
+          </ModalTrigger>
+          <ModalTrigger
+            modalTarget={deleteImgModalName} // Pastikan variabel ini didefinisikan dan diteruskan dari komponen induk
+            style={{ display: "flex", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0)", borderStyle: "none"}}
+            onClick={() => handleDeleteClick(images)} // Perhatikan 'item', pastikan variabel ini didefinisikan dan diteruskan dari komponen induk
+          >
+            <img
+              src={TrashIcon}
+              alt="Delete Icon"
+              className="ml-2"
+              width="16"
+              height="16"
+            />
+            
+          </ModalTrigger>
+          
+        </div> : null
+      }
     </div>
   );
 };
