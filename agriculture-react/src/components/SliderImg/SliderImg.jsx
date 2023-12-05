@@ -3,13 +3,15 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ImgCard from "./ImgCard"
 
+const images = []; // Define the 'images' array here
+
 const carouselItems = images.map((image, index) => (
   <div key={index}>
     <ImgCard alt={`Item ${index + 1}`} />
   </div>
 ));
 
-const SliderImg extends React.Component {
+class SliderImg extends React.Component {
   render() {
     const responsive = {
       desktop: {
