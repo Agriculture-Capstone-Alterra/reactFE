@@ -10,6 +10,8 @@ import Calendar from "../../../assets/calendar.svg";
 import BarChart from "../../../components/BarChart/BarChart";
 import Accordion from "../../../components/Accordion";
 import "./style.css";
+import SliderImg from "../../../components/SliderImg/SliderImg";
+import ImgCard from "../../../components/SliderImg/ImgCard";
 
 
 const InfoDetailRiwayatTanaman = () => {
@@ -132,6 +134,7 @@ const InfoDetailRiwayatTanaman = () => {
             <BarChart />
 
             <h4 className="g-col-6">Perkembangan Tumbuhan</h4>
+            <ImgCard/>
             <Accordion
                     title="Informasi Penanganan Hama"
                     onClick={() => setIsShowPenanganan(!isShowPenanganan)}
