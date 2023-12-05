@@ -1,32 +1,17 @@
 import Layout from "../../../layout/Layout";
 import Select from "../../../components/Select";
-import "./tambahPengingat.css";
-import styles from "../../../components/Modal/styles.module.css";
 import Input from "../../../components/Input";
+import "./editPengingat.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Modal from "../../../components/Modal/Modal";
-import ModalTrigger from "../../../components/Modal/ModalTrigger";
-import { SlArrowUp, SlArrowDown } from "react-icons/sl";
+import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 
-const tambahPengingat = () => {
+const editPengingat = () => {
   const [radio, setRadio] = useState("");
-  const [modalRadio, setModalRadio] = useState("");
   const [selectedTanaman, setSelectedTanaman] = useState("");
-  const [selectedHari, setSelectedHari] = useState("");
-  const [number, setNumber] = useState(0);
-  const [counter, setCounter] = useState(0);
-
-  const breadcrumbsobjectexample = [
-    {
-      crumbname: "Pengingat Menanam Tanaman",
-      crumblink: "/tambah-pengingat",
-    },
-    {
-      crumbname: "Tambah Pengingat Tanaman",
-      crumblink: "/tambah-pengingat",
-    },
-  ];
+  const [pilihHari, setPilihHari] = useState("");
+  const [hitung, setHitung] = useState(0);
+  const [menambah, setMenambah] = useState(0);
 
   const namaTanaman = [
     {
@@ -38,8 +23,18 @@ const tambahPengingat = () => {
       value: "Sawi",
     },
   ];
+  const breadcrumbsobjectexample = [
+    {
+      crumbname: "Pengingat Menanam Tanaman",
+      crumblink: "/edit-tanaman",
+    },
+    {
+      crumbname: "Edit Pengingat Tanaman",
+      crumblink: "/edit-tanaman",
+    },
+  ];
 
-  const namaHari = [
+  const pilihanHari = [
     {
       label: "Minggu",
       value: "Minggu",
@@ -74,37 +69,38 @@ const tambahPengingat = () => {
     setSelectedTanaman(selectedOption.value);
   };
 
-  const handleSelectHari = (selectedOption) => {
-    setSelectedHari(selectedOption.value);
-  };
-
   const handleRadioChange = (e) => {
     setRadio(e.target.value);
   };
 
-  const handleRadioModal = (e) => {
-    setModalRadio(e.target.value);
+  const handleModalRadio = (e) => {
+    setPilihHari(e.target.value);
   };
 
-  const increment = (e) => {
-    e.preventDefault();
-    setNumber(number + 1);
+  const handlePilihHari = (selectedOption) => {
+    setPilihHari(selectedOption.value);
   };
 
-  const decrement = (e) => {
+  const plus = (e) => {
     e.preventDefault();
-    setNumber(number > 0 ? number - 1 : 0);
+    setHitung(hitung + 1);
   };
 
-  const tambah = (e) => {
+  const minus = (e) => {
     e.preventDefault();
-    setCounter(counter + 1);
+    setHitung(hitung > 0 ? hitung - 1 : 0);
   };
 
-  const kurang = (e) => {
+  const atas = (e) => {
     e.preventDefault();
-    setCounter(number > 0 ? number - 1 : 0);
+    setMenambah(menambah + 1);
   };
+
+  const bawah = (e) => {
+    e.preventDefault();
+    setMenambah(menambah > 0 ? menambah - 1 : 0);
+  };
+
   return (
     <>
       <Layout
@@ -112,25 +108,25 @@ const tambahPengingat = () => {
         breadcrumbs={breadcrumbsobjectexample}>
         <form className="container ms-3 mt-4">
           <div className="mb-4">
-            <label className="tambahPengingat-label d-flex mb-2">
+            <label className="editPengingat-label d-flex mb-2">
               Jenis Tanaman
             </label>
             <Select
               value={selectedTanaman}
-              className={"form-select tambahPengingat-select"}
+              className={"form-select editPengingat-select"}
               options={namaTanaman}
-              onChange={handleSelectChange}
               title={"Pilih nama tanaman"}
+              onChange={handleSelectChange}
             />
           </div>
           <div className="mb-4">
-            <label className="tambahPengingat-label d-flex mb-2">
+            <label className="editPengingat-label d-flex mb-2">
               Nama Pengingat Tanaman
             </label>
             <input
               value={radio}
               disabled={true}
-              className={"tambahPengingat-Input form-control"}
+              className={"editPengingat-Input form-control"}
             />
             <div className="d-flex gap-5 mt-3">
               <div className="form-check">
@@ -155,63 +151,45 @@ const tambahPengingat = () => {
               </div>
             </div>
           </div>
-          <label className="tambahPengingat-label d-flex mb-2">Waktu</label>
+          <label className="editPengingat-label d-flex mb-2">Waktu</label>
           <div className="d-flex gap-3 mb-1">
             <Input
               type={"date"}
-              className={"tambahPengingat-date form-control"}
+              className={"editPengingat-date form-control"}
             />
             <Input
               type={"time"}
-              className={"tambahPengingat-time form-control"}
+              className={"editPengingat-time form-control"}
             />
           </div>
-          {/* modalTrigger */}
           <button
-            className="btn btn-outline-primary tambahPengingat-kustom"
+            className="btn btn-outline-primary editPengingat-kustom"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
             data-bs-whatever="@getbootstrap">
             Kustom Pengulangan
           </button>
-          <div className="text-center mt-5 d-flex justify-content-center">
-            <ModalTrigger
-              modalTarget={"tambahData"}
-              className={`btn me-3 tambahPengingat-btnOutline ${styles.btnAction}`}
-              style={{ display: "flex", alignItems: "center" }}>
-              Simpan dan Bagikan
-            </ModalTrigger>
+          <div className="d-flex justify-content-center mt-5">
             <Link
-              to=""
-              className="btn btn-success tambahPengingat-btnPrimary ambahPengingat-btnOutline">
+              to="/pengingat-tanaman"
+              className={"btn me-3 editPengingat-btnOutline"}>
+              Batal
+            </Link>
+            <Link to="" className="btn btn-success editPengingat-btnPrimary">
               Simpan
             </Link>
           </div>
         </form>
-        <Modal
-          id="tambahData"
-          title="Bagikan Ke Seluruh User"
-          content={
-            <p className="text-center">
-              Apakah anda yakin ingin membagikan ke seluruh user?
-            </p>
-          }
-          submitButtonText={"Ya"}
-          cancelButtonText={"Tidak"}
-          onCancel={() => {}}
-          onSubmit={() => {}}
-          type="edit"
-        />
         {/* modal */}
         <div
-          className="modal fade tambahPengingat-modal"
+          className="modal fade editPengingat-modal"
           id="exampleModal"
           tabindex="-1">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
                 <h1
-                  className="modal-title text-center tambahPengingat-modalTitle "
+                  className="modal-title text-center editPengingat-modalTitle "
                   id="exampleModalLabel">
                   Kostum Pengulangan
                 </h1>
@@ -221,31 +199,31 @@ const tambahPengingat = () => {
                   <div className="mb-3">
                     <label
                       for="recipient-name"
-                      className="col-form-label tambahPengingat-modalFormLabel">
+                      className="col-form-label editPengingat-modalFormLabel">
                       Ulangi Setiap
                     </label>
                     <div className="d-flex gap-1">
                       <input
-                        value={number}
-                        className="form-control tambahPengingat-modalInputnumber text-center"
+                        value={menambah}
+                        className="form-control editPengingat-modalInputnumber text-center"
                       />
-                      <div className="d-flex flex-column gap-2 tambahPengingat-modalInputnumberControl">
+                      <div className="d-flex flex-column gap-2 editPengingat-modalInputnumberControl">
                         <button
-                          className="tambahPengingat-modalControl"
-                          onClick={increment}>
+                          className="editPengingat-modalControl"
+                          onClick={atas}>
                           <SlArrowUp size={8} />
                         </button>
                         <button
-                          className="tambahPengingat-modalControl"
-                          onClick={decrement}>
+                          className="editPengingat-modalControl"
+                          onClick={bawah}>
                           <SlArrowDown size={8} />
                         </button>
                       </div>
                       <Select
-                        value={selectedHari}
-                        className={"form-select tambahPengingat-modalHari"}
-                        options={namaHari}
-                        onChange={handleSelectHari}
+                        value={pilihHari}
+                        className={"form-select editPengingat-modalHari"}
+                        options={pilihanHari}
+                        onChange={handlePilihHari}
                         title={"Hari"}
                       />
                     </div>
@@ -253,7 +231,7 @@ const tambahPengingat = () => {
                   <div className="mb-3">
                     <label
                       for="message-text"
-                      className="col-form-label tambahPengingat-modalFormLabel">
+                      className="col-form-label editPengingat-modalFormLabel">
                       Ulangi Setiap Hari
                     </label>
                     <input className="form-control" id="message-text" />
@@ -261,7 +239,7 @@ const tambahPengingat = () => {
                   <div className="mb-3">
                     <label
                       for="message-text"
-                      className="col-form-label tambahPengingat-modalFormLabel">
+                      className="col-form-label editPengingat-modalFormLabel">
                       Berakhir
                     </label>
                     <div className="mt-3">
@@ -271,7 +249,7 @@ const tambahPengingat = () => {
                           type="radio"
                           name="flexRadioDefault"
                           value="Tidak Pernah"
-                          onChange={handleRadioModal}
+                          onChange={handleModalRadio}
                         />
                         <label className="form-check-label">Tidak Pernah</label>
                       </div>
@@ -282,7 +260,7 @@ const tambahPengingat = () => {
                             type="radio"
                             name="flexRadioDefault"
                             value="Berlaku sampai"
-                            onChange={handleRadioModal}
+                            onChange={handleModalRadio}
                           />
                           <label className="form-check-label">
                             Berlaku Sampai
@@ -294,31 +272,31 @@ const tambahPengingat = () => {
                       </div>
                     </div>
                     <div>
-                      <div className="d-flex tambahpPengingat-modalGap mt-2">
+                      <div className="d-flex editpPengingat-modalGap mt-2">
                         <div className="form-check  mt-2">
                           <Input
                             className="form-check-input"
                             type="radio"
                             name="flexRadioDefault"
                             value="Setelah"
-                            onChange={handleRadioModal}
+                            onChange={handleModalRadio}
                           />
                           <label className="form-check-label">Setelah</label>
                         </div>
                         <div className="d-flex gap-1">
                           <input
-                            value={counter}
-                            className="form-control tambahPengingat-modalInputnumber text-center"
+                            value={hitung}
+                            className="form-control editPengingat-modalInputnumber text-center"
                           />
-                          <div className="d-flex flex-column gap-2 tambahPengingat-modalInputnumberControl">
+                          <div className="d-flex flex-column gap-2 editPengingat-modalInputnumberControl">
                             <button
-                              className="tambahPengingat-modalControl"
-                              onClick={tambah}>
+                              className="editPengingat-modalControl"
+                              onClick={plus}>
                               <SlArrowUp size={8} />
                             </button>
                             <button
-                              className="tambahPengingat-modalControl"
-                              onClick={kurang}>
+                              className="editPengingat-modalControl"
+                              onClick={minus}>
                               <SlArrowDown size={8} />
                             </button>
                           </div>
@@ -332,13 +310,13 @@ const tambahPengingat = () => {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn btn-outline-primary tambahPengingat-modalFormBtnCancel"
+                  className="btn btn-outline-primary editPengingat-modalFormBtnCancel"
                   data-bs-dismiss="modal">
                   Cancel
                 </button>
                 <button
                   type="button"
-                  className="btn btn-primary tambahPengingat-modalFormBtnDone">
+                  className="btn btn-primary editPengingat-modalFormBtnDone">
                   Done
                 </button>
               </div>
@@ -350,4 +328,4 @@ const tambahPengingat = () => {
   );
 };
 
-export default tambahPengingat;
+export default editPengingat;

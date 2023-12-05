@@ -1,92 +1,92 @@
-.tambahPengingat-parent {
+.editPengingat-parent {
   font-size: 24px;
   font-weight: 800;
 }
 
-.tambahPengingat-label {
+.editPengingat-label {
   font-size: 20px;
   font-weight: 600;
 }
 
-.tambahPengingat-select {
+.editPengingat-select {
   width: 389px;
   height: 46px;
 }
 
-.tambahPengingat-Input {
+.editPengingat-Input {
   width: 389px;
   height: 46px;
 }
 
-.tambahPengingat-Input:disabled {
+.editPengingat-Input:disabled {
   background-color: #fff;
   width: 389px;
   height: 46px;
 }
-.tambahPengingat-date {
+.editPengingat-date {
   border-color: #ced4da;
   border-radius: 4px;
   width: 278px;
   height: 38px;
 }
-.tambahPengingat-time {
+.editPengingat-time {
   border-color: #ced4da;
   border-radius: 4px;
   width: 250px;
   height: 38px;
 }
 
-.tambahPengingat-kustom {
+.editPengingat-kustom {
   color: #3b82f6;
   border: none;
 }
 
-.tambahPengingat-kustom:hover {
+.editPengingat-kustom:hover {
   color: #3b82f6;
   background-color: #fff;
 }
 
-.tambahPengingat-btnwaktu {
+.editPengingat-btnwaktu {
   background-color: #374151;
   border-color: #374151;
   border-radius: 4px;
 }
 
-.tambahPengingat-btnwaktu:hover {
+.editPengingat-btnwaktu:hover {
   background-color: #374151;
   border-color: #374151;
 }
 
-.tambahPengingat-btnOutline {
+.editPengingat-btnOutline {
   color: #51ab8c;
   border-color: #51ab8c;
   border-radius: 4px;
 }
 
-.tambahPengingat-btnOutline:hover {
+.editPengingat-btnOutline:hover {
   color: #51ab8c;
   background-color: #fff;
   border-color: #51ab8c;
 }
 
-.tambahPengingat-btnPrimary {
+.editPengingat-btnPrimary {
   background-color: #51ab8c;
   border-color: #51ab8c;
   border-radius: 4px;
 }
 
-.tambahPengingat-btnPrimary:hover {
+.editPengingat-btnPrimary:hover {
   background-color: #51ab8c;
   border-color: #51ab8c;
 }
 
-.tambahPengingat-modalTitle {
+.editPengingat-modalTitle {
   font-size: 24px;
   font-weight: 600;
   text-align: left;
 }
 
-.tambahPengingat-modalFormLabel {
+.editPengingat-modalFormLabel {
   font-size: 20px;
   font-weight: 600;
   text-align: left;
@@ -100,41 +100,41 @@
   border-top: none;
 }
 
-.tambahPengingat-modalFormBtnDone {
+.editPengingat-modalFormBtnDone {
   background-color: #60a5fa;
   border-color: #60a5fa;
   font-size: 16px;
 }
 
-.tambahPengingat-modalFormBtnDone:hover {
+.editPengingat-modalFormBtnDone:hover {
   background-color: #60a5fa;
   border-color: #60a5fa;
 }
 
-.tambahPengingat-modalFormBtnCancel {
+.editPengingat-modalFormBtnCancel {
   color: #60a5fa;
   border: none;
 }
-.tambahPengingat-modalFormBtnCancel:hover {
+.editPengingat-modalFormBtnCancel:hover {
   background-color: #fff;
   color: #60a5fa;
   border: none;
 }
 
-.tambahPengingat-modalInputnumber {
+.editPengingat-modalInputnumber {
   width: 52px;
   height: 38px;
   background-color: #f3f4f6;
   border: #e5e7eb;
 }
 
-.tambahPengingat-modalInputnumberControl {
+.editPengingat-modalInputnumberControl {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.tambahPengingat-modalControl {
+.editPengingat-modalControl {
   background-color: #fff;
   border: none;
   width: 100%;
@@ -144,13 +144,13 @@
   justify-content: center;
 }
 
-.tambahPengingat-modalHari {
+.editPengingat-modalHari {
   width: 125px;
   height: 38px;
   background-color: #f3f4f6;
   border: #e5e7eb;
 }
 
-.tambahpPengingat-modalGap {
+.editpPengingat-modalGap {
   gap: 75px;
 }

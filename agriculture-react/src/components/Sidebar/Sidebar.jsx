@@ -1,20 +1,52 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { MdLogout, MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import { SidebarData } from "./SidebarData";
 import "./Sidebar.css";
 
 const Sidebar = () => {
-  const [sidebarOpen, setsidebarOpen] = useState(true);
-  const [activeLink, setActiveLink] = useState("/");
+  const pathLocation = useLocation();
+  const currentPath = pathLocation.pathname;
+  const [activeLink, setActiveLink] = useState(currentPath);
+  const navigate = useNavigate();
+
+  // Status sidebar dari localStorage
+  const storedSidebarStatus = localStorage.getItem("sidebarOpen");
+  const [sidebarOpen, setSidebarOpen] = useState(
+    storedSidebarStatus ? JSON.parse(storedSidebarStatus) : true
+  );
 
   const handleLinkClick = (path) => {
-    setActiveLink(path);
+    const activeLink = path;
+    setActiveLink(activeLink);
+
+    // Jika sidebar sebelumnya ditutup, buka sidebar saat user mengeklik link
+    if (!sidebarOpen) {
+      setSidebarOpen(true);
+    }
   };
 
+  // Buka dan tutup sidebar
   const toggleSidebar = () => {
-    setsidebarOpen(!sidebarOpen);
+    const sidebarStatus = !sidebarOpen;
+    setSidebarOpen(sidebarStatus);
+
+    // Save sidebar status terakhir
+    localStorage.setItem("sidebarOpen", JSON.stringify(sidebarStatus));
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("usertoken");
+    navigate("/login");
+  };
+
+  // Update active link dari currentPath
+  useEffect(() => {
+    setActiveLink(currentPath);
+  }, [currentPath]);
+
+  // Root path untuk menentukan sidebar aktif
+  const rootPath = currentPath.split("/")[1];
 
   return (
     <div className={`sidebar ${sidebarOpen ? "open" : "closed"}`}>
@@ -29,7 +61,7 @@ const Sidebar = () => {
             <Link
               to={item.path}
               className={`${
-                item.path === activeLink
+                rootPath === item.path.split("/")[1]
                   ? "nav-link sidebar-text active"
                   : "nav-link sidebar-text"
               }`}
@@ -45,11 +77,11 @@ const Sidebar = () => {
       <hr />
       <ul className="sidebar-list nav nav-pills flex-column mb-2">
         <li className="sidebar-item">
-          <Link to="/login" className="nav-link sidebar-text">
+          <button className="nav-link sidebar-text" onClick={handleLogout}>
             <MdLogout />
             <span className="sidebar-item-text">Logout</span>
             <span className="tooltip">Logout</span>
-          </Link>
+          </button>
         </li>
       </ul>
       <button

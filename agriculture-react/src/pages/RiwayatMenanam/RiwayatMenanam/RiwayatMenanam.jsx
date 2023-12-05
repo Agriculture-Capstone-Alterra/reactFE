@@ -5,10 +5,10 @@ import styles from "./riwayatMenanam.module.css";
 import { MdArrowBackIos, MdArrowForwardIos, MdSearch } from "react-icons/md";
 import { FaUsersSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosWithAuth from "../../../api/axios";
 
 const RiwayatMenanam = () => {
-  const [dataPengguna, setDataPengguna] = useState([]);
+  const [usersData, setUsersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
@@ -18,23 +18,21 @@ const RiwayatMenanam = () => {
   const indexOfFirstItem = indexOfLastItem - 10;
 
   // Filter data dari search input
-  const filteredData = dataPengguna.filter((item) =>
+  const filteredData = usersData.filter((item) =>
     item.namaPengguna.toLowerCase().includes(searchTerm.toLowerCase())
   );
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
   // Get Dummy data dari mockapi
   useEffect(() => {
-    fetchDataPengguna();
+    fetchUsersData();
   }, []);
 
-  const fetchDataPengguna = async () => {
+  const fetchUsersData = async () => {
     try {
-      const response = await axios.get(
-        "https://6554779c63cafc694fe680e6.mockapi.io/tableListPengguna"
-      );
-      const dataPengguna = response.data;
-      setDataPengguna(dataPengguna);
+      const response = await axiosWithAuth.get("/users");
+      const usersData = response.data;
+      setUsersData(usersData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

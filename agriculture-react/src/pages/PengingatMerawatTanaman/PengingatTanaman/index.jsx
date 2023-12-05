@@ -114,7 +114,7 @@ const PengingatTanaman = () => {
                           <ul className="dropdown-menu">
                             <li className="d-grid mb-2 ps-3 pe-3">
                               <Link
-                                to={`/pengingat-tanaman/editPengingat`}
+                                to={`/pengingat-tanaman/edit-pengingat`}
                                 className={`btn ${styles.btnAction}`}
                                 style={{ display: 'flex', alignItems: 'center' }}
                               >
@@ -188,7 +188,7 @@ const PengingatTanaman = () => {
                           <ul className="dropdown-menu">
                             <li className="d-grid mb-2 ps-3 pe-3">
                               <Link
-                                to={`/pengingat-tanaman/editPengingat`}
+                                to={`/pengingat-tanaman/edit-pengingat`}
                                 className={`btn ${styles.btnAction}`}
                                 style={{ display: 'flex', alignItems: 'center' }}
                               >

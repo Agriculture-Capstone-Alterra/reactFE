@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Layout from "../../../layout/Layout";
+import Carousel from "react-multi-carousel";
 import bayam from "../../../assets/img/bayam.png";
 import varietas from "../../../assets/img/varietas-detail.png";
 import jenisTanaman from "../../../assets/img/jenis-tanaman-detail.png";
@@ -13,6 +14,10 @@ import Accordion from "../../../components/Accordion";
 import { motion } from "framer-motion";
 import Modal from "../../../components/Modal/Modal";
 import ModalTrigger from "../../../components/Modal/ModalTrigger";
+import { useNavigate, useParams } from "react-router-dom";
+import axiosWithAuth from "../../../api/axios";
+import { format } from "date-fns";
+import idLocale from "date-fns/locale/id";
 
 const DetailTanaman = () => {
   const [isShowNutrisi, setIsShowNutrisi] = useState(false);
@@ -22,10 +27,25 @@ const DetailTanaman = () => {
   const [isShowLangkah, setIsShowLangkah] = useState(false);
   const [isShowMenanam, setIsShowMenanam] = useState(false);
   const [isShowPenanganan, setIsShowPenanganan] = useState(false);
-
+  const navigate = useNavigate();
   const [widthScroll, setWithScroll] = useState(0);
   const scroll = useRef(null);
   const deleteModalName = "deletaDataTanaman";
+
+  const { id } = useParams();
+  const [tanaman, setTanaman] = useState({});
+
+  useEffect(() => {
+    axiosWithAuth
+      .get(`plants/${id}`)
+      .then((result) => {
+        setTanaman(result.data.data);
+        // console.log(result.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [id]);
 
   const alat = [
     {
@@ -65,21 +85,23 @@ const DetailTanaman = () => {
 
   const breadcrumbsobjectexample = [
     {
-      crumblink: "/linkpage1",
-      crumbname: "Nama Page1",
+      crumblink: "/menanam-tanaman",
+      crumbname: "Menanam Tanaman",
     },
     {
-      crumblink: "/linkpage2",
-      crumbname: "Nama Page2",
-    },
-    {
-      crumblink: "/linkpage3",
-      crumbname: "Nama Page Final",
+      crumblink: "/menanam-tanaman/detail-menanam-tanaman",
+      crumbname: "Detail Tanaman",
     },
   ];
+  const handleOnClick = () => {
+    navigate(`/menanam-tanaman/edit-tanaman`);
+  };
   return (
     <>
-      <Layout pagetitle={"Nama Header"} breadcrumbs={breadcrumbsobjectexample}>
+      <Layout
+        pagetitle={"Menanam Tanaman"}
+        breadcrumbs={breadcrumbsobjectexample}
+      >
         {/* begin main content */}
         <div>
           <div className="mt-2 mb-2">
@@ -94,7 +116,82 @@ const DetailTanaman = () => {
                 <figure>
                   <img src={bayam} width={"100%"} alt="" />
                 </figure>
-                <h2 className="text-center fw-bolder mt-5 mb-5">Bayam</h2>
+                {/* <div style={{ width: "100%" }}>
+                  <Carousel
+                    additionalTransfrom={0}
+                    arrows={false}
+                    autoPlaySpeed={3000}
+                    centerMode={false}
+                    className={""}
+                    containerClass="container"
+                    dotListClass=""
+                    draggable
+                    focusOnSelect={false}
+                    infinite
+                    itemClass=""
+                    keyBoardControl
+                    minimumTouchDrag={80}
+                    pauseOnHover
+                    renderArrowsWhenDisabled={false}
+                    renderButtonGroupOutside={false}
+                    renderDotsOutside={false}
+                    responsive={{
+                      desktop: {
+                        breakpoint: {
+                          max: 3000,
+                          min: 1024,
+                        },
+                        items: 1,
+                      },
+                      mobile: {
+                        breakpoint: {
+                          max: 464,
+                          min: 0,
+                        },
+                        items: 1,
+                      },
+                      tablet: {
+                        breakpoint: {
+                          max: 1024,
+                          min: 464,
+                        },
+                        items: 1,
+                      },
+                    }}
+                    rewind={false}
+                    rewindWithAnimation={false}
+                    rtl={false}
+                    shouldResetAutoplay
+                    showDots
+                    sliderClass=""
+                    slidesToSlide={1}
+                    swipeable
+                  >
+                    <img
+                      src={bayam}
+                      style={{
+                        display: "block",
+                        height: "100%",
+                        // margin: "auto",
+                        width: "100%",
+                      }}
+                      alt=""
+                    />
+                    <img
+                      src={bayam}
+                      style={{
+                        display: "block",
+                        height: "100%",
+                        // margin: "auto",
+                        width: "100%",
+                      }}
+                      alt=""
+                    />
+                  </Carousel>
+                </div> */}
+                <h2 className="text-center fw-bolder mt-5 mb-5">
+                  {tanaman.name}
+                </h2>
                 <div
                   className="d-flex justify-content-center"
                   style={{ gap: "50px" }}
@@ -114,7 +211,7 @@ const DetailTanaman = () => {
                         Varietas
                       </p>
                       <p style={{ color: "#4B5563", fontSize: "16px" }}>
-                        Maryland
+                        {tanaman.variety}
                       </p>
                     </div>
                   </div>
@@ -133,7 +230,7 @@ const DetailTanaman = () => {
                         Jenis Tanaman
                       </p>
                       <p style={{ color: "#4B5563", fontSize: "16px" }}>
-                        Sayuran
+                        {tanaman.plant_type}
                       </p>
                     </div>
                   </div>
@@ -152,7 +249,7 @@ const DetailTanaman = () => {
                         Teknologi
                       </p>
                       <p style={{ color: "#4B5563", fontSize: "16px" }}>
-                        Hidroponik
+                        {tanaman.technology}
                       </p>
                     </div>
                   </div>
@@ -173,11 +270,7 @@ const DetailTanaman = () => {
                         paddingRight: "22px",
                       }}
                     >
-                      Tanaman Bayam merupakan jenis sayuran semusim tergolong ke
-                      dalam famili Amaranthaceae beriklim tropis dengan penamaan
-                      ilmiah Amaranthus spp. Dominan dimanfaatkan dan dikonsumsi
-                      sebagai sayuran hijau dan banyak mengandung vitamin serta
-                      mineral yang baik bagi kesehatan untuk dibudidayakan.
+                      {tanaman.description}
                     </p>
                   </Accordion>
                   <Accordion
@@ -251,11 +344,7 @@ const DetailTanaman = () => {
                         paddingRight: "22px",
                       }}
                     >
-                      Sebaiknya bayam ditempatkan didalam pot yang dengan
-                      teknologi hidroponik. Untuk penyimpanan dari tanaman bayam
-                      bisa disimpan pada tempat yang teduh, agar bayam tidak
-                      layu. Perlu diketahui kalau bayam merupakan tanaman sering
-                      layu.
+                      {tanaman.planting_suggestions}
                     </p>
                   </Accordion>
                   <Accordion
@@ -318,12 +407,7 @@ const DetailTanaman = () => {
                         paddingRight: "22px",
                       }}
                     >
-                      Merawat bayam dengan baik melibatkan penyiraman yang
-                      cukup, tanah subur, pemupukan teratur, pencahayaan yang
-                      memadai, suhu sejuk, pemangkasan teratur, pencegahan hama
-                      dan penyakit, rotasi tanaman, dan pemanenan pada waktu
-                      yang tepat. Dengan perhatian pada detail ini, Anda dapat
-                      menikmati panen bayam yang lezat dan sehat.
+                      {tanaman.how_to_maintain}
                     </p>
                   </Accordion>
                 </div>
@@ -337,6 +421,7 @@ const DetailTanaman = () => {
                       borderRadius: "6px",
                       padding: "6px 12px",
                     }}
+                    onClick={() => handleOnClick()}
                   >
                     Edit Tanaman
                   </button>
@@ -393,15 +478,26 @@ const DetailTanaman = () => {
                       </p>
                       <div className="d-flex gap-2 align-items-center mt-2">
                         <img src={calendar} alt="" />
-                        <span
-                          style={{
-                            color: "#4B5563",
-                            fontSize: "16px",
-                            fontWeight: 400,
-                          }}
-                        >
-                          4 Februari 2023 - 26 Juli 2023
-                        </span>
+                        {tanaman.dry_season_start_plant &&
+                          tanaman.dry_season_finish_plant && (
+                            <span
+                              style={{
+                                color: "#4B5563",
+                                fontSize: "16px",
+                                fontWeight: 400,
+                              }}
+                            >
+                              {`${format(
+                                new Date(tanaman.rainy_season_start_plant),
+                                "dd MMMM yyyy",
+                                { locale: idLocale }
+                              )} - ${format(
+                                new Date(tanaman.rainy_season_finish_plant),
+                                "dd MMMM yyyy",
+                                { locale: idLocale }
+                              )}`}
+                            </span>
+                          )}
                       </div>
                     </div>
                     <div className="mt-3">
@@ -416,15 +512,43 @@ const DetailTanaman = () => {
                       </p>
                       <div className="d-flex gap-2 align-items-center mt-2">
                         <img src={calendar} alt="" />
-                        <span
+                        {tanaman.rainy_season_start_plant &&
+                          tanaman.rainy_season_finish_plant && (
+                            <span
+                              style={{
+                                color: "#4B5563",
+                                fontSize: "16px",
+                                fontWeight: 400,
+                              }}
+                            >
+                              {`${format(
+                                new Date(tanaman.rainy_season_start_plant),
+                                "dd MMMM yyyy",
+                                { locale: idLocale }
+                              )} - ${format(
+                                new Date(tanaman.rainy_season_finish_plant),
+                                "dd MMMM yyyy",
+                                { locale: idLocale }
+                              )}`}
+                            </span>
+                          )}
+                        {/* <span
                           style={{
                             color: "#4B5563",
                             fontSize: "16px",
                             fontWeight: 400,
                           }}
                         >
-                          20 September 2023 - 1 Januari 2024
-                        </span>
+                          {`${format(
+                            new Date(tanaman.rainy_season_start_plant),
+                            "dd MMMM yyyy",
+                            { locale: idLocale }
+                          )} - ${format(
+                            new Date(tanaman.rainy_season_finish_plant),
+                            "dd MMMM yyyy",
+                            { locale: idLocale }
+                          )}`}
+                        </span> */}
                       </div>
                     </div>
                   </div>
@@ -445,11 +569,7 @@ const DetailTanaman = () => {
                         paddingRight: "22px",
                       }}
                     >
-                      Tanaman Bayam merupakan jenis sayuran semusim tergolong ke
-                      dalam famili Amaranthaceae beriklim tropis dengan penamaan
-                      ilmiah Amaranthus spp. Dominan dimanfaatkan dan dikonsumsi
-                      sebagai sayuran hijau dan banyak mengandung vitamin serta
-                      mineral yang baik bagi kesehatan untuk dibudidayakan.
+                      {tanaman.pest_info}
                     </p>
                   </Accordion>
                   <Accordion
@@ -467,11 +587,7 @@ const DetailTanaman = () => {
                         paddingRight: "22px",
                       }}
                     >
-                      Tanaman Bayam merupakan jenis sayuran semusim tergolong ke
-                      dalam famili Amaranthaceae beriklim tropis dengan penamaan
-                      ilmiah Amaranthus spp. Dominan dimanfaatkan dan dikonsumsi
-                      sebagai sayuran hijau dan banyak mengandung vitamin serta
-                      mineral yang baik bagi kesehatan untuk dibudidayakan.
+                      {tanaman.fertilizer_info}
                     </p>
                   </Accordion>
                 </div>
