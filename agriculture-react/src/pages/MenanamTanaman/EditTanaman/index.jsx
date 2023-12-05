@@ -6,24 +6,13 @@ import Select from '../../../components/Select'
 import Invalid from '../../../components/Invalid'
 import Layout from '../../../layout/Layout'
 import DragFile from '../../../components/DragFile'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import FormCardTambah from '../../../components/FormCardTambah'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axiosWithAuth from '../../../api/axios'
 
 const EditTanaman = () => {
     const navigate = useNavigate();
-    const jenisTanamanOptions = [
-        { value: 'Bunga', label: 'Bunga' },
-        { value: 'Tanaman Hias', label: 'Tanaman Hias' },
-        { value: 'Umbi-umbian', label: 'Umbi-umbian' },
-        { value: 'Kacang-kacangan', label: 'Kacang-kacangan' },
-        { value: 'Pohon-pohonan', label: 'Pohon-pohonan' },
-        { value: 'Sayuran', label: 'Sayuran' },
-    ];
-    const teknologiTanamanOptions = [
-        { value: 'Hidroponik', label: 'Hidroponik' },
-        { value: 'Aeroponik', label: 'Aeroponik' },
-    ];
     const breadcrumEditTanaman = [
         {
             crumblink : "/menanam-tanaman",
@@ -34,6 +23,41 @@ const EditTanaman = () => {
             crumbname : "Edit Tanaman",
         }
     ];
+    const [jenisTanamanOptions, setJenisTanamanOptions] = useState([]);
+    const [teknologiTanamanOptions, setTeknologiTanamanOptions] = useState([]);
+    const getDataPlantType = async () => {
+        try {
+          const response = await axiosWithAuth.get('plant-types')
+          const dataFromApi = response.data.data;
+          const transformedData = dataFromApi.map(item => ({
+            value: item.id,
+            label: item.name,
+          }));
+          setJenisTanamanOptions(transformedData);
+          console.log('get type:', transformedData);
+        } catch (error) {
+          console.error('Error fetching data from API:', error);
+        }
+    };
+    const getDataPlantTech = async () => {
+        try {
+          const response = await axiosWithAuth.get('planting-techs')
+          const dataFromApi = response.data.data;
+          const transformedData = dataFromApi.map(item => ({
+            value: item.id,
+            label: item.name,
+          }));
+          setTeknologiTanamanOptions(transformedData);
+          console.log('get tech:', transformedData);
+        } catch (error) {
+          console.error('Error fetching data from API:', error);
+        }
+    };
+
+    useEffect(()=>{
+        getDataPlantType();
+        getDataPlantTech();
+    },[])
     const [namaTanaman, setNamaTanaman] = useState('');
     const [jenisTanaman, setJenisTanaman] = useState('');
     const [deskTanaman, setDeskTanaman] = useState('');
@@ -104,7 +128,7 @@ const EditTanaman = () => {
         hujanAwal,
         hujanAkhir,
         hama, pupuk, saran, gambarSaran, rawat});
-        navigate('/menanam-tanaman')
+        // navigate('/menanam-tanaman')
     }
     const handleAlatPenanamanChange = (index, field, value) => {
         const updatedData = [...alatPenanaman];
@@ -172,7 +196,7 @@ const EditTanaman = () => {
                 <DragFile 
                     name={'gambartanaman'}
                     value={gambarTanaman}
-                    onChange={(e) => setGambarTanaman(e.target.value)}
+                    setValue={setGambarTanaman}
                 /> 
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="varietastanaman">Varietas Tanaman</label>
@@ -276,11 +300,12 @@ const EditTanaman = () => {
                 <p className='p-label'>Alat yang Dibutuhkan</p>
                 <FormCardTambah
                     data={alatPenanaman}
+                    setData={setAlatPenanaman}
                     onTambah={tambahkanAlatPenanaman}
                     onHapus={hapusAlatPenanaman}
                     onChange={handleAlatPenanamanChange}
                     label="Alat Penanaman"
-                    name='alatpenanaman'
+                    namelabel='Alat'
                 />
                 <div className='form-label fontw600 mt-3'>Saran Untuk Tempat Penanaman</div>
                 <div className='card card-n px-4 py-3 mb-3'>
@@ -300,17 +325,18 @@ const EditTanaman = () => {
                     <DragFile 
                         name={'gambarsaran'}
                         value={gambarSaran}
-                        onChange={(e) => setGambarSaran(e.target.value)}
+                        setValue={setGambarSaran}
                     />
                 </div>
                 <div className='form-label fontw600'>Langkah Penanaman</div>
                 <FormCardTambah
                     data={langkahPenanaman}
+                    setData={setLangkahPenanaman}
                     onTambah={tambahkanLangkahPenanaman}
                     onHapus={hapusLangkahPenanaman}
                     onChange={handleLangkahPenanamanChange}
                     label="Langkah Penanaman"
-                    name='langkahpenanaman'
+                    namelabel='Langkah'
                 />
                 <div className="form-group mb-3 mt-3">
                     <label className="form-label fontw600" htmlFor="caramerawat">Cara merawat tanaman</label>
@@ -329,7 +355,7 @@ const EditTanaman = () => {
                     <button type="button" className="btn btn-outline-green" onClick={() => handleOnClick()}>Batal</button>
                     </div>
                     <button type='submit' className="btn btn-green col-auto m12">
-                        Edit
+                        Tambah
                     </button>
                 </div>
             </FormLayout>
