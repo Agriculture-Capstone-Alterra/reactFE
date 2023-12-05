@@ -2,11 +2,9 @@ import {
   MdOutlineDashboard,
   MdListAlt,
   MdOutlineShoppingCart,
-  MdCloudQueue,
   MdHistory,
 } from "react-icons/md";
 import { IoMdStopwatch } from "react-icons/io";
-import { FaArrowTrendUp } from "react-icons/fa6";
 
 export const SidebarData = [
   {
@@ -15,12 +13,7 @@ export const SidebarData = [
     icon: <MdOutlineDashboard />,
   },
   {
-    title: "Informasi Cuaca",
-    path: "/informasi-cuaca",
-    icon: <MdCloudQueue />,
-  },
-  {
-    title: "Remainder",
+    title: "Pengingat Tanaman",
     path: "/pengingat-tanaman",
     icon: <IoMdStopwatch />,
   },
@@ -33,11 +26,6 @@ export const SidebarData = [
     title: "Riwayat Menanam",
     path: "/riwayat-menanam",
     icon: <MdHistory />,
-  },
-  {
-    title: "Pertumbuhan",
-    path: "/pertumbuhan",
-    icon: <FaArrowTrendUp />,
   },
   {
     title: "Produk Lokal",
