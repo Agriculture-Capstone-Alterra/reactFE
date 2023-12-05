@@ -103,13 +103,13 @@ const TableTanaman = () => {
                 </Link>
               </div>
               <Table headers={tableHeaders}>
-              {Array.isArray(plantData) && plantData.map((plant, index) => (
+                {plantData.map((plant, index) => (
                     <tr key={index}>
-                      <td onClick={() => handleRowClick()}>{plant.number}</td>
+                      <td onClick={() => handleRowClick()}>{plant.id}</td>
                       <td onClick={() => handleRowClick()}>{plant.name}</td>
-                      <td onClick={() => handleRowClick()}>{plant.plant_type}</td>
+                      <td onClick={() => handleRowClick()}>{plant.plant_type.name}</td>
                       <td onClick={() => handleRowClick()}>{plant.variety}</td>
-                      <td onClick={() => handleRowClick()}>{plant.technology}</td>
+                      <td onClick={() => handleRowClick()}>{plant.technology.name}</td>
                       <td>
                         <div className="p-2 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                           <TbDots className="fw-bold fs-4 ms-1" />
@@ -149,7 +149,7 @@ const TableTanaman = () => {
                 }
               </Table>
             </div>
-            
+            <Pagination {...paginationProps} />
           </div>
           <Filter /> 
         </div>
