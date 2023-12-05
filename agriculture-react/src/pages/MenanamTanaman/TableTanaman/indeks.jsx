@@ -105,13 +105,13 @@
                 </div>
                 <Table headers={tableHeaders}>
                   {plantData.map((plant, index) => (
-                      <tr key={index} onClick={() => handleRowClick()}>
-                      <td>{plant.id}</td>
-                      <td>{plant.name}</td>
-                      <td>{plant.plant_type.name}</td>
-                      <td>{plant.variety}</td>
-                      <td>{plant.technology.name}</td>
-                        <td>
+                      <tr key={index}>
+                      <td onClick={() => handleRowClick()}>{plant.id}</td>
+                      <td onClick={() => handleRowClick()}>{plant.name}</td>
+                      <td onClick={() => handleRowClick()}>{plant.plant_type.name}</td>
+                      <td onClick={() => handleRowClick()}>{plant.variety}</td>
+                      <td onClick={() => handleRowClick()}>{plant.technology.name}</td>
+                      <td>
                           <div className="p-2 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                             <TbDots className="fw-bold fs-4 ms-1" />
                           </div>
