@@ -97,7 +97,9 @@ const ListTanaman = () => {
               onChange={handleSortChange}
               value={selectedSortOption}
             >
-              <option value="">Urutkan dalam</option>
+              <option disabled value="">
+                Urutkan dalam
+              </option>
               <option value="oldest">Paling lama</option>
               <option value="newest">Paling baru</option>
               <option value="ascending">A-Z</option>
