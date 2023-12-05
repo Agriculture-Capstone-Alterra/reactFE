@@ -65,18 +65,14 @@
       }
     };
 
-    const handleRowClick = () => {
-      navigate('/menanam-tanaman/detail-menanam-tanaman');
+    const handleRowClick = (id) => {
+      navigate(`/menanam-tanaman/detail-menanam-tanaman/${id}`);
     };
 
     const crumbs = [
       {
         crumblink: '/menanam-tanaman',
         crumbname: 'Menanam Tanaman',
-      },
-      {
-        crumblink: '/menanam-tanaman/tambah-tanaman',
-        crumbname: 'Tambah Tanaman',
       },
     ];
 
@@ -87,8 +83,6 @@
       itemsPerPage,
       setCurrentData: setPlantData,   
       numberingData: true,
-      currentPage,
-      setCurrentPage,
     };
 
     return (
@@ -106,11 +100,11 @@
                 <Table headers={tableHeaders}>
                   {plantData.map((plant, index) => (
                       <tr key={index}>
-                      <td onClick={() => handleRowClick()}>{plant.id}</td>
-                      <td onClick={() => handleRowClick()}>{plant.name}</td>
-                      <td onClick={() => handleRowClick()}>{plant.plant_type.name}</td>
-                      <td onClick={() => handleRowClick()}>{plant.variety}</td>
-                      <td onClick={() => handleRowClick()}>{plant.technology.name}</td>
+                      <td onClick={() => handleRowClick(plant.id)}>{plant.number}</td>
+                      <td onClick={() => handleRowClick(plant.id)}>{plant.name}</td>
+                      <td onClick={() => handleRowClick(plant.id)}>{plant.plant_type.name}</td>
+                      <td onClick={() => handleRowClick(plant.id)}>{plant.variety}</td>
+                      <td onClick={() => handleRowClick(plant.id)}>{plant.technology.name}</td>
                       <td>
                           <div className="p-2 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                             <TbDots className="fw-bold fs-4 ms-1" />
