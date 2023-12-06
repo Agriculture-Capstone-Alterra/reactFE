@@ -6,13 +6,12 @@ import { BsPlus } from 'react-icons/bs';
 import styles from './style.module.css';
 import EditIcon from '../../../assets/icons/edit.svg';
 import TrashIcon from '../../../assets/icons/trash.svg';
-import data from './data.js';
 import { Link, useLocation } from 'react-router-dom';
 import ToastNotification from '../../../components/ToastNotification/ToastNotification.jsx';
 import Pagination from '../../../components/Pagination/Pagination.jsx';
 import Modal from '../../../components/Modal/Modal.jsx';
 import ModalTrigger from '../../../components/Modal/ModalTrigger.jsx';
-import Swal from 'sweetalert2';
+import axios from "axios";
 
 
 // start dokumentasi komponen
@@ -22,11 +21,13 @@ import Swal from 'sweetalert2';
 // link diatas digunakan untuk contoh navigasi ke halaman komponen ini sambil menampilkan toast notif
 // end dokumentasi komponen
 
+// mockapi link (temporary)
+const mockApiUrl = "https://656c4778e1e03bfd572e2309.mockapi.io/";
 const PengingatTanaman = () => {
   const itemsPerPage = 5;
-  const [dataPenyiramanList, setDataPenyiramanList] = useState(data);
+  const [dataPenyiramanList, setDataPenyiramanList] = useState([]);
   const [currentDataPenyiraman, setCurrentDataPenyiraman] = useState([]);
-  const [dataPemupukanList, setDataPemupukanList] = useState(data);
+  const [dataPemupukanList, setDataPemupukanList] = useState([]);
   const [currentDataPemupukan, setCurrentDataPemupukan] = useState([]);
   const [modalData, setModalData] = useState({});
   const [showToast, setShowToast] = useState(false);
@@ -43,6 +44,27 @@ const PengingatTanaman = () => {
       setTimeout(() => setShowToast(false), 3000);
     }
   }, [location.state]);
+
+  useEffect(() => {
+    axios
+      .get(`${mockApiUrl}/penyiraman`)
+      .then(res => {
+        setDataPenyiramanList(res.data);
+      })
+      .catch(err => {
+        setDataPenyiramanList([])
+        console.log(err);
+      });
+    axios
+      .get(`${mockApiUrl}/pemupukan`)
+      .then(res => {
+        setDataPemupukanList(res.data);
+      })
+      .catch(err => {
+        setDataPemupukanList([])
+        console.log(err);
+      });
+  }, []);
 
   const headers = [
     'No',

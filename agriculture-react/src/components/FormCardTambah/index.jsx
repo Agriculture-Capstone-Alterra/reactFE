@@ -7,7 +7,7 @@ import TextArea from '../Textarea';
 import Invalid from '../Invalid';
 import DropFile from '../DropFile';
 
-const FormCardTambah = ({ data, onTambah, onHapus, onChange, label, namelabel }) => {
+const FormCardTambah = ({ data, setData, onTambah, onHapus, onChange, label, namelabel }) => {
   return (
     <div>
       {data.map((item, index) => (
@@ -17,12 +17,12 @@ const FormCardTambah = ({ data, onTambah, onHapus, onChange, label, namelabel })
               <div className='row'>
                 <div className='col-sm'>
                   <div className='form-group mb-3'>
-                    <label className='form-label fontw600' htmlFor={`nama-${namelabel}-${index}`}>
+                    <label className='form-label fontw600' htmlFor={`nama${namelabel}`}>
                       Nama {label}
                     </label>
                     <Input
-                      id={`nama-${namelabel}-${index}`}
-                      name={`nama-${namelabel}-${index}`}
+                      id={`nama${namelabel}`}
+                      name={`nama${namelabel}`}
                       placeholder={`Masukkan nama ${label.toLowerCase()}`}
                       value={item[`nama${namelabel}`]}
                       onChange={(e) => onChange(index, `nama${namelabel}`, e.target.value)}
@@ -32,22 +32,24 @@ const FormCardTambah = ({ data, onTambah, onHapus, onChange, label, namelabel })
                 </div>
                 <div className='col-sm'>
                   <div className='form-group mb-3'>
-                    <label className='form-label fontw600' htmlFor={`gambar-${namelabel}-${index}`}>
+                    <label className='form-label fontw600' htmlFor={`gambar${namelabel}`}>
                       Foto
                     </label>
                     <DropFile 
-                    name={`gambar-${namelabel}-${index}`}
-                    onChange={(value) => onChange(index, `gambar${namelabel}`, value)}  />
+                    name={`gambar${namelabel}`}
+                    value={item[`gambar${namelabel}`]} 
+                    setValue={(value) => onChange(index, `gambar${namelabel}`, value)}
+                    />
                     <Invalid errormsg={`Tolong masukkan gambar ${label.toLowerCase()}.`} />
                   </div>
                 </div>
                 <div className='form-group mb-3'>
-                  <label className='form-label fontw600' htmlFor={`deskripsi-${namelabel}-${index}`}>
+                  <label className='form-label fontw600' htmlFor={`deskripsi${namelabel}`}>
                     Deskripsi {label}
                   </label>
                   <TextArea
-                    id={`deskripsi-${namelabel}-${index}`}
-                    name={`deskripsi-${namelabel}-${index}`}
+                    id={`deskripsi${namelabel}`}
+                    name={`deskripsi${namelabel}`}
                     placeholder={`Masukkan deskripsi ${label.toLowerCase()}`}
                     rows={2}
                     value={item[`deskripsi${namelabel}`]}
