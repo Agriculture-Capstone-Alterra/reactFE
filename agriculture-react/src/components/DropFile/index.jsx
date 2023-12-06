@@ -1,12 +1,10 @@
 import "./drag-drop.css";
 import Upload from '../../assets/uploadFile.svg';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
-const DropFile = ({ value, onChange, name }) => {
+const DropFile = ({ name, value, setValue }) => {
   const dropAreaRef = useRef(null);
   const fileInputRef = useRef(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [selectedFileName, setSelectedFileName] = useState('');
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -27,7 +25,6 @@ const DropFile = ({ value, onChange, name }) => {
   const handleFileInputChange = (e) => {
     const files = fileInputRef.current.files;
     handleFiles(files);
-    onChange(e);
   };
 
   const handleFiles = (files) => {
@@ -35,8 +32,11 @@ const DropFile = ({ value, onChange, name }) => {
       const reader = new FileReader();
 
       reader.onload = () => {
-        setImagePreview(reader.result);
-        setSelectedFileName(files[0].name);
+        const fileObject = {
+          name: files[0].name,
+          src: reader.result,
+        };
+        setValue(fileObject);
       };
 
       reader.readAsDataURL(files[0]);
@@ -44,8 +44,7 @@ const DropFile = ({ value, onChange, name }) => {
   };
 
   const handleDelete = () => {
-    setImagePreview(null);
-    setSelectedFileName('');
+    setValue(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -55,16 +54,16 @@ const DropFile = ({ value, onChange, name }) => {
     <div>
       <div
         ref={dropAreaRef}
-        id={imagePreview ? 'input-area' : 'drop-area'}
+        id={value ? 'input-area' : 'drop-area'}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        {imagePreview ? (
+        {value ? (
           <div className="preview-container">
-            <img src={imagePreview} alt="Preview" />
+            <img src={value.src} alt="Preview" />
             <div className="image-info">
-              <div className="image-name">{selectedFileName}</div>
+              <div className="image-name">{value.name}</div>
               <button className="remove-image" onClick={handleDelete}>
                 Remove
               </button>
@@ -90,7 +89,6 @@ const DropFile = ({ value, onChange, name }) => {
           type="file"
           ref={fileInputRef}
           onChange={handleFileInputChange}
-          value={value}
           name={name}
         />
       </div>

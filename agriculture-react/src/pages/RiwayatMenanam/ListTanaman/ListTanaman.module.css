@@ -22,11 +22,6 @@
   background: var(--netral-100, #f3f4f6);
 }
 
-.selectBox option {
-  background-color: #51ab8c;
-  color: #fff;
-}
-
 .card {
   display: flex;
   padding: 16px 0;
