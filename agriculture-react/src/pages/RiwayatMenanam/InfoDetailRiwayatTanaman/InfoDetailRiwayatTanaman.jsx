@@ -4,7 +4,7 @@ import Layout from "../../../layout/Layout";
 import MawarPutih from "../../../assets/img/mawarputih.jpg";
 import Bibit from "../../../assets/bibit.svg";
 import JenisTanaman from "../../../assets/jenisTanaman.svg";
-import Teknologi from "../../../assets/teknologi.svg";
+import Teknologi from "../../../assets/Teknologi.svg";
 import Varietas from "../../../assets/varietas.svg";
 import Calendar from "../../../assets/calendar.svg";
 import BarChart from "../../../components/BarChart/BarChart";
