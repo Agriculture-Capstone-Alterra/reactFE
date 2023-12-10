@@ -7,13 +7,12 @@ const Select = ({ id, name, value, className, onChange, options, title }) => {
       value={value}
       onChange={onChange}
       required>
-
       <option value="" disabled selected>
         {title}
       </option>
       {options.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
+        <option key={option.id} value={option.name}>
+          {option.name}
         </option>
       ))}
     </select>
