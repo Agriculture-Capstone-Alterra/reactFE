@@ -27,10 +27,16 @@ const EditTanaman = () => {
     const [hujanAkhir, setHujanAkhir] = useState('');
     const [hama, setHama] = useState('');
     const [pupuk, setPupuk] = useState('');
-    const [alatPenanaman, setAlatPenanaman] = useState([]);
+    // const [alatPenanaman, setAlatPenanaman] = useState([]);
+    const [alatPenanaman, setAlatPenanaman] = useState([
+        { id: 0, namaAlat: '', gambarAlat: null, deskripsiAlat: '' },
+    ]);
     const [saran, setSaran] = useState('');
     const [gambarSaran, setGambarSaran] = useState([]);
-    const [langkahPenanaman, setLangkahPenanaman] = useState([]);
+    // const [langkahPenanaman, setLangkahPenanaman] = useState([]);
+    const [langkahPenanaman, setLangkahPenanaman] = useState([
+        { id: 0, namaLangkah: '', gambarLangkah: null, deskripsiLangkah: '' },
+    ]);
     const [rawat, setRawat] = useState('');
     const breadcrumEditTanaman = [
         {
@@ -233,9 +239,12 @@ const EditTanaman = () => {
                     })),
                 });
             
-                // const plantId = plantResponse.data.data.id;
+                const response = await axiosWithAuth.get(`plants/${id}`);
+                const tanaman = response.data.data;
+                
+                //
 
-                const toolData = plantResponse.data.data.planting_tools;
+                const toolData = tanaman.planting_tools;
                 const idsToolArray = toolData.map((tool) => tool.id);
                 console.log('id guides, ',idsToolArray)
                 const toolIDs = idsToolArray.join(',');
@@ -253,8 +262,10 @@ const EditTanaman = () => {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-
-                const guideData = plantResponse.data.data.planting_guides;
+                
+                //
+                
+                const guideData = tanaman.planting_guides;
                 const idsGuideArray = guideData.map((guide) => guide.id);
                 console.log('id guides, ',idsGuideArray)
                 const guideIDs = idsGuideArray.join(',');
