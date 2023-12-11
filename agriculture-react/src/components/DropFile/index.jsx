@@ -24,6 +24,7 @@ const DropFile = ({ name, value, setValue }) => {
 
   const handleFileInputChange = (e) => {
     const files = fileInputRef.current.files;
+    console.log("file, ", files)
     handleFiles(files);
   };
 

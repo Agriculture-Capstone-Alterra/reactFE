@@ -43,8 +43,7 @@ const DragFile = ({ value, name, setValue}) => {
             name: file.name,
           };
 
-          // addImage(imagePreview);
-          addImage(files);
+          addImage(imagePreview);
         };
 
         reader.readAsDataURL(file);
