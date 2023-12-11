@@ -18,7 +18,6 @@
     const itemsPerPage = 10;
     const [plantData, setPlantData] = useState([]);
     const [currentData, setCurrentData] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
@@ -55,7 +54,13 @@
     const handleDeleteConfirm = async () => {
       try {
         await axiosWithAuth.delete(`/plants/${selectedItemId}`);
-        setPlantData((prevData) => prevData.filter((plant) => plant.id !== selectedItemId));
+        const updatedData = plantData.filter((plant) => plant.id !== selectedItemId);
+        const updatedDataWithNumbers = updatedData.map((plant, index) => ({
+          ...plant,
+          number: index + 1,
+        }));
+    
+        setPlantData(updatedDataWithNumbers);
         setModalData({});
         setShowToast(true);
         setToastMessage("Data tanaman berhasil dihapus");
