@@ -34,7 +34,7 @@ function App() {
           element={<TambahTanaman />}
           />
           <Route
-            path="/menanam-tanaman/edit-tanaman"
+            path="/menanam-tanaman/edit-tanaman/:id"
             element={<EditTanaman />}
           />
         </Route>
