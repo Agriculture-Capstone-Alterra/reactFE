@@ -26,14 +26,10 @@ const EditTanaman = () => {
     const [hujanAkhir, setHujanAkhir] = useState('');
     const [hama, setHama] = useState('');
     const [pupuk, setPupuk] = useState('');
-    const [alatPenanaman, setAlatPenanaman] = useState([
-        { id: 0, namaAlat: '', gambarAlat: null, deskripsiAlat: '' },
-    ]);
+    const [alatPenanaman, setAlatPenanaman] = useState([]);
     const [saran, setSaran] = useState('');
     const [gambarSaran, setGambarSaran] = useState([]);
-    const [langkahPenanaman, setLangkahPenanaman] = useState([
-        { id: 0, namaLangkah: '', gambarLangkah: null, deskripsiLangkah: '' },
-    ]);
+    const [langkahPenanaman, setLangkahPenanaman] = useState([]);
     const [rawat, setRawat] = useState('');
     const breadcrumEditTanaman = [
         {
@@ -82,7 +78,16 @@ const EditTanaman = () => {
             setNamaTanaman(tanaman.name)
             setJenisTanaman(tanaman.plant_type_id)
             setDeskTanaman(tanaman.description)
-            // setGambarTanaman(tanaman.plant_images)
+            const gambarTanamanFiles = await tanaman.plant_images.map((tanamanGambar) => {
+                const imgURL = tanamanGambar.image_path;
+                const fileName=  imgURL.substring(imgURL.lastIndexOf('/') + 1);
+                return {
+                    id: tanamanGambar.id,
+                    name: fileName,
+                    src: tanamanGambar.image_path,
+                };
+            });
+            setGambarTanaman(gambarTanamanFiles)
             setVarietasTanaman(tanaman.variety)
             setTeknoTanaman(tanaman.technology_id)
             setKemarauAwal(tanaman.dry_season_start_plant)
@@ -92,22 +97,23 @@ const EditTanaman = () => {
             setHama(tanaman.fertilizer_info)
             setPupuk(tanaman.pest_info)
             setSaran(tanaman.planting_suggestions)
-            // setGambarSaran(tanaman.planting_medium_image)
             setRawat(tanaman.how_to_maintain)
-            // const tools = tanaman.planting_tools;
-            // setAlatPenanaman(tools.map((getAlat) => ({
-            //     id: getAlat.id,
-            //     namaAlat: getAlat.name,
-            //     gambarAlat: getAlat.image_path,
-            //     deskripsiAlat: getAlat.description
-            // })))
-            // const guides = tanaman.planting_guides
-            // setLangkahPenanaman(guides.map((getLangkah) => ({
-            //     id: getLangkah.id,
-            //     namaLangkah: getLangkah.name,
-            //     gambarLangkah: getLangkah.image_path,
-            //     deskripsiLangkah: getLangkah.description
-            // })))
+            const gambarSaranFiles = await tanaman.planting_medium_image;
+            setGambarSaran([gambarSaranFiles])
+            const tools = tanaman.planting_tools;
+            setAlatPenanaman(tools.map((getAlat) => ({
+                id: getAlat.id,
+                namaAlat: getAlat.name,
+                gambarAlat: getAlat.image_path,
+                deskripsiAlat: getAlat.description
+            })))
+            const guides = tanaman.planting_guides
+            setLangkahPenanaman(guides.map((getLangkah) => ({
+                id: getLangkah.id,
+                namaLangkah: getLangkah.name,
+                gambarLangkah: getLangkah.image_path,
+                deskripsiLangkah: getLangkah.description
+            })))
         } catch (error) {
             console.error('Error fetching data from API:', error);
         }
@@ -171,9 +177,70 @@ const EditTanaman = () => {
     const handleOnClick = () => {
         navigate(`/menanam-tanaman`);
     };
-    const handleSubmit  = () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if(namaTanaman===''
+        || jenisTanaman===''
+        || deskTanaman===''
+        || gambarTanaman===null
+        || varietasTanaman===''
+        || teknoTanaman===''
+        || kemarauAwal===''
+        || kemarauAkhir===''
+        || hujanAwal===''
+        || hujanAkhir===''
+        || hama===''
+        || pupuk===''
+        // || gambarSaran===null
+        || saran===''
+        || rawat===''
+        || langkahPenanaman.namaLangkah===''
+        // || langkahPenanaman.gambarLangkah===null
+        || langkahPenanaman.deskripsiLangkah===''
+        || alatPenanaman.namaAlat===''
+        // || alatPenanaman.gambarAlat===null
+        || alatPenanaman.deskripsiAlat===''
+        ){
+            alert('Tolong lengkapi form!')
+        }else{
+            try {
+                // Step 1
+                const plantResponse = await axiosWithAuth.put(`plants/${id}`, {
+                    description: deskTanaman,
+                    dry_season_finish_plant: kemarauAkhir,
+                    dry_season_start_plant: kemarauAwal,
+                    fertilizer_info: pupuk,
+                    how_to_maintain: rawat,
+                    name: namaTanaman,
+                    pest_info: hama,
+                    plant_type_id: parseInt(jenisTanaman),
+                    planting_medium_suggestions: saran,
+                    planting_suggestions: saran,
+                    rainy_season_finish_plant: hujanAkhir,
+                    rainy_season_start_plant: hujanAwal,
+                    technology_id: parseInt(teknoTanaman),
+                    variety: varietasTanaman,
+                    planting_guides: langkahPenanaman.map((langkah) => ({
+                    id: langkah.id,
+                    description: langkah.deskripsiLangkah,
+                    name: langkah.namaLangkah,
+                    })),
+                    planting_tools: alatPenanaman.map((alat) => ({
+                    id: alat.id,
+                    description: alat.deskripsiAlat,
+                    name: alat.namaAlat,
+                    })),
+                });
+            
+                const plantId = plantResponse.data.data.id;
 
-    }
+                navigate('/menanam-tanaman')
+            } catch (error) {
+                console.error('Error updating form:', error);
+            }
+        }
+            
+    };
     return (
         <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={breadcrumEditTanaman}>
         <div className='mt-2' style={{ padding:'0px 0px 30px 30px', marginRight:'0'}}>
