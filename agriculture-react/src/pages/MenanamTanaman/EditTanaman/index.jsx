@@ -10,6 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import FormCardTambah from '../../../components/FormCardTambah'
 import React, { useState, useEffect } from 'react'
 import axiosWithAuth from '../../../api/axios'
+import DropFile from '../../../components/DropFile'
 
 const EditTanaman = () => {
     const { id } = useParams();
@@ -232,8 +233,45 @@ const EditTanaman = () => {
                     })),
                 });
             
-                const plantId = plantResponse.data.data.id;
+                // const plantId = plantResponse.data.data.id;
 
+                const toolData = plantResponse.data.data.planting_tools;
+                const idsToolArray = toolData.map((tool) => tool.id);
+                console.log('id guides, ',idsToolArray)
+                const toolIDs = idsToolArray.join(',');
+                const plantingToolsFormData = new FormData();
+                plantingToolsFormData.append('plant_id', id);
+                plantingToolsFormData.append('planting_tool_ids', toolIDs);
+                for (const imgalat of alatPenanaman) {
+                    const base64toRes = await fetch(imgalat.gambarAlat.src)
+                    const base64toBlob = await base64toRes.blob()
+                    console.log("images load, ", base64toBlob)
+                    plantingToolsFormData.append('image_files', base64toBlob);
+                }
+                const plantingToolsResponse = await axiosWithAuth.post(`planting-tools/upload/${id}`, plantingToolsFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+                const guideData = plantResponse.data.data.planting_guides;
+                const idsGuideArray = guideData.map((guide) => guide.id);
+                console.log('id guides, ',idsGuideArray)
+                const guideIDs = idsGuideArray.join(',');
+                const plantingGuideFormData = new FormData();
+                plantingGuideFormData.append('plant_id', id);
+                plantingGuideFormData.append('planting_guide_ids', guideIDs);
+                for (const imglangkah of langkahPenanaman) {
+                    const base64toRes = await fetch(imglangkah.gambarLangkah.src)
+                    const base64toBlob = await base64toRes.blob()
+                    console.log("images load, ", base64toBlob)
+                    plantingGuideFormData.append('image_files', base64toBlob);
+                }
+                const plantingGuideResponse = await axiosWithAuth.post(`planting-guides/upload/${id}`, plantingGuideFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
                 navigate('/menanam-tanaman')
             } catch (error) {
                 console.error('Error updating form:', error);
@@ -413,7 +451,7 @@ const EditTanaman = () => {
                         <Invalid errormsg={"Tolong masukkan saran untuk tempat penanaman."}/>
                     </div>
                     <label className="form-label fontw600" htmlFor="gambarsaran">Foto</label>
-                    <DragFile 
+                    <DropFile 
                         name={'gambarsaran'}
                         value={gambarSaran}
                         setValue={setGambarSaran}
@@ -446,7 +484,7 @@ const EditTanaman = () => {
                     <button type="button" className="btn btn-outline-green" onClick={() => handleOnClick()}>Batal</button>
                     </div>
                     <button type='submit' className="btn btn-green col-auto m12">
-                        Tambah
+                        Edit
                     </button>
                 </div>
             </FormLayout>
