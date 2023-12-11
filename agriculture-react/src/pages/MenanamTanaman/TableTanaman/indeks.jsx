@@ -116,6 +116,7 @@
                           </div>
                           <ul className="dropdown-menu">
                             <li className="d-grid mb-2 ps-3 pe-3">
+                              <div className='link-none'>
                               <Link to={`/menanam-tanaman/edit-tanaman/${plant.id}`}>
                               <button
                                 className="btn"
@@ -128,6 +129,7 @@
                                 <span>Edit</span>
                               </button>
                               </Link>
+                              </div>
                             </li>
                             <li className="d-grid mb-2 ps-3 pe-3">
                               <ModalTrigger
