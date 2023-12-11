@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import Layout from "../../../layout/Layout";
-import Carousel from "react-multi-carousel";
+// import Carousel from "react-multi-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
 import bayam from "../../../assets/img/bayam.png";
 import varietas from "../../../assets/img/varietas-detail.png";
 import jenisTanaman from "../../../assets/img/jenis-tanaman-detail.png";
@@ -46,6 +48,18 @@ const DetailTanaman = () => {
         console.log(error);
       });
   }, [id]);
+
+  const deleteTanaman = (id) => {
+    axiosWithAuth
+      .delete(`plants/${id}`)
+      .then((result) => {
+        console.log(result);
+        navigate("/menanam-tanaman");
+      })
+      .catch((error) => {
+        console.log("Error :", error);
+      });
+  };
 
   const alat = [
     {
@@ -113,82 +127,23 @@ const DetailTanaman = () => {
                   padding: 0,
                 }}
               >
-                <figure>
+                {/* <figure>
                   <img src={bayam} width={"100%"} alt="" />
-                </figure>
-                {/* <div style={{ width: "100%" }}>
+                </figure> */}
+                <div style={{ width: "100%" }}>
                   <Carousel
-                    additionalTransfrom={0}
-                    arrows={false}
-                    autoPlaySpeed={3000}
-                    centerMode={false}
-                    className={""}
-                    containerClass="container"
-                    dotListClass=""
-                    draggable
-                    focusOnSelect={false}
-                    infinite
-                    itemClass=""
-                    keyBoardControl
-                    minimumTouchDrag={80}
-                    pauseOnHover
-                    renderArrowsWhenDisabled={false}
-                    renderButtonGroupOutside={false}
-                    renderDotsOutside={false}
-                    responsive={{
-                      desktop: {
-                        breakpoint: {
-                          max: 3000,
-                          min: 1024,
-                        },
-                        items: 1,
-                      },
-                      mobile: {
-                        breakpoint: {
-                          max: 464,
-                          min: 0,
-                        },
-                        items: 1,
-                      },
-                      tablet: {
-                        breakpoint: {
-                          max: 1024,
-                          min: 464,
-                        },
-                        items: 1,
-                      },
-                    }}
-                    rewind={false}
-                    rewindWithAnimation={false}
-                    rtl={false}
-                    shouldResetAutoplay
-                    showDots
-                    sliderClass=""
-                    slidesToSlide={1}
-                    swipeable
+                    autoPlay={true}
+                    showArrows={false}
+                    showThumbs={false}
                   >
-                    <img
-                      src={bayam}
-                      style={{
-                        display: "block",
-                        height: "100%",
-                        // margin: "auto",
-                        width: "100%",
-                      }}
-                      alt=""
-                    />
-                    <img
-                      src={bayam}
-                      style={{
-                        display: "block",
-                        height: "100%",
-                        // margin: "auto",
-                        width: "100%",
-                      }}
-                      alt=""
-                    />
+                    <div>
+                      <img src={bayam} />
+                    </div>
+                    <div>
+                      <img src={bayam} />
+                    </div>
                   </Carousel>
-                </div> */}
+                </div>
                 <h2 className="text-center fw-bolder mt-5 mb-5">
                   {tanaman.name}
                 </h2>
@@ -606,7 +561,7 @@ const DetailTanaman = () => {
           </p>
         }
         onCancel={() => {}}
-        onSubmit={() => {}}
+        onSubmit={() => deleteTanaman(id)}
         type="delete"
       />
     </>

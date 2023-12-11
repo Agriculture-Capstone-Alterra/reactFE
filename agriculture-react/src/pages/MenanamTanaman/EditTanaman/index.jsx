@@ -6,13 +6,35 @@ import Select from '../../../components/Select'
 import Invalid from '../../../components/Invalid'
 import Layout from '../../../layout/Layout'
 import DragFile from '../../../components/DragFile'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import FormCardTambah from '../../../components/FormCardTambah'
 import React, { useState, useEffect } from 'react'
 import axiosWithAuth from '../../../api/axios'
 
 const EditTanaman = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
+    const [namaTanaman, setNamaTanaman] = useState('');
+    const [jenisTanaman, setJenisTanaman] = useState('');
+    const [deskTanaman, setDeskTanaman] = useState('');
+    const [gambarTanaman, setGambarTanaman] = useState([]);
+    const [varietasTanaman, setVarietasTanaman] = useState('');
+    const [teknoTanaman, setTeknoTanaman] = useState('');
+    const [kemarauAwal, setKemarauAwal] = useState('');
+    const [hujanAwal, setHujanAwal] = useState('');
+    const [kemarauAkhir, setKemarauAkhir] = useState('');
+    const [hujanAkhir, setHujanAkhir] = useState('');
+    const [hama, setHama] = useState('');
+    const [pupuk, setPupuk] = useState('');
+    const [alatPenanaman, setAlatPenanaman] = useState([
+        { id: 0, namaAlat: '', gambarAlat: null, deskripsiAlat: '' },
+    ]);
+    const [saran, setSaran] = useState('');
+    const [gambarSaran, setGambarSaran] = useState([]);
+    const [langkahPenanaman, setLangkahPenanaman] = useState([
+        { id: 0, namaLangkah: '', gambarLangkah: null, deskripsiLangkah: '' },
+    ]);
+    const [rawat, setRawat] = useState('');
     const breadcrumEditTanaman = [
         {
             crumblink : "/menanam-tanaman",
@@ -53,32 +75,49 @@ const EditTanaman = () => {
           console.error('Error fetching data from API:', error);
         }
     };
+    const getDataEdit = async () => {
+        try {
+            const response = await axiosWithAuth.get(`plants/${id}`);
+            const tanaman = response.data.data;
+            setNamaTanaman(tanaman.name)
+            setJenisTanaman(tanaman.plant_type_id)
+            setDeskTanaman(tanaman.description)
+            // setGambarTanaman(tanaman.plant_images)
+            setVarietasTanaman(tanaman.variety)
+            setTeknoTanaman(tanaman.technology_id)
+            setKemarauAwal(tanaman.dry_season_start_plant)
+            setHujanAwal(tanaman.rainy_season_start_plant)
+            setKemarauAkhir(tanaman.dry_season_finish_plant)
+            setHujanAkhir(tanaman.rainy_season_finish_plant)
+            setHama(tanaman.fertilizer_info)
+            setPupuk(tanaman.pest_info)
+            setSaran(tanaman.planting_suggestions)
+            // setGambarSaran(tanaman.planting_medium_image)
+            setRawat(tanaman.how_to_maintain)
+            // const tools = tanaman.planting_tools;
+            // setAlatPenanaman(tools.map((getAlat) => ({
+            //     id: getAlat.id,
+            //     namaAlat: getAlat.name,
+            //     gambarAlat: getAlat.image_path,
+            //     deskripsiAlat: getAlat.description
+            // })))
+            // const guides = tanaman.planting_guides
+            // setLangkahPenanaman(guides.map((getLangkah) => ({
+            //     id: getLangkah.id,
+            //     namaLangkah: getLangkah.name,
+            //     gambarLangkah: getLangkah.image_path,
+            //     deskripsiLangkah: getLangkah.description
+            // })))
+        } catch (error) {
+            console.error('Error fetching data from API:', error);
+        }
+    };
 
     useEffect(()=>{
         getDataPlantType();
         getDataPlantTech();
+        getDataEdit();
     },[])
-    const [namaTanaman, setNamaTanaman] = useState('');
-    const [jenisTanaman, setJenisTanaman] = useState('');
-    const [deskTanaman, setDeskTanaman] = useState('');
-    const [gambarTanaman, setGambarTanaman] = useState([]);
-    const [varietasTanaman, setVarietasTanaman] = useState('');
-    const [teknoTanaman, setTeknoTanaman] = useState('');
-    const [kemarauAwal, setKemarauAwal] = useState('');
-    const [hujanAwal, setHujanAwal] = useState('');
-    const [kemarauAkhir, setKemarauAkhir] = useState('');
-    const [hujanAkhir, setHujanAkhir] = useState('');
-    const [hama, setHama] = useState('');
-    const [pupuk, setPupuk] = useState('');
-    const [alatPenanaman, setAlatPenanaman] = useState([
-        { id: 1, namaAlat: '', gambarAlat: null, deskripsiAlat: '' },
-    ]);
-    const [saran, setSaran] = useState('');
-    const [gambarSaran, setGambarSaran] = useState([]);
-    const [langkahPenanaman, setLangkahPenanaman] = useState([
-        { id: 1, namaLangkah: '', gambarLangkah: null, deskripsiLangkah: '' },
-    ]);
-    const [rawat, setRawat] = useState('');
     
     const tambahkanLangkahPenanaman = () => {
         setLangkahPenanaman((prevLangkah) => [
@@ -112,24 +151,6 @@ const EditTanaman = () => {
         prevAlat.filter((alat) => alat.id !== id)
         );
     };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form Data:', 
-        { langkahPenanaman,
-        alatPenanaman,
-        namaTanaman,
-        jenisTanaman,
-        deskTanaman,
-        gambarTanaman,
-        varietasTanaman,
-        teknoTanaman,
-        kemarauAwal,
-        kemarauAkhir,
-        hujanAwal,
-        hujanAkhir,
-        hama, pupuk, saran, gambarSaran, rawat});
-        // navigate('/menanam-tanaman')
-    }
     const handleAlatPenanamanChange = (index, field, value) => {
         const updatedData = [...alatPenanaman];
         updatedData[index] = {
@@ -150,6 +171,9 @@ const EditTanaman = () => {
     const handleOnClick = () => {
         navigate(`/menanam-tanaman`);
     };
+    const handleSubmit  = () => {
+
+    }
     return (
         <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={breadcrumEditTanaman}>
         <div className='mt-2' style={{ padding:'0px 0px 30px 30px', marginRight:'0'}}>
