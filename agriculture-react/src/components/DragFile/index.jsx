@@ -3,8 +3,6 @@ import Upload from '../../assets/uploadFile.svg'
 import React, { useRef } from 'react';
 
 const DragFile = ({ value, name, setValue}) => {
-  const imageUrl = `${value}`;
-  const fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
   const dropAreaRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -62,18 +60,7 @@ const DragFile = ({ value, name, setValue}) => {
   return (
     <div>
       <div id="image-preview">
-      {value.length === 1 ? (
-        <div className="preview-container">
-          <img src={value} alt="Preview" />
-          <div className="image-info">
-            <div className="image-name">{fileName}</div>
-            <button className="remove-image" onClick={() => handleRemoveImage(value[0].id)}>
-              Remove
-            </button>
-          </div>
-        </div>
-      ) : (
-        value.map((image) => (
+      {value.map((image) => (
           <div key={image.id} className="preview-container">
             <img src={image.src} alt="Preview" />
             <div className="image-info">
@@ -83,8 +70,7 @@ const DragFile = ({ value, name, setValue}) => {
               </button>
             </div>
           </div>
-        ))
-      )}
+        ))}
       </div>
       <div
         ref={dropAreaRef}
