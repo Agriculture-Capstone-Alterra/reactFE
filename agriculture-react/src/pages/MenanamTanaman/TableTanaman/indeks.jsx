@@ -54,13 +54,13 @@
     const handleDeleteConfirm = async () => {
       try {
         await axiosWithAuth.delete(`/plants/${selectedItemId}`);
-        const updatedData = plantData.filter((plant) => plant.id !== selectedItemId);
+        const updatedData = currentData.filter((plant) => plant.id !== selectedItemId);
         const updatedDataWithNumbers = updatedData.map((plant, index) => ({
           ...plant,
           number: index + 1,
         }));
     
-        setPlantData(updatedDataWithNumbers);
+        setPlantData(updatedData);
         setModalData({});
         setShowToast(true);
         setToastMessage("Data tanaman berhasil dihapus");
