@@ -45,6 +45,7 @@
   
   .table tr {
     height: 0px;
+    border-bottom: 1px solid var(--stroke-10, rgba(107, 114, 128, 0.10));;
   }
 
 .table-list {

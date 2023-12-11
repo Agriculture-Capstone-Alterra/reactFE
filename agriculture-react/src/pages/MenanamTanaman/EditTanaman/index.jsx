@@ -6,34 +6,14 @@ import Select from '../../../components/Select'
 import Invalid from '../../../components/Invalid'
 import Layout from '../../../layout/Layout'
 import DragFile from '../../../components/DragFile'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import FormCardTambah from '../../../components/FormCardTambah'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axiosWithAuth from '../../../api/axios'
 
 const EditTanaman = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
-    const jenisTanamanOptions = [
-        { value: 'Bunga', label: 'Bunga' },
-        { value: 'Tanaman Hias', label: 'Tanaman Hias' },
-        { value: 'Umbi-umbian', label: 'Umbi-umbian' },
-        { value: 'Kacang-kacangan', label: 'Kacang-kacangan' },
-        { value: 'Pohon-pohonan', label: 'Pohon-pohonan' },
-        { value: 'Sayuran', label: 'Sayuran' },
-    ];
-    const teknologiTanamanOptions = [
-        { value: 'Hidroponik', label: 'Hidroponik' },
-        { value: 'Aeroponik', label: 'Aeroponik' },
-    ];
-    const breadcrumEditTanaman = [
-        {
-            crumblink : "/menanam-tanaman",
-            crumbname : "Menanam Tanaman",
-        },
-        {
-            crumblink : "/menanam-tanaman/edit-tanaman",
-            crumbname : "Edit Tanaman",
-        }
-    ];
     const [namaTanaman, setNamaTanaman] = useState('');
     const [jenisTanaman, setJenisTanaman] = useState('');
     const [deskTanaman, setDeskTanaman] = useState('');
@@ -47,14 +27,97 @@ const EditTanaman = () => {
     const [hama, setHama] = useState('');
     const [pupuk, setPupuk] = useState('');
     const [alatPenanaman, setAlatPenanaman] = useState([
-        { id: 1, namaAlat: '', gambarAlat: null, deskripsiAlat: '' },
+        { id: 0, namaAlat: '', gambarAlat: null, deskripsiAlat: '' },
     ]);
     const [saran, setSaran] = useState('');
     const [gambarSaran, setGambarSaran] = useState([]);
     const [langkahPenanaman, setLangkahPenanaman] = useState([
-        { id: 1, namaLangkah: '', gambarLangkah: null, deskripsiLangkah: '' },
+        { id: 0, namaLangkah: '', gambarLangkah: null, deskripsiLangkah: '' },
     ]);
     const [rawat, setRawat] = useState('');
+    const breadcrumEditTanaman = [
+        {
+            crumblink : "/menanam-tanaman",
+            crumbname : "Menanam Tanaman",
+        },
+        {
+            crumblink : "/menanam-tanaman/edit-tanaman",
+            crumbname : "Edit Tanaman",
+        }
+    ];
+    const [jenisTanamanOptions, setJenisTanamanOptions] = useState([]);
+    const [teknologiTanamanOptions, setTeknologiTanamanOptions] = useState([]);
+    const getDataPlantType = async () => {
+        try {
+          const response = await axiosWithAuth.get('plant-types')
+          const dataFromApi = response.data.data;
+          const transformedData = dataFromApi.map(item => ({
+            value: item.id,
+            label: item.name,
+          }));
+          setJenisTanamanOptions(transformedData);
+          console.log('get type:', transformedData);
+        } catch (error) {
+          console.error('Error fetching data from API:', error);
+        }
+    };
+    const getDataPlantTech = async () => {
+        try {
+          const response = await axiosWithAuth.get('planting-techs')
+          const dataFromApi = response.data.data;
+          const transformedData = dataFromApi.map(item => ({
+            value: item.id,
+            label: item.name,
+          }));
+          setTeknologiTanamanOptions(transformedData);
+          console.log('get tech:', transformedData);
+        } catch (error) {
+          console.error('Error fetching data from API:', error);
+        }
+    };
+    const getDataEdit = async () => {
+        try {
+            const response = await axiosWithAuth.get(`plants/${id}`);
+            const tanaman = response.data.data;
+            setNamaTanaman(tanaman.name)
+            setJenisTanaman(tanaman.plant_type_id)
+            setDeskTanaman(tanaman.description)
+            // setGambarTanaman(tanaman.plant_images)
+            setVarietasTanaman(tanaman.variety)
+            setTeknoTanaman(tanaman.technology_id)
+            setKemarauAwal(tanaman.dry_season_start_plant)
+            setHujanAwal(tanaman.rainy_season_start_plant)
+            setKemarauAkhir(tanaman.dry_season_finish_plant)
+            setHujanAkhir(tanaman.rainy_season_finish_plant)
+            setHama(tanaman.fertilizer_info)
+            setPupuk(tanaman.pest_info)
+            setSaran(tanaman.planting_suggestions)
+            // setGambarSaran(tanaman.planting_medium_image)
+            setRawat(tanaman.how_to_maintain)
+            // const tools = tanaman.planting_tools;
+            // setAlatPenanaman(tools.map((getAlat) => ({
+            //     id: getAlat.id,
+            //     namaAlat: getAlat.name,
+            //     gambarAlat: getAlat.image_path,
+            //     deskripsiAlat: getAlat.description
+            // })))
+            // const guides = tanaman.planting_guides
+            // setLangkahPenanaman(guides.map((getLangkah) => ({
+            //     id: getLangkah.id,
+            //     namaLangkah: getLangkah.name,
+            //     gambarLangkah: getLangkah.image_path,
+            //     deskripsiLangkah: getLangkah.description
+            // })))
+        } catch (error) {
+            console.error('Error fetching data from API:', error);
+        }
+    };
+
+    useEffect(()=>{
+        getDataPlantType();
+        getDataPlantTech();
+        getDataEdit();
+    },[])
     
     const tambahkanLangkahPenanaman = () => {
         setLangkahPenanaman((prevLangkah) => [
@@ -88,24 +151,6 @@ const EditTanaman = () => {
         prevAlat.filter((alat) => alat.id !== id)
         );
     };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form Data:', 
-        { langkahPenanaman,
-        alatPenanaman,
-        namaTanaman,
-        jenisTanaman,
-        deskTanaman,
-        gambarTanaman,
-        varietasTanaman,
-        teknoTanaman,
-        kemarauAwal,
-        kemarauAkhir,
-        hujanAwal,
-        hujanAkhir,
-        hama, pupuk, saran, gambarSaran, rawat});
-        navigate('/menanam-tanaman')
-    }
     const handleAlatPenanamanChange = (index, field, value) => {
         const updatedData = [...alatPenanaman];
         updatedData[index] = {
@@ -126,6 +171,9 @@ const EditTanaman = () => {
     const handleOnClick = () => {
         navigate(`/menanam-tanaman`);
     };
+    const handleSubmit  = () => {
+
+    }
     return (
         <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={breadcrumEditTanaman}>
         <div className='mt-2' style={{ padding:'0px 0px 30px 30px', marginRight:'0'}}>
@@ -172,7 +220,7 @@ const EditTanaman = () => {
                 <DragFile 
                     name={'gambartanaman'}
                     value={gambarTanaman}
-                    onChange={(e) => setGambarTanaman(e.target.value)}
+                    setValue={setGambarTanaman}
                 /> 
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="varietastanaman">Varietas Tanaman</label>
@@ -276,11 +324,12 @@ const EditTanaman = () => {
                 <p className='p-label'>Alat yang Dibutuhkan</p>
                 <FormCardTambah
                     data={alatPenanaman}
+                    setData={setAlatPenanaman}
                     onTambah={tambahkanAlatPenanaman}
                     onHapus={hapusAlatPenanaman}
                     onChange={handleAlatPenanamanChange}
                     label="Alat Penanaman"
-                    name='alatpenanaman'
+                    namelabel='Alat'
                 />
                 <div className='form-label fontw600 mt-3'>Saran Untuk Tempat Penanaman</div>
                 <div className='card card-n px-4 py-3 mb-3'>
@@ -300,17 +349,18 @@ const EditTanaman = () => {
                     <DragFile 
                         name={'gambarsaran'}
                         value={gambarSaran}
-                        onChange={(e) => setGambarSaran(e.target.value)}
+                        setValue={setGambarSaran}
                     />
                 </div>
                 <div className='form-label fontw600'>Langkah Penanaman</div>
                 <FormCardTambah
                     data={langkahPenanaman}
+                    setData={setLangkahPenanaman}
                     onTambah={tambahkanLangkahPenanaman}
                     onHapus={hapusLangkahPenanaman}
                     onChange={handleLangkahPenanamanChange}
                     label="Langkah Penanaman"
-                    name='langkahpenanaman'
+                    namelabel='Langkah'
                 />
                 <div className="form-group mb-3 mt-3">
                     <label className="form-label fontw600" htmlFor="caramerawat">Cara merawat tanaman</label>
@@ -329,7 +379,7 @@ const EditTanaman = () => {
                     <button type="button" className="btn btn-outline-green" onClick={() => handleOnClick()}>Batal</button>
                     </div>
                     <button type='submit' className="btn btn-green col-auto m12">
-                        Edit
+                        Tambah
                     </button>
                 </div>
             </FormLayout>

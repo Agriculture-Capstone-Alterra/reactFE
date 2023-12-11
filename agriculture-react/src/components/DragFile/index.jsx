@@ -1,11 +1,10 @@
 import "./drag-drop.css";
 import Upload from '../../assets/uploadFile.svg'
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
-const DragFile = ({ value, onChange, name }) => {
+const DragFile = ({ value, name, setValue}) => {
   const dropAreaRef = useRef(null);
   const fileInputRef = useRef(null);
-  const [imagePreviews, setImagePreviews] = useState([]);
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -23,44 +22,45 @@ const DragFile = ({ value, onChange, name }) => {
     handleFiles(files);
   };
 
-  const handleFileInputChange = (e) => {
+  const handleFileInputChange = () => {
     const files = fileInputRef.current.files;
+    console.log("file, ", files)
     handleFiles(files);
-    onChange(e);
+  };
+  const addImage = (imagePreview) => {
+    setValue((prevImagePreviews) => [...prevImagePreviews, imagePreview]);
   };
 
   const handleFiles = (files) => {
-    const newImagePreviews = [];
-
     for (const file of files) {
       if (file.type.startsWith('image/')) {
         const reader = new FileReader();
 
         reader.onload = () => {
           const imagePreview = {
-            id: Date.now(), // Unique ID for each image
+            id: Date.now(),
             src: reader.result,
             name: file.name,
           };
 
-          newImagePreviews.push(imagePreview);
-          setImagePreviews([...imagePreviews, ...newImagePreviews]);
+          addImage(imagePreview);
         };
 
         reader.readAsDataURL(file);
       }
     }
+    
   };
 
   const handleRemoveImage = (id) => {
-    const updatedImagePreviews = imagePreviews.filter((image) => image.id !== id);
-    setImagePreviews(updatedImagePreviews);
+    const updatedImagePreviews = value.filter((image) => image.id !== id);
+    setValue(updatedImagePreviews);
   };
 
   return (
     <div>
       <div id="image-preview">
-        {imagePreviews.map((image) => (
+        {value.map((image) => (
           <div key={image.id} className="preview-container">
             <img src={image.src} alt="Preview" />
             <div className="image-info">
@@ -98,7 +98,6 @@ const DragFile = ({ value, onChange, name }) => {
           multiple={true}
           ref={fileInputRef}
           onChange={handleFileInputChange}
-          value={value}
           name={name} 
         />
       </div>

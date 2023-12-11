@@ -19,24 +19,25 @@ const RiwayatMenanam = () => {
 
   // Filter data dari search input
   const filteredData = usersData.filter((item) =>
-    item.namaPengguna.toLowerCase().includes(searchTerm.toLowerCase())
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Get Dummy data dari mockapi
+  // TODO : GET Users Data from API
+  const fetchUsersData = async () => {
+    try {
+      const res = await axiosWithAuth.get("/users");
+      const usersData = res.data.data;
+      setUsersData(usersData);
+      console.log("users data => ", usersData);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    }
+  };
+
   useEffect(() => {
     fetchUsersData();
   }, []);
-
-  const fetchUsersData = async () => {
-    try {
-      const response = await axiosWithAuth.get("/users");
-      const usersData = response.data;
-      setUsersData(usersData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const breadcrumbsobjectexample = [
     {
@@ -62,11 +63,11 @@ const RiwayatMenanam = () => {
     setCurrentPage(1);
   };
 
-  const handleRowClick = (namaPengguna) => {
-    console.log("Row clicked:", namaPengguna);
+  const handleRowClick = (id) => {
+    console.log("Row clicked:", id);
 
     //Link ke halaman List Tanaman dari Nama Pengguna
-    navigate(`/riwayat-menanam/list-tanaman/`);
+    navigate(`/riwayat-menanam/list-tanaman`);
   };
 
   return (
@@ -109,13 +110,13 @@ const RiwayatMenanam = () => {
                   {currentItems.map((item, index) => (
                     <tr
                       key={index + indexOfFirstItem}
-                      onClick={() => handleRowClick(item.namaPengguna)}
+                      onClick={() => handleRowClick(item.id)}
                       className={styles.rowClickable}
                     >
                       <td>{index + indexOfFirstItem + 1}</td>
-                      <td>{item.namaPengguna}</td>
-                      <td>{item.jumlahTanaman}</td>
-                      <td>{item.terakhirUpdate}</td>
+                      <td>{item.name}</td>
+                      <td>{}</td>
+                      <td>{item.updated_at}</td>
                     </tr>
                   ))}
                 </Table>
