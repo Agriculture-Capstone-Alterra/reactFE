@@ -163,6 +163,17 @@
   display: none !important;
 }
 
+.tambahPengingat-stateKostumPengingat {
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 400;
+  background-color: #e5e7eb;
+  border: 1px solid #6b728040;
+  border-radius: 4px;
+  padding: 4px 8px;
+  width: fit-content;
+}
+
 .weekDays-selector input[type="checkbox"] + label {
   display: inline-block;
   border-radius: 50px;

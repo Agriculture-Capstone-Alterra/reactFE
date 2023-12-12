@@ -3,6 +3,8 @@ import Upload from '../../assets/uploadFile.svg';
 import React, { useRef } from 'react';
 
 const DropFile = ({ name, value, setValue }) => {
+  const imageUrl = `${value}`;
+  const fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
   const dropAreaRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -24,6 +26,7 @@ const DropFile = ({ name, value, setValue }) => {
 
   const handleFileInputChange = (e) => {
     const files = fileInputRef.current.files;
+    console.log("file, ", files)
     handleFiles(files);
   };
 
@@ -40,6 +43,7 @@ const DropFile = ({ name, value, setValue }) => {
       };
 
       reader.readAsDataURL(files[0]);
+
     }
   };
 
@@ -61,13 +65,27 @@ const DropFile = ({ name, value, setValue }) => {
       >
         {value ? (
           <div className="preview-container">
-            <img src={value.src} alt="Preview" />
-            <div className="image-info">
-              <div className="image-name">{value.name}</div>
-              <button className="remove-image" onClick={handleDelete}>
-                Remove
-              </button>
-            </div>
+            {value.src ? (
+              <>
+              <img src={value.src} alt="Preview" />
+              <div className="image-info">
+                <div className="image-name">{value.name}</div>
+                <button className="remove-image" onClick={handleDelete}>
+                  Remove
+                </button>
+              </div>
+              </>
+            ) : (
+              <>
+              <img src={value} alt="Preview" />
+              <div className="image-info">
+                <div className="image-name">{fileName}</div>
+                {/* <button className="remove-image" onClick={handleDelete}>
+                  Remove
+                </button> */}
+              </div>
+              </>
+            )}
           </div>
         ) : (
           <div className="row justify-content-center">
