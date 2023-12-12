@@ -209,7 +209,7 @@ const TambahTanaman = () => {
                     const base64toRes = await fetch(imgsaran.src)
                     const base64toBlob = await base64toRes.blob()
                     console.log("images load, ", base64toBlob)
-                    plantSuggData.append('image_file', base64toBlob);
+                    plantSuggData.append('image_files', base64toBlob);
                     plantSuggData.append('plant_id', plantId);
                 }
                 const plantSuggResponse = await axiosWithAuth.post(`planting-medium-images/${plantId}`, plantSuggData, {
@@ -236,17 +236,6 @@ const TambahTanaman = () => {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-            
-                console.log('Form Data:', plantResponse)
-                console.log('Message:', plantResponse.response.data.message)
-                console.log('Form Data Img:', plantImagesResponse)
-                console.log('Message Img:', plantImagesResponse.response.data.message)
-                console.log('Form Data Guides:', plantingGuideResponse)
-                console.log('Message Guides:', plantingGuideResponse.response.data.message)
-                console.log('Form Data Tools:', plantingToolsResponse)
-                console.log('Message Tools:', plantingToolsResponse.response.data.message)
-                console.log('Form Data Img 2:', plantSuggResponse)
-                console.log('Message Img 2:', plantSuggResponse.response.data.message)
 
                 navigate('/menanam-tanaman')
             } catch (error) {

@@ -80,9 +80,9 @@ const DropFile = ({ name, value, setValue }) => {
               <img src={value} alt="Preview" />
               <div className="image-info">
                 <div className="image-name">{fileName}</div>
-                <button className="remove-image" onClick={handleDelete}>
+                {/* <button className="remove-image" onClick={handleDelete}>
                   Remove
-                </button>
+                </button> */}
               </div>
               </>
             )}

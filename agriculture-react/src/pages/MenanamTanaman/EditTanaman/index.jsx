@@ -10,7 +10,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import FormCardTambah from '../../../components/FormCardTambah'
 import React, { useState, useEffect } from 'react'
 import axiosWithAuth from '../../../api/axios'
-import DropFile from '../../../components/DropFile'
 
 const EditTanaman = () => {
     const { id } = useParams();
@@ -105,22 +104,30 @@ const EditTanaman = () => {
             setPupuk(tanaman.pest_info)
             setSaran(tanaman.planting_suggestions)
             setRawat(tanaman.how_to_maintain)
-            const gambarSaranFiles = await tanaman.planting_medium_image;
-            setGambarSaran([gambarSaranFiles])
-            const tools = tanaman.planting_tools;
+            const tools = await tanaman.planting_tools;
             setAlatPenanaman(tools.map((getAlat) => ({
                 id: getAlat.id,
                 namaAlat: getAlat.name,
                 gambarAlat: getAlat.image_path,
                 deskripsiAlat: getAlat.description
             })))
-            const guides = tanaman.planting_guides
+            const guides = await tanaman.planting_guides
             setLangkahPenanaman(guides.map((getLangkah) => ({
                 id: getLangkah.id,
                 namaLangkah: getLangkah.name,
                 gambarLangkah: getLangkah.image_path,
                 deskripsiLangkah: getLangkah.description
             })))
+            const gambarSaranFiles = await tanaman.planting_medium_images.map((saranGambar) => {
+                const imgURL = saranGambar.image_path;
+                const fileName=  imgURL.substring(imgURL.lastIndexOf('/') + 1);
+                return {
+                    id: saranGambar.id,
+                    name: fileName,
+                    src: saranGambar.image_path,
+                };
+            });
+            setGambarSaran(gambarSaranFiles)
         } catch (error) {
             console.error('Error fetching data from API:', error);
         }
@@ -154,16 +161,35 @@ const EditTanaman = () => {
         },
         ]);
     };
-    const hapusLangkahPenanaman = (id) => {
+    const hapusLangkahPenanaman = (idLangkah) => {
+        console.log('langkah id, ', idLangkah)
+        // try {
+        //     const response = await axiosWithAuth.get(`plants/${id}`);
+        //     const tanaman = response.data.data;
+        //     tanaman.planting_guides.forEach((plantingGuide) => {
+        //         const plantingGuideId = plantingGuide.id;
+        //         if(idLangkah === plantingGuideId){
+        //         }else{
+        //         }
+        //     });
+
+        // }catch (error){
+        //     console.error(error);
+        // }
+    };
+    const hapusDefaultLP = (id) => {
         setLangkahPenanaman((prevLangkah) =>
         prevLangkah.filter((langkah) => langkah.id !== id)
         );
+    }
+    const hapusAlatPenanaman = async (idAlat) => {
+        console.log('alat id, ', idAlat)
     };
-    const hapusAlatPenanaman = (id) => {
+    const hapusDefaultAP = (id) => {
         setAlatPenanaman((prevAlat) =>
         prevAlat.filter((alat) => alat.id !== id)
         );
-    };
+    }
     const handleAlatPenanamanChange = (index, field, value) => {
         const updatedData = [...alatPenanaman];
         updatedData[index] = {
@@ -241,8 +267,6 @@ const EditTanaman = () => {
             
                 const response = await axiosWithAuth.get(`plants/${id}`);
                 const tanaman = response.data.data;
-                
-                //
 
                 const toolData = tanaman.planting_tools;
                 const idsToolArray = toolData.map((tool) => tool.id);
@@ -262,9 +286,7 @@ const EditTanaman = () => {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-                
-                //
-                
+
                 const guideData = tanaman.planting_guides;
                 const idsGuideArray = guideData.map((guide) => guide.id);
                 console.log('id guides, ',idsGuideArray)
@@ -283,6 +305,21 @@ const EditTanaman = () => {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
+
+                // const plantFormData = new FormData();
+                // for (const image of gambarTanaman) {
+                //     const base64toRes = await fetch(image.src)
+                //     const base64toBlob = await base64toRes.blob()
+                //     console.log("images load, ", base64toBlob)
+                //     plantFormData.append('image_files', base64toBlob);
+                //     plantFormData.append('plant_id', tanaman.id);
+                // }
+                // const plantImagesResponse = await axiosWithAuth.post(`plant-images/${tanaman.id}`, plantFormData, {
+                //     headers: {
+                //         'Content-Type': 'multipart/form-data',
+                //     },
+                // });
+
                 navigate('/menanam-tanaman')
             } catch (error) {
                 console.error('Error updating form:', error);
@@ -462,7 +499,7 @@ const EditTanaman = () => {
                         <Invalid errormsg={"Tolong masukkan saran untuk tempat penanaman."}/>
                     </div>
                     <label className="form-label fontw600" htmlFor="gambarsaran">Foto</label>
-                    <DropFile 
+                    <DragFile 
                         name={'gambarsaran'}
                         value={gambarSaran}
                         setValue={setGambarSaran}
