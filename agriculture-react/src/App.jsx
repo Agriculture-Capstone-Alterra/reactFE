@@ -45,7 +45,7 @@ function App() {
           element={<RiwayatListTanaman />}
         />
         <Route
-          path="riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman"
+          path="riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/:id"
           element={<InfoDetailRiwayatTanaman />}
         />
         {/* End Riwayat Menanam Pages */}

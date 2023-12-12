@@ -40,10 +40,10 @@ const InfoDetailRiwayatTanaman = () => {
 
   const { id } = useParams();
   const [tanaman, setTanaman] = useState({});
-  
+
   useEffect(() => {
     axiosWithAuth
-      .get(`plants/${id}`)
+      .get(`user-plants/${id}`)
       .then((result) => {
         setTanaman(result.data.data);
         console.log(result.data.data);
@@ -83,8 +83,6 @@ const InfoDetailRiwayatTanaman = () => {
     },
   ];
 
-  
-
   return (
     <>
       <ImgModal
@@ -121,7 +119,7 @@ const InfoDetailRiwayatTanaman = () => {
                       <div className="">
                         <img src={Bibit} alt="" />
                         <div className="fw-bold">Jumlah Bibit</div>
-                        <p>10</p>
+                        <p>{tanaman.seed_quantity}</p>
                       </div>
                     </div>
                     <div className="text-center">
@@ -147,7 +145,7 @@ const InfoDetailRiwayatTanaman = () => {
                     </div>
                   </div>
                   <Accordion
-                    title="Deskripsi Tananman"
+                    title="Deskripsi Tanaman"
                     onClick={() => setIsShowDeskripsi(!isShowDeskripsi)}
                     isShowAccordion={isShowDeskripsi}
                   >
@@ -169,11 +167,34 @@ const InfoDetailRiwayatTanaman = () => {
             </div>
             <div className="col" style={{ width: "436px" }}>
               <div>
-                <h4 className="">Tanggal Mulai Menanam</h4>
-                <h6 className="">
-                  <img src={calendar} />
-                  22 Februari 2023
-                </h6>
+              <p
+                    style={{
+                      color: "#111827",
+                      fontSize: "20px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Tanggal Mulai Menanam
+                  </p>
+                <div className="d-flex gap-2 align-items-center mt-2">
+                  <img src={calendar} alt="" />
+                  {tanaman.start_planting_date &&(
+                      <span
+                        style={{
+                          color: "#4B5563",
+                          fontSize: "16px",
+                          fontWeight: 400,
+                        }}
+                      >
+                        {`${format(
+                          new Date(tanaman.start_planting_date),
+                          "dd MMMM yyyy",
+                          { locale: idLocale }
+                        )} 
+                        `}
+                      </span>
+                    )}
+                </div>
               </div>
               <div className="mt-4">
                 <div>
@@ -267,7 +288,7 @@ const InfoDetailRiwayatTanaman = () => {
 
               <div>
                 <h4 className="mt-4">Perkembangan Tumbuhan</h4>
-{/* 
+                {/* 
                 <ImgCard
                   images={MawarPutih}
                   viewImgModal={handleonClick}
