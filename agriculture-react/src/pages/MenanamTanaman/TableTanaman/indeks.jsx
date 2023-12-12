@@ -111,17 +111,20 @@
                           </div>
                           <ul className="dropdown-menu">
                             <li className="d-grid mb-2 ps-3 pe-3">
+                              <div className='link-none'>
+                              <Link to={`/menanam-tanaman/edit-tanaman/${plant.id}`}>
                               <button
                                 className="btn"
                                 style={{
                                   display: 'flex',
                                   alignItems: 'center',
                                 }}
-                                onClick={() => handleEdit(plant.id)}
                               >
                                 <img src={EditIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
                                 <span>Edit</span>
                               </button>
+                              </Link>
+                              </div>
                             </li>
                             <li className="d-grid mb-2 ps-3 pe-3">
                               <ModalTrigger
