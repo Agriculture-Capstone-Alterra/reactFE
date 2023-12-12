@@ -12,6 +12,7 @@ import Pagination from '../../../components/Pagination/Pagination.jsx';
 import Modal from '../../../components/Modal/Modal.jsx';
 import ModalTrigger from '../../../components/Modal/ModalTrigger.jsx';
 import axios from "axios";
+import axiosWithAuth from '../../../api/axios.jsx';
 
 
 // start dokumentasi komponen
@@ -46,24 +47,33 @@ const PengingatTanaman = () => {
   }, [location.state]);
 
   useEffect(() => {
-    axios
-      .get(`${mockApiUrl}/penyiraman`)
-      .then(res => {
-        setDataPenyiramanList(res.data);
-      })
-      .catch(err => {
-        setDataPenyiramanList([])
-        console.log(err);
-      });
-    axios
-      .get(`${mockApiUrl}/pemupukan`)
-      .then(res => {
-        setDataPemupukanList(res.data);
-      })
-      .catch(err => {
-        setDataPemupukanList([])
-        console.log(err);
-      });
+    // axios
+    //   .get(`${mockApiUrl}/penyiraman`)
+    //   .then(res => {
+    //     setDataPenyiramanList(res.data);
+    //   })
+    //   .catch(err => {
+    //     setDataPenyiramanList([])
+    //     console.log(err);
+    //   });
+    // axios
+    //   .get(`${mockApiUrl}/pemupukan`)
+    //   .then(res => {
+    //     setDataPemupukanList(res.data);
+    //   })
+    //   .catch(err => {
+    //     setDataPemupukanList([])
+    //     console.log(err);
+    //   });
+      axiosWithAuth('https://service.api-agriplant.xyz/recommended-schedule').then((res) => {
+        const rawData = res.data.data;
+        console.log(rawData);
+        const penyiramanList = rawData.filter((item) => item.schedule_type === 'siram');
+        const pemupukanList = rawData.filter((item) => item.schedule_type === 'pupuk');
+
+        setDataPenyiramanList(penyiramanList);
+        setDataPemupukanList(pemupukanList);
+      }).catch((err) => console.log(err));
   }, []);
 
   const headers = [
@@ -121,10 +131,10 @@ const PengingatTanaman = () => {
                     currentDataPenyiraman.map((item, index) => (
                       <tr key={index}>
                         <td>{item.number}</td>
-                        <td>{item.jenisTanaman}</td>
-                        <td>{item.namaPengingat}</td>
-                        <td>{item.waktu}</td>
-                        <td>{item.pengulangan}</td>
+                        <td>{item.plant.name}</td>
+                        <td>{item.name}</td>
+                        <td>{`setiap ${item.repeat_in} kali ${item.repeat_in_unit} `}</td>
+                        <td>{item.repeat_date + " " + item.repeat_days}</td>
                         <td>
                           <div
                             className="p-2 dropdown-toggle-split"
@@ -195,10 +205,10 @@ const PengingatTanaman = () => {
                     currentDataPemupukan.map((item, index) => (
                       <tr key={index}>
                         <td>{item.number}</td>
-                        <td>{item.jenisTanaman}</td>
-                        <td>{item.namaPengingat}</td>
-                        <td>{item.waktu}</td>
-                        <td>{item.pengulangan}</td>
+                        <td>{item.plant.name}</td>
+                        <td>{item.name}</td>
+                        <td>{`setiap ${item.repeat_in} kali ${item.repeat_in_unit} `}</td>
+                        <td>{item.repeat_date + " " + item.repeat_days}</td>
                         <td>
                           <div
                             className="p-2 dropdown-toggle-split"
