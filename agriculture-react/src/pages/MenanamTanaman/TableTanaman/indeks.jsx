@@ -54,13 +54,13 @@
     const handleDeleteConfirm = async () => {
       try {
         await axiosWithAuth.delete(`/plants/${selectedItemId}`);
-        const updatedData = plantData.filter((plant) => plant.id !== selectedItemId);
+        const updatedData = currentData.filter((plant) => plant.id !== selectedItemId);
         const updatedDataWithNumbers = updatedData.map((plant, index) => ({
           ...plant,
           number: index + 1,
         }));
     
-        setPlantData(updatedDataWithNumbers);
+        setPlantData(updatedData);
         setModalData({});
         setShowToast(true);
         setToastMessage("Data tanaman berhasil dihapus");
@@ -107,15 +107,16 @@
                       <tr key={index}>
                       <td onClick={() => handleRowClick(plant.id)}>{plant.number}</td>
                       <td onClick={() => handleRowClick(plant.id)}>{plant.name}</td>
-                      <td onClick={() => handleRowClick(plant.id)}>{plant.plant_type.name}</td>
+                      <td onClick={() => handleRowClick(plant.id)}>{plant.plant_type}</td>
                       <td onClick={() => handleRowClick(plant.id)}>{plant.variety}</td>
-                      <td onClick={() => handleRowClick(plant.id)}>{plant.technology.name}</td>
+                      <td onClick={() => handleRowClick(plant.id)}>{plant.technology}</td>
                       <td>
                           <div className="p-2 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                             <TbDots className="fw-bold fs-4 ms-1" />
                           </div>
                           <ul className="dropdown-menu">
                             <li className="d-grid mb-2 ps-3 pe-3">
+                              <div className='link-none'>
                               <Link to={`/menanam-tanaman/edit-tanaman/${plant.id}`}>
                               <button
                                 className="btn"
@@ -128,6 +129,7 @@
                                 <span>Edit</span>
                               </button>
                               </Link>
+                              </div>
                             </li>
                             <li className="d-grid mb-2 ps-3 pe-3">
                               <ModalTrigger
