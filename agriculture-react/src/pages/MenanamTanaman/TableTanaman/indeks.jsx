@@ -170,7 +170,7 @@
           <Modal
             id={deleteModalName}
             title="Hapus Data Tanaman"
-            content={<p className='text-center'>Apakah anda yakin akan menghapus data tanaman?</p>}
+            content={<p className='text-center'>Apakah anda yakin akan menghapus SEMUA DATA TANAMAN PADA USER ? </p>}
             onCancel={() => {}}
             onSubmit={handleDeleteConfirm}
             type="delete"
