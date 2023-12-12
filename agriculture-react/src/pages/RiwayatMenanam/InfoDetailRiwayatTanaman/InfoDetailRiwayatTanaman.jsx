@@ -18,6 +18,10 @@ import Modal from "../../../components/Modal/Modal";
 import ImgModal from "../../../components/ImgModal/ImgModal";
 import { format } from "date-fns";
 import idLocale from "date-fns/locale/id";
+import bayam from "../../../assets/img/bayam.png";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; 
+
 
 const InfoDetailRiwayatTanaman = () => {
   const breadcrumbsobjectexample = [
@@ -43,7 +47,7 @@ const InfoDetailRiwayatTanaman = () => {
 
   useEffect(() => {
     axiosWithAuth
-      .get(`user-plants/${id}`)
+      .get(`plants/${id}`)
       .then((result) => {
         setTanaman(result.data.data);
         console.log(result.data.data);
@@ -102,11 +106,25 @@ const InfoDetailRiwayatTanaman = () => {
                 className="card"
                 style={{ width: "640px", backgroundColor: "#F3F4F6" }}
               >
-                <img
+                {/* <img
                   src={MawarPutih}
                   className="card-img-top img-style"
                   alt="..."
-                />
+                /> */}
+                <div style={{ width: "100%" }}>
+                  <Carousel
+                    autoPlay={true}
+                    showArrows={false}
+                    showThumbs={false}
+                  >
+                    <div>
+                      <img src={bayam} />
+                    </div>
+                    <div>
+                      <img src={bayam} />
+                    </div>
+                  </Carousel>
+                </div>
                 <div className="card-body">
                   <h5 className="card-title text-center fw-bold">
                     {tanaman.name}
