@@ -57,10 +57,11 @@
         const updatedData = currentData.filter((plant) => plant.id !== selectedItemId);
         const updatedDataWithNumbers = updatedData.map((plant, index) => ({
           ...plant,
-          number: index + 1,
+          number: index + 1, 
+          itemsPerPage: 10,
         }));
-    
-        setPlantData(updatedData);
+
+        setCurrentData(updatedDataWithNumbers);
         setModalData({});
         setShowToast(true);
         setToastMessage("Data tanaman berhasil dihapus");
