@@ -162,34 +162,15 @@ const EditTanaman = () => {
         ]);
     };
     const hapusLangkahPenanaman = (idLangkah) => {
-        console.log('langkah id, ', idLangkah)
-        // try {
-        //     const response = await axiosWithAuth.get(`plants/${id}`);
-        //     const tanaman = response.data.data;
-        //     tanaman.planting_guides.forEach((plantingGuide) => {
-        //         const plantingGuideId = plantingGuide.id;
-        //         if(idLangkah === plantingGuideId){
-        //         }else{
-        //         }
-        //     });
-
-        // }catch (error){
-        //     console.error(error);
-        // }
-    };
-    const hapusDefaultLP = (id) => {
         setLangkahPenanaman((prevLangkah) =>
-        prevLangkah.filter((langkah) => langkah.id !== id)
+        prevLangkah.filter((langkah) => langkah.id !== idLangkah)
         );
-    }
-    const hapusAlatPenanaman = async (idAlat) => {
-        console.log('alat id, ', idAlat)
     };
-    const hapusDefaultAP = (id) => {
+    const hapusAlatPenanaman = async (idAlat) => {
         setAlatPenanaman((prevAlat) =>
-        prevAlat.filter((alat) => alat.id !== id)
+        prevAlat.filter((alat) => alat.id !== idAlat)
         );
-    }
+    };
     const handleAlatPenanamanChange = (index, field, value) => {
         const updatedData = [...alatPenanaman];
         updatedData[index] = {
