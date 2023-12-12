@@ -16,8 +16,6 @@ const tambahPengingat = () => {
   const [radio, setRadio] = useState("");
   const [modalRadio, setModalRadio] = useState("");
   const [selectedTanaman, setSelectedTanaman] = useState("");
-  const [isValid, setIsValid] = useState(true);
-
   const [number, setNumber] = useState(0);
   const [counter, setCounter] = useState(0);
   const [formData, setFormData] = useState(null);
@@ -43,9 +41,7 @@ const tambahPengingat = () => {
   ];
 
   const handleSelectChange = (e) => {
-    const isValid = selectedTanaman !== "";
-    setIsValid(isValid);
-    return isValid;
+    setSelectedTanaman(e.target.value);
   };
 
   const handleRadioChange = (e) => {
