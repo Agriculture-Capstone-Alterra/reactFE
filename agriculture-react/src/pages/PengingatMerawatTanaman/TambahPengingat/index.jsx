@@ -8,7 +8,6 @@ import { Link, useNavigate } from "react-router-dom";
 import Modal from "../../../components/Modal/Modal";
 import ModalTrigger from "../../../components/Modal/ModalTrigger";
 import { SlArrowUp, SlArrowDown } from "react-icons/sl";
-
 import axiosWithAuth from "../../../api/axios";
 import axios from "axios";
 
