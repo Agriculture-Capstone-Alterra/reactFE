@@ -2,16 +2,22 @@ import Layout from "../../../layout/Layout";
 import Select from "../../../components/Select";
 import Input from "../../../components/Input";
 import "./editPengingat.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SlArrowDown, SlArrowUp } from "react-icons/sl";
+import axios from "axios";
 
 const editPengingat = () => {
   const [radio, setRadio] = useState("");
   const [selectedTanaman, setSelectedTanaman] = useState("");
-  const [pilihHari, setPilihHari] = useState("");
   const [hitung, setHitung] = useState(0);
   const [menambah, setMenambah] = useState(0);
+  const [selectedTanamanError, setSelectedTanamanError] = useState("");
+  const [formData, setFormData] = useState(null);
+  const [selectedDay, setSelectedDay] = useState([]);
+  const [dateModal, setDateModal] = useState(0);
+  const [modalRadio, setModalRadio] = useState("");
+  const [tanamanOptions, setTanamanOptions] = useState([]);
 
   const namaTanaman = [
     {
@@ -34,25 +40,6 @@ const editPengingat = () => {
     },
   ];
 
-  const pilihanHari = [
-    {
-      label: "Hari",
-      value: "Hari",
-    },
-    {
-      value: "Minggu",
-      label: "Minggu",
-    },
-    {
-      label: "Bulan",
-      value: "Bulan",
-    },
-    {
-      label: "Tahun",
-      value: "Tahun",
-    },
-  ];
-
   const handleSelectChange = (selectedOption) => {
     setSelectedTanaman(selectedOption.value);
   };
@@ -62,11 +49,7 @@ const editPengingat = () => {
   };
 
   const handleModalRadio = (e) => {
-    setPilihHari(e.target.value);
-  };
-
-  const handlePilihHari = (selectedOption) => {
-    setPilihHari(selectedOption.value);
+    setModalRadio(e.target.value);
   };
 
   const plus = (e) => {
@@ -76,29 +59,78 @@ const editPengingat = () => {
 
   const minus = (e) => {
     e.preventDefault();
-    setHitung(hitung > 0 ? hitung - 1 : 0);
+    if (hitung > 0) {
+      setHitung((prev) => prev - 1);
+    }
   };
 
   const atas = (e) => {
     e.preventDefault();
-    setMenambah(menambah + 1);
+    setMenambah((prev) => prev + 1);
   };
 
   const bawah = (e) => {
     e.preventDefault();
-    setMenambah(menambah > 0 ? menambah - 1 : 0);
+    if (menambah > 0) {
+      setMenambah((prev) => prev - 1);
+    }
   };
 
   const handleCostumPengulangan = (e) => {
     e.preventDefault();
   };
 
+  // checkbox hari
+  const handleCheckboxChangeDay = (value) => {
+    if (selectedDay.includes(value)) {
+      setSelectedDay(selectedDay.filter((item) => item !== value));
+    } else {
+      if (selectedDay.length < 3) {
+        setSelectedDay([...selectedDay, value]);
+      }
+    }
+  };
+
+  const handleDateModal = (e) => {
+    setDateModal(e.target.value);
+  };
+
+  const handleSimpan = (e) => {
+    e.preventDefault();
+  };
+  // handleDone
+  const handleDone = () => {
+    setFormData({
+      ulangiSetiap: menambah,
+      ulangiHari: selectedDay,
+    });
+  };
+  // Get API
+  useEffect(() => {
+    const fetchNamaTanaman = async () => {
+      try {
+        const response = await axios.get(
+          "https://6575b5f4b2fbb8f6509d68ad.mockapi.io/namatanaman"
+        );
+        const mappedData = response.data.map((value) => ({
+          label: value.name,
+          value: value.id,
+        }));
+
+        setTanamanOptions(mappedData);
+      } catch (error) {
+        console.error("Error fetching tanaman data:", error);
+      }
+    };
+
+    fetchNamaTanaman();
+  }, []);
   return (
     <>
       <Layout
         pagetitle={"Pengingat Tanaman"}
         breadcrumbs={breadcrumbsobjectexample}>
-        <form className="container ms-3 mt-4">
+        <form className="container ms-3 mt-4" onSubmit={handleSimpan}>
           <div className="mb-4">
             <label className="editPengingat-label d-flex mb-2">
               Jenis Tanaman
@@ -106,7 +138,7 @@ const editPengingat = () => {
             <Select
               value={selectedTanaman}
               className={"form-select editPengingat-select"}
-              options={namaTanaman}
+              options={tanamanOptions}
               title={"Pilih nama tanaman"}
               onChange={handleSelectChange}
             />
@@ -117,8 +149,8 @@ const editPengingat = () => {
             </label>
             <input
               value={radio}
-              disabled={true}
               className={"editPengingat-Input form-control"}
+              required
             />
             <div className="d-flex gap-5 mt-3">
               <div className="form-check">
@@ -155,15 +187,40 @@ const editPengingat = () => {
           </div>
           <label className="editPengingat-label d-flex mb-2">Waktu</label>
           <div className="d-flex gap-3 mb-1">
-            <Input
+            <input
               type={"date"}
               className={"editPengingat-date form-control"}
+              required
             />
-            <Input
+            <input
               type={"time"}
               className={"editPengingat-time form-control"}
+              required
+            />
+            <input
+              type={"time"}
+              className={"editPengingat-time form-control"}
+              required
             />
           </div>
+          {formData !== null && modalRadio === "Tidak Pernah" && (
+            <p className="d-flex tambahPengingat-stateKostumPengingat">
+              {formData.ulangiSetiap} Minggu tiap hari{" "}
+              {formData.ulangiHari?.join(", ")} Berakhir sampai {modalRadio}
+            </p>
+          )}
+          {formData !== null && modalRadio === "Berlaku Sampai" && (
+            <p className="d-flex tambahPengingat-stateKostumPengingat">
+              {formData.ulangiSetiap} Minggu tiap hari{" "}
+              {formData.ulangiHari?.join(", ")} {modalRadio} {dateModal}
+            </p>
+          )}
+          {formData !== null && modalRadio === "Setelah" && (
+            <p className="d-flex tambahPengingat-stateKostumPengingat">
+              {formData.ulangiSetiap} Minggu tiap hari{" "}
+              {formData.ulangiHari?.join(", ")} {modalRadio} {hitung} Kali
+            </p>
+          )}
           <button
             className="btn btn-outline-primary editPengingat-kustom"
             data-bs-toggle="modal"
@@ -178,12 +235,14 @@ const editPengingat = () => {
               className={"btn me-3 editPengingat-btnOutline"}>
               Batal
             </Link>
-            <Link to="" className="btn btn-success editPengingat-btnPrimary">
+            <button
+              type="submit"
+              className="btn btn-success editPengingat-btnPrimary">
               Simpan
-            </Link>
+            </button>
           </div>
         </form>
-        {/* modal */}
+        {/* Modal Form */}
         <div className="modal fade " id="exampleModal" tabindex="-1">
           <div className="modal-dialog editPengingat-modal">
             <div className="modal-content">
@@ -205,6 +264,7 @@ const editPengingat = () => {
                     <div className="d-flex gap-1">
                       <input
                         value={menambah}
+                        onChange={(e) => setMenambah(e.target.value)}
                         className="form-control editPengingat-modalInputnumber text-center"
                       />
                       <div className="d-flex flex-column gap-2 editPengingat-modalInputnumberControl">
@@ -219,13 +279,7 @@ const editPengingat = () => {
                           <SlArrowDown size={8} />
                         </button>
                       </div>
-                      <Select
-                        value={pilihHari}
-                        className={"form-select editPengingat-modalHari"}
-                        options={pilihanHari}
-                        onChange={handlePilihHari}
-                        title={"Hari"}
-                      />
+                      <span className="mt-2">Minggu</span>
                     </div>
                   </div>
                   <div className="mb-3">
@@ -237,46 +291,66 @@ const editPengingat = () => {
                     <div className="weekDays-selector">
                       <input
                         type="checkbox"
-                        id="weekday-mon"
+                        id="weekday-senin"
+                        value="senin"
                         className="weekday"
+                        checked={selectedDay.includes("senin")}
+                        onChange={() => handleCheckboxChangeDay("senin")}
                       />
-                      <label for="weekday-mon">S</label>
+                      <label htmlFor="weekday-senin">S</label>
                       <input
                         type="checkbox"
-                        id="weekday-tue"
+                        id="weekday-selasa"
+                        value="senin"
                         className="weekday"
+                        checked={selectedDay.includes("selasa")}
+                        onChange={() => handleCheckboxChangeDay("selasa")}
                       />
-                      <label for="weekday-tue">S</label>
+                      <label htmlFor="weekday-selasa">S</label>
                       <input
                         type="checkbox"
-                        id="weekday-wed"
+                        id="weekday-rabu"
+                        value="rabu"
                         className="weekday"
+                        checked={selectedDay.includes("rabu")}
+                        onChange={() => handleCheckboxChangeDay("rabu")}
                       />
-                      <label for="weekday-wed">R</label>
+                      <label htmlFor="weekday-rabu">R</label>
                       <input
                         type="checkbox"
-                        id="weekday-thu"
+                        id="weekday-kamis"
+                        value="kamis"
                         className="weekday"
+                        checked={selectedDay.includes("kamis")}
+                        onChange={() => handleCheckboxChangeDay("kamis")}
                       />
-                      <label for="weekday-thu">K</label>
+                      <label htmlFor="weekday-kamis">K</label>
                       <input
                         type="checkbox"
-                        id="weekday-fri"
+                        id="weekday-jumat"
+                        value="jumat"
                         className="weekday"
+                        checked={selectedDay.includes("jumat")}
+                        onChange={() => handleCheckboxChangeDay("jumat")}
                       />
-                      <label for="weekday-fri">J</label>
+                      <label htmlFor="weekday-jumat">J</label>
                       <input
                         type="checkbox"
-                        id="weekday-sat"
+                        id="weekday-sabtu"
+                        value="sabtu"
                         className="weekday"
+                        checked={selectedDay.includes("sabtu")}
+                        onChange={() => handleCheckboxChangeDay("sabtu")}
                       />
-                      <label for="weekday-sat">S</label>
+                      <label htmlFor="weekday-sabtu">S</label>
                       <input
                         type="checkbox"
-                        id="weekday-sun"
+                        id="weekday-minggu"
                         className="weekday"
+                        checked={selectedDay.includes("minggu")}
+                        onChange={(e) => handleCheckboxChangeDay("minggu")}
                       />
-                      <label for="weekday-sun">M</label>
+                      <label htmlFor="weekday-minggu">M</label>
                     </div>
                   </div>
                   <div className="mb-3">
@@ -292,25 +366,33 @@ const editPengingat = () => {
                           type="radio"
                           name="flexRadioDefault"
                           value="Tidak Pernah"
+                          id={"tidakPernah"}
                           onChange={handleModalRadio}
                         />
-                        <label className="form-check-label">Tidak Pernah</label>
+                        <label
+                          htmlFor="tidakPernah"
+                          className="form-check-label">
+                          Tidak Pernah
+                        </label>
                       </div>
                       <div className="d-flex gap-3">
                         <div className="form-check  mt-2">
                           <Input
                             className="form-check-input"
                             type="radio"
+                            id={"berlakuSampai"}
                             name="flexRadioDefault"
-                            value="Berlaku sampai"
+                            value="Berlaku Sampai"
                             onChange={handleModalRadio}
                           />
-                          <label className="form-check-label">
+                          <label
+                            htmlFor="berlakuSampai"
+                            className="form-check-label">
                             Berlaku Sampai
                           </label>
                         </div>
                         <div>
-                          <Input type={"date"} />
+                          <Input type={"date"} onChange={handleDateModal} />
                         </div>
                       </div>
                     </div>
@@ -320,11 +402,14 @@ const editPengingat = () => {
                           <Input
                             className="form-check-input"
                             type="radio"
+                            id={"setelah"}
                             name="flexRadioDefault"
                             value="Setelah"
                             onChange={handleModalRadio}
                           />
-                          <label className="form-check-label">Setelah</label>
+                          <label htmlFor="setelah" className="form-check-label">
+                            Setelah
+                          </label>
                         </div>
                         <div className="d-flex gap-1">
                           <input
@@ -359,6 +444,8 @@ const editPengingat = () => {
                 </button>
                 <button
                   type="button"
+                  onClick={handleDone}
+                  data-bs-dismiss="modal"
                   className="btn btn-primary editPengingat-modalFormBtnDone">
                   Done
                 </button>
