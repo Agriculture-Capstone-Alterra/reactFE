@@ -112,7 +112,12 @@ const editPengingat = () => {
         const response = await axios.get(
           "https://6575b5f4b2fbb8f6509d68ad.mockapi.io/namatanaman"
         );
-        setTanamanOptions(response.data);
+        const mappedData = response.data.map((value) => ({
+          label: value.name,
+          value: value.id,
+        }));
+
+        setTanamanOptions(mappedData);
       } catch (error) {
         console.error("Error fetching tanaman data:", error);
       }
