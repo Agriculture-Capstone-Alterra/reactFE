@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Modal from "../../../components/Modal/Modal";
 import ModalTrigger from "../../../components/Modal/ModalTrigger";
 import { SlArrowUp, SlArrowDown } from "react-icons/sl";
+
 import axiosWithAuth from "../../../api/axios";
 import axios from "axios";
 
@@ -15,6 +16,8 @@ const tambahPengingat = () => {
   const [radio, setRadio] = useState("");
   const [modalRadio, setModalRadio] = useState("");
   const [selectedTanaman, setSelectedTanaman] = useState("");
+  const [isValid, setIsValid] = useState(true);
+
   const [number, setNumber] = useState(0);
   const [counter, setCounter] = useState(0);
   const [formData, setFormData] = useState(null);
@@ -40,7 +43,9 @@ const tambahPengingat = () => {
   ];
 
   const handleSelectChange = (e) => {
-    setSelectedTanaman(e.target.value);
+    const isValid = selectedTanaman !== "";
+    setIsValid(isValid);
+    return isValid;
   };
 
   const handleRadioChange = (e) => {
@@ -181,10 +186,13 @@ const tambahPengingat = () => {
         breadcrumbs={breadcrumbsobjectexample}>
         <form className="container ms-3 mt-4" onSubmit={handleSimpan}>
           <div className="mb-4">
-            <label className="tambahPengingat-label d-flex mb-2">
+            <label
+              htmlFor="validationDefault04"
+              className="tambahPengingat-label d-flex mb-2">
               Jenis Tanaman
             </label>
             <Select
+              id={"validationDefault04"}
               value={selectedTanaman}
               className={"form-select tambahPengingat-select"}
               options={tanamanOptions}
