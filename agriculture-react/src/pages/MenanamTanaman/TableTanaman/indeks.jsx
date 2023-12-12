@@ -18,7 +18,6 @@
     const itemsPerPage = 10;
     const [plantData, setPlantData] = useState([]);
     const [currentData, setCurrentData] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
@@ -55,7 +54,13 @@
     const handleDeleteConfirm = async () => {
       try {
         await axiosWithAuth.delete(`/plants/${selectedItemId}`);
-        setPlantData((prevData) => prevData.filter((plant) => plant.id !== selectedItemId));
+        const updatedData = currentData.filter((plant) => plant.id !== selectedItemId);
+        const updatedDataWithNumbers = updatedData.map((plant, index) => ({
+          ...plant,
+          number: index + 1,
+        }));
+    
+        setPlantData(updatedData);
         setModalData({});
         setShowToast(true);
         setToastMessage("Data tanaman berhasil dihapus");
@@ -102,9 +107,9 @@
                       <tr key={index}>
                       <td onClick={() => handleRowClick(plant.id)}>{plant.number}</td>
                       <td onClick={() => handleRowClick(plant.id)}>{plant.name}</td>
-                      <td onClick={() => handleRowClick(plant.id)}>{plant.plant_type.name}</td>
+                      <td onClick={() => handleRowClick(plant.id)}>{plant.plant_type}</td>
                       <td onClick={() => handleRowClick(plant.id)}>{plant.variety}</td>
-                      <td onClick={() => handleRowClick(plant.id)}>{plant.technology.name}</td>
+                      <td onClick={() => handleRowClick(plant.id)}>{plant.technology}</td>
                       <td>
                           <div className="p-2 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                             <TbDots className="fw-bold fs-4 ms-1" />
