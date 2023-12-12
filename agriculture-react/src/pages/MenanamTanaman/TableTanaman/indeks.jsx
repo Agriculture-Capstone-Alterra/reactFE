@@ -107,9 +107,9 @@
                       <tr key={index}>
                       <td onClick={() => handleRowClick(plant.id)}>{plant.number}</td>
                       <td onClick={() => handleRowClick(plant.id)}>{plant.name}</td>
-                      <td onClick={() => handleRowClick(plant.id)}>{plant.plant_type.name}</td>
+                      <td onClick={() => handleRowClick(plant.id)}>{plant.plant_type}</td>
                       <td onClick={() => handleRowClick(plant.id)}>{plant.variety}</td>
-                      <td onClick={() => handleRowClick(plant.id)}>{plant.technology.name}</td>
+                      <td onClick={() => handleRowClick(plant.id)}>{plant.technology}</td>
                       <td>
                           <div className="p-2 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                             <TbDots className="fw-bold fs-4 ms-1" />
