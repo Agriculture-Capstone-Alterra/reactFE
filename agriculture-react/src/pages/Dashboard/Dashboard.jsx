@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LineChart from "../../components/LineChart/LineChart"
 import Persentase from "../../components/Persentase/Persentase";
 import Layout from "../../layout/Layout"
@@ -11,6 +11,7 @@ import card2 from '../../assets/DashboardCardImg/card2.svg'
 import cloud from '../../assets/DashboardCardImg/cloud.svg'
 import CardCuaca from "../../components/CardCuaca/indeks";
 import { Plant } from "../../assets";
+import axiosWithAuth from "../../api/axios";
 
 
 export default function Dashboard(){
@@ -96,6 +97,116 @@ export default function Dashboard(){
             leavepoint: 5
         },
     ])
+    async function GetCuaca(){
+        let weathermap = []
+        await axiosWithAuth.get("https://api.open-meteo.com/v1/forecast?latitude=3.5833&longitude=98.6667&hourly=temperature_2m,weather_code&timezone=auto&forecast_days=1")
+        .then((response)=>{
+            const resp = response.data
+            weathermap = resp.hourly.time.map((value, index)=>{
+                var weather
+                // switch (resp.hourly.weather_code[index]) {
+                //     case 0:
+                //         weather = "Cerah Tanpa Awan"
+                //         break;
+                //     case 1,2,3:
+                //         weather = "Berawan"
+                //         break;
+                //     case 45,48:
+                //         weather = "Berkabut"
+                //         break;
+                //     case 51,53,55:
+                //         weather = "Gerimis"
+                //         break;
+                //     case 56,57:
+                //         weather = "Gerimis dingin"
+                //         break;
+                //     case 61,63,65:
+                //         weather = "Hujan menengah ke atas"
+                //         break;
+                //     case 66,67:
+                //         weather = "Hujan membeku"
+                //         break;
+                //     case 71,73,75:
+                //         weather = "Turun Salju"
+                //         break;
+                //     case 77:
+                //         weather = "Bersalju"
+                //         break;
+                //     case 80,81,82:
+                //         weather = "Hujan deras"
+                //         break;
+                //     case 85,86:
+                //         weather = "Hujan Salju"
+                //         break;
+                //     case 95:
+                //         weather = "Badai"
+                //         break;
+                //     case 96,99:
+                //         weather = "Badah dengan angin"
+                //         break;
+                //     default:
+                //         weather = "Unknown"
+                //         break;
+                // }
+                if (resp.hourly.weather_code[index] === 0) {
+                    weather = "Cerah Tanpa Awan";
+                } else if (resp.hourly.weather_code[index] === 1 || resp.hourly.weather_code[index] === 2 || resp.hourly.weather_code[index] === 3) {
+                    weather = "Berawan";
+                } else if (resp.hourly.weather_code[index] === 45 || resp.hourly.weather_code[index] === 48) {
+                    weather = "Berkabut";
+                } else if (resp.hourly.weather_code[index] === 51 || resp.hourly.weather_code[index] === 53 || resp.hourly.weather_code[index] === 55) {
+                    weather = "Gerimis";
+                } else if (resp.hourly.weather_code[index] === 56 || resp.hourly.weather_code[index] === 57) {
+                    weather = "Gerimis dingin";
+                } else if (resp.hourly.weather_code[index] === 61 || resp.hourly.weather_code[index] === 63 || resp.hourly.weather_code[index] === 65) {
+                    weather = "Hujan menengah ke atas";
+                } else if (resp.hourly.weather_code[index] === 66 || resp.hourly.weather_code[index] === 67) {
+                    weather = "Hujan membeku";
+                } else if (resp.hourly.weather_code[index] === 71 || resp.hourly.weather_code[index] === 73 || resp.hourly.weather_code[index] === 75) {
+                    weather = "Turun Salju";
+                } else if (resp.hourly.weather_code[index] === 77) {
+                    weather = "Bersalju";
+                } else if (resp.hourly.weather_code[index] === 80 || resp.hourly.weather_code[index] === 81 || resp.hourly.weather_code[index] === 82) {
+                    weather = "Hujan deras";
+                } else if (resp.hourly.weather_code[index] === 85 || resp.hourly.weather_code[index] === 86) {
+                    weather = "Hujan salju";
+                } else if (resp.hourly.weather_code[index] === 95) {
+                    weather = "Badai";
+                } else if (resp.hourly.weather_code[index] === 96 || resp.hourly.weather_code[index] === 99) {
+                    weather = "Badai dengan hujan es";
+                } else {
+                    weather = "Unknown";
+                }
+                console.log(resp.hourly.weather_code[index])
+                return {
+                    time: value,
+                    temperature: resp.hourly.temperature_2m[index],
+                    weather_name: weather
+                }
+            })
+            console.log(weathermap)
+
+        })
+        let currenttime = new Date(new Date().toISOString())
+        const hour = currenttime.getHours()
+        const currentweather = weathermap.filter(obj=>{
+            const date = new Date(obj.time);
+            return date.getHours() === hour
+        })
+        const weatherconverted = {
+            suhunama: currentweather[0].weather_name,
+            suhu: currentweather[0].temperature,
+            suhupic: cloud
+        }
+        console.log("current time", currentweather)
+        setDataSuhu(weatherconverted)
+    }
+
+    useEffect(()=>{
+        GetCuaca()
+    },[])
+
+
 
     return (
         <>
@@ -181,10 +292,3 @@ export default function Dashboard(){
 }
 
 
-function GetCuaca(){
-    
-
-    return (
-        <></>
-    )
-}
