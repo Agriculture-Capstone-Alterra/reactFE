@@ -45,7 +45,7 @@ const ListTanaman = () => {
     console.log(`Card ${id} clicked`);
 
     //Link ke halaman List Tanaman dari Nama Pengguna
-    navigate(`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/${id})`);
+    navigate(`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/${id}`);
   };
 
   // handle sort change
