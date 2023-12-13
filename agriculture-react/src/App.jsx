@@ -56,15 +56,18 @@ function App() {
           path="/menanam-tanaman/detail-menanam-tanaman/:id"
           element={<DetailTanaman />}
         />
+
+        {/* rute pengingat */}
         <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
         <Route
           path="/pengingat-tanaman/tambah-pengingat"
           element={<TambahPengingat />}
         />
         <Route
-          path="/pengingat-tanaman/edit-pengingat"
+          path="/pengingat-tanaman/edit-pengingat/:id"
           element={<EditPengingat />}
         />
+        {/* end rute pengingat */}
 
         <Route path="/testpage" element={<TestPage />} />
 
