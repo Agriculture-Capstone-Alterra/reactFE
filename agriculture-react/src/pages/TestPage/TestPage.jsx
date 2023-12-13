@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ImgModal from "../../components/ImgModal/ImgModal";
 import Layout from "../../layout/Layout";
-import { Bayam } from "../../assets";
+// import { Bayam } from "../../assets";
 import Carousel from "react-multi-carousel";
 export default function TestPage() {
   const headers = ["Ngetest ioni satu", "kedua", "Ketiga", "keempat"];
