@@ -17,6 +17,8 @@ import PrivateRoute from "./privateroute/PrivateRoute";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import DetailTanaman from "./pages/MenanamTanaman/DetailTanaman";
 import EditTanaman from "./pages/MenanamTanaman/EditTanaman";
+import ListProduct from "./pages/ProductLocal/ListProduct";
+import TambahProduct from "./pages/ProductLocal/TambahProduct.jsx";
 
 function App() {
   return (
@@ -29,11 +31,11 @@ function App() {
           <Route path="/landingpage" element={<LandingPage />} />
           {/* end punya safutra */}
           <Route
-          path="/menanam-tanaman/tambah-tanaman"
-          element={<TambahTanaman />}
+            path="/menanam-tanaman/tambah-tanaman"
+            element={<TambahTanaman />}
           />
           <Route
-            path="/menanam-tanaman/edit-tanaman"
+            path="/menanam-tanaman/edit-tanaman/:id"
             element={<EditTanaman />}
           />
         </Route>
@@ -45,7 +47,7 @@ function App() {
           element={<RiwayatListTanaman />}
         />
         <Route
-          path="riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman"
+          path="riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/:id"
           element={<InfoDetailRiwayatTanaman />}
         />
         {/* End Riwayat Menanam Pages */}
@@ -56,20 +58,26 @@ function App() {
           path="/menanam-tanaman/detail-menanam-tanaman/:id"
           element={<DetailTanaman />}
         />
+
+        {/* rute pengingat */}
         <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
         <Route
           path="/pengingat-tanaman/tambah-pengingat"
           element={<TambahPengingat />}
         />
         <Route
-          path="/pengingat-tanaman/edit-pengingat"
+          path="/pengingat-tanaman/edit-pengingat/:id"
           element={<EditPengingat />}
         />
+        {/* end rute pengingat */}
 
         <Route path="/testpage" element={<TestPage />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/errorpage" element={<ErrorPage />} />
+
+        <Route path="/produk-lokal" element={<ListProduct />} />
+        <Route path="/produk-lokal/tambah-produk" element={<TambahProduct />} />
       </Routes>
     </BrowserRouter>
   );

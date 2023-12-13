@@ -6,7 +6,7 @@ import Bibit from "../../../assets/bibit.svg";
 import JenisTanaman from "../../../assets/jenisTanaman.svg";
 import Teknologi from "../../../assets/Teknologi.svg";
 import Varietas from "../../../assets/varietas.svg";
-import Calendar from "../../../assets/calendar.svg";
+import calendar from "../../../assets/calendar.svg";
 import BarChart from "../../../components/BarChart/BarChart";
 import Accordion from "../../../components/Accordion";
 import "./style.css";
@@ -15,8 +15,13 @@ import ImgCard from "../../../components/SliderImg/ImgCard";
 import axiosWithAuth from "../../../api/axios";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../../../components/Modal/Modal";
+import ImgModal from "../../../components/ImgModal/ImgModal";
 import { format } from "date-fns";
 import idLocale from "date-fns/locale/id";
+import bayam from "../../../assets/img/bayam.png";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; 
+
 
 const InfoDetailRiwayatTanaman = () => {
   const breadcrumbsobjectexample = [
@@ -39,80 +44,281 @@ const InfoDetailRiwayatTanaman = () => {
 
   const { id } = useParams();
   const [tanaman, setTanaman] = useState({});
-  function handleDeleteClick(id) {
-    console.log(id);
-  }
 
   useEffect(() => {
     axiosWithAuth
       .get(`plants/${id}`)
       .then((result) => {
         setTanaman(result.data.data);
-        // console.log(result.data.data);
+        console.log(result.data.data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [id]);
 
+  function handleDeleteClick(id) {
+    console.log(id);
+  }
+
+  const [modalopen, setModalOpen] = useState(false);
+  const [imgmodalcurrentindex, setImgModalCurrentIndex] = useState(0);
+  function handleonClick(key) {
+    console.log(key);
+    setImgModalCurrentIndex(key);
+    setModalOpen(!modalopen);
+  }
+  const dataimage = [
+    {
+      link: "https://loremflickr.com/640/480/abstract",
+      datecreated: "20-20-2907",
+    },
+    {
+      link: "https://loremflickr.com/640/480/abstract",
+      datecreated: "20-20-2907",
+    },
+    {
+      link: "https://loremflickr.com/640/480/nightlife",
+      datecreated: "20-20-2907",
+    },
+    {
+      link: "https://loremflickr.com/640/480/fashion",
+      datecreated: "20-20-2907",
+    },
+  ];
+
   return (
-    <Layout
-      pagetitle={"Info Detail History Tanaman"}
-      breadcrumbs={breadcrumbsobjectexample}
-    >
-      <div className="container">
-        <div className="row">
-          <div className="col">
-            <div
-              className="card"
-              style={{ width: "640px", backgroundColor: "#F3F4F6" }}
-            >
-              <img
-                src={MawarPutih}
-                className="card-img-top img-style"
-                alt="..."
-              />
-              <div className="card-body">
-                <h5 className="card-title text-center fw-bold">
-                  {tanaman.name}
-                </h5>
-                <div
-                  className="content d-flex justify-content-between"
-                  style={{ gap: "32px" }}
-                >
-                  <div className="text-center">
-                    <div className="">
-                      <img src={Bibit} alt="" />
-                      <div className="fw-bold">Jumlah Bibit</div>
-                      <p>10</p>
+    <>
+      <ImgModal
+        imgclickedindex={imgmodalcurrentindex}
+        imgdatas={dataimage}
+        modalstatus={modalopen}
+        modalcloser={handleonClick}
+      />
+      <Layout
+        pagetitle={"Info Detail History Tanaman"}
+        breadcrumbs={breadcrumbsobjectexample}
+      >
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <div
+                className="card"
+                style={{ width: "640px", backgroundColor: "#F3F4F6" }}
+              >
+                {/* <img
+                  src={MawarPutih}
+                  className="card-img-top img-style"
+                  alt="..."
+                /> */}
+                <div style={{ width: "100%" }}>
+                  <Carousel
+                    autoPlay={true}
+                    showArrows={false}
+                    showThumbs={false}
+                  >
+                    <div>
+                      <img src={bayam} />
+                    </div>
+                    <div>
+                      <img src={bayam} />
+                    </div>
+                  </Carousel>
+                </div>
+                <div className="card-body">
+                  <h5 className="card-title text-center fw-bold">
+                    {tanaman.name}
+                  </h5>
+                  <div
+                    className="content d-flex justify-content-between"
+                    style={{ gap: "32px" }}
+                  >
+                    <div className="text-center">
+                      <div className="">
+                        <img src={Bibit} alt="" />
+                        <div className="fw-bold">Jumlah Bibit</div>
+                        <p>{tanaman.seed_quantity}</p>
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="">
+                        <img src={Varietas} alt="" />
+                        <div className="fw-bold">Varietas</div>
+                        <p>{tanaman.variety}</p>
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="">
+                        <img src={JenisTanaman} alt="" />
+                        <div className="fw-bold">Jenis Tanaman</div>
+                        <p>{tanaman.plant_type}</p>
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="">
+                        <img src={Teknologi} alt="" />
+                        <div className="fw-bold">Teknologi</div>
+                        <p>{tanaman.technology}</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="text-center">
-                    <div className="">
-                      <img src={Varietas} alt="" />
-                      <div className="fw-bold">Varietas</div>
-                      <p>{tanaman.variety}</p>
+                  <Accordion
+                    title="Deskripsi Tanaman"
+                    onClick={() => setIsShowDeskripsi(!isShowDeskripsi)}
+                    isShowAccordion={isShowDeskripsi}
+                  >
+                    <p
+                      className="mt-2"
+                      style={{
+                        color: "#4B5563",
+                        fontSize: "16px",
+                        fontWeight: 400,
+                        // width: "90%",
+                        paddingRight: "22px",
+                      }}
+                    >
+                      {tanaman.description}
+                    </p>
+                  </Accordion>
+                </div>
+              </div>
+            </div>
+            <div className="col" style={{ width: "436px" }}>
+              <div>
+              <p
+                    style={{
+                      color: "#111827",
+                      fontSize: "20px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Tanggal Mulai Menanam
+                  </p>
+                <div className="d-flex gap-2 align-items-center mt-2">
+                  <img src={calendar} alt="" />
+                  {tanaman.start_planting_date &&(
+                      <span
+                        style={{
+                          color: "#4B5563",
+                          fontSize: "16px",
+                          fontWeight: 400,
+                        }}
+                      >
+                        {`${format(
+                          new Date(tanaman.start_planting_date),
+                          "dd MMMM yyyy",
+                          { locale: idLocale }
+                        )} 
+                        `}
+                      </span>
+                    )}
+                </div>
+              </div>
+              <div className="mt-4">
+                <div>
+                  <p
+                    style={{
+                      color: "#111827",
+                      fontSize: "20px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Kalender Musiman
+                  </p>
+                  <div>
+                    <div>
+                      <p
+                        className="mt-3"
+                        style={{
+                          color: "#111827",
+                          fontSize: "16px",
+                          fontWeight: 600,
+                        }}
+                      >
+                        Musim Kemarau
+                      </p>
+                      <div className="d-flex gap-2 align-items-center mt-2">
+                        <img src={calendar} alt="" />
+                        {tanaman.dry_season_start_plant &&
+                          tanaman.dry_season_finish_plant && (
+                            <span
+                              style={{
+                                color: "#4B5563",
+                                fontSize: "16px",
+                                fontWeight: 400,
+                              }}
+                            >
+                              {`${format(
+                                new Date(tanaman.rainy_season_start_plant),
+                                "dd MMMM yyyy",
+                                { locale: idLocale }
+                              )} - ${format(
+                                new Date(tanaman.rainy_season_finish_plant),
+                                "dd MMMM yyyy",
+                                { locale: idLocale }
+                              )}`}
+                            </span>
+                          )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="">
-                      <img src={JenisTanaman} alt="" />
-                      <div className="fw-bold">Jenis Tanaman</div>
-                      <p>Hidroponik</p>
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="">
-                      <img src={Teknologi} alt="" />
-                      <div className="fw-bold">Teknologi</div>
-                      <p>Hidroponik</p>
+                    <div className="mt-3">
+                      <p
+                        style={{
+                          color: "#111827",
+                          fontSize: "16px",
+                          fontWeight: 600,
+                        }}
+                      >
+                        Musim Hujan
+                      </p>
+                      <div className="d-flex gap-2 align-items-center mt-2">
+                        <img src={calendar} alt="" />
+                        {tanaman.rainy_season_start_plant &&
+                          tanaman.rainy_season_finish_plant && (
+                            <span
+                              style={{
+                                color: "#4B5563",
+                                fontSize: "16px",
+                                fontWeight: 400,
+                              }}
+                            >
+                              {`${format(
+                                new Date(tanaman.rainy_season_start_plant),
+                                "dd MMMM yyyy",
+                                { locale: idLocale }
+                              )} - ${format(
+                                new Date(tanaman.rainy_season_finish_plant),
+                                "dd MMMM yyyy",
+                                { locale: idLocale }
+                              )}`}
+                            </span>
+                          )}
+                      </div>
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div>
+                <h4 className="mt-4">Progress Tanaman</h4>
+                <BarChart />
+              </div>
+
+              <div>
+                <h4 className="mt-4">Perkembangan Tumbuhan</h4>
+                {/* 
+                <ImgCard
+                  images={MawarPutih}
+                  viewImgModal={handleonClick}
+                  deleteImgModalName="modalDelete"
+                /> */}
+              </div>
+              <div className="d-flex flex-wrap gap-4 mt-4">
                 <Accordion
-                  title="Deskripsi Tananman"
-                  onClick={() => setIsShowDeskripsi(!isShowDeskripsi)}
-                  isShowAccordion={isShowDeskripsi}
+                  title="Informasi Penanganan Hama"
+                  onClick={() => setIsShowPenanganan(!isShowPenanganan)}
+                  isShowAccordion={isShowPenanganan}
+                  style={{ width: "100%", borderColor: "#6B72801A" }}
                 >
                   <p
                     className="mt-2"
@@ -120,119 +326,36 @@ const InfoDetailRiwayatTanaman = () => {
                       color: "#4B5563",
                       fontSize: "16px",
                       fontWeight: 400,
-                      // width: "90%",
                       paddingRight: "22px",
                     }}
                   >
-                    Tanaman Bayam merupakan jenis sayuran semusim tergolong ke
-                    dalam famili Amaranthaceae beriklim tropis dengan penamaan
-                    ilmiah Amaranthus spp. Dominan dimanfaatkan dan dikonsumsi
-                    sebagai sayuran hijau dan banyak mengandung vitamin serta
-                    mineral yang baik bagi kesehatan untuk dibudidayakan.
+                    {tanaman.pest_info}
+                  </p>
+                </Accordion>
+                <Accordion
+                  title="Informasi Nutrisi dan Pupuk"
+                  onClick={() => setIsShowNutrisi(!isShowNutrisi)}
+                  isShowAccordion={isShowNutrisi}
+                  style={{ width: "100%", borderColor: "#6B72801A" }}
+                >
+                  <p
+                    className="mt-2"
+                    style={{
+                      color: "#4B5563",
+                      fontSize: "16px",
+                      fontWeight: 400,
+                      paddingRight: "22px",
+                    }}
+                  >
+                    {tanaman.fertilizer_info}
                   </p>
                 </Accordion>
               </div>
             </div>
           </div>
-          <div className="col" style={{ width: "436px"}}>
-            <div>
-              <h4 className="">Tanggal Mulai Menanam</h4>
-              <h6 className="">
-                <img src={Calendar} />
-                22 Februari 2023
-              </h6>
-            </div>
-            <div className="mt-4">
-              <h4>Kalender Musiman</h4>
-              <h5>Musim Kemarau</h5>
-              <h6>
-                <img src={Calendar} />
-                22 Februari 2023
-              </h6>
-              <h5>Musim Hujan</h5>
-              <h6>
-                <img src={Calendar} />
-                22 Februari 2023
-              </h6>
-            </div>
-
-            <div>
-              <h4 className="mt-4">Progress Tanaman</h4>
-              <BarChart />
-            </div>
-
-            <div>
-              <h4 className="mt-4">Perkembangan Tumbuhan</h4>
-              <Modal
-                id="modalDelete"
-                title="Hapus Data Tanaman"
-                content={
-                  <p className="text-center">
-                    Apakah anda yakin akan mengapus data tanaman?
-                  </p>
-                }
-                onSubmit={() => handleDeleteClick(1)}
-                type={"delete"}
-              />
-              <ImgCard images={MawarPutih} deleteImgModalName="modalDelete" />
-            </div>
-            <div className="d-flex flex-wrap gap-4 mt-4">
-              <Accordion
-                title="Informasi Penanganan Hama"
-                onClick={() => setIsShowPenanganan(!isShowPenanganan)}
-                isShowAccordion={isShowPenanganan}
-                style={{ width: "100%", borderColor: "#6B72801A" }}
-              >
-                <p
-                  className="mt-2"
-                  style={{
-                    color: "#4B5563",
-                    fontSize: "16px",
-                    fontWeight: 400,
-                    paddingRight: "22px",
-                  }}
-                >
-                  Cara terbaik untuk mengendalikan hama dan penyakit ialah
-                  selalu pencegahan daripada intervensi. Penanam bayam harus
-                  mempertimbangkan langkah-langkah berikut: Disarankan
-                  menggunakan benih bersertifikat. Dalam kebanyakan kasus,
-                  petani harus memilih hibrida yang memiliki ketahanan terhadap
-                  bolting dan Bulai. Perkecambahan benih yang rendah atau laju
-                  pembibitan yang tidak tepat akan mempercepat efek negatif hama
-                  dan penyakit. Pemupukan dan/atau Irigasi yang tidak memadai
-                  akan mempercepat efek negatif. Langkah-langkah pengendalian
-                  bahan kimia diizinkan hanya setelah berkonsultasi dengan ahli
-                  agronomi berlisensi setempat. Rotasi tanaman dapat diterapkan
-                  untuk mengendalikan beberapa penyakit.
-                </p>
-              </Accordion>
-              <Accordion
-                title="Informasi Nutrisi dan Pupuk"
-                onClick={() => setIsShowNutrisi(!isShowNutrisi)}
-                isShowAccordion={isShowNutrisi}
-                style={{ width: "100%", borderColor: "#6B72801A" }}
-              >
-                <p
-                  className="mt-2"
-                  style={{
-                    color: "#4B5563",
-                    fontSize: "16px",
-                    fontWeight: 400,
-                    paddingRight: "22px",
-                  }}
-                >
-                  Tanaman Bayam merupakan jenis sayuran semusim tergolong ke
-                  dalam famili Amaranthaceae beriklim tropis dengan penamaan
-                  ilmiah Amaranthus spp. Dominan dimanfaatkan dan dikonsumsi
-                  sebagai sayuran hijau dan banyak mengandung vitamin serta
-                  mineral yang baik bagi kesehatan untuk dibudidayakan.
-                </p>
-              </Accordion>
-            </div>
-          </div>
         </div>
-      </div>
-    </Layout>
+      </Layout>
+    </>
   );
 };
 

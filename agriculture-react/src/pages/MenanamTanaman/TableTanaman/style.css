@@ -115,3 +115,7 @@
     border-color: #6B7280; 
     
   }
+.link-none a {
+    color: #000!important;
+    text-decoration: none!important;
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../../../layout/Layout";
 import Table from "../../../components/Table/Table";
-import styles from "./riwayatMenanam.module.css";
+import styles from "./RiwayatMenanam.module.css";
 import { MdArrowBackIos, MdArrowForwardIos, MdSearch } from "react-icons/md";
 import { FaUsersSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";

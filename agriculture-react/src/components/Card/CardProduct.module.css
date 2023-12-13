@@ -1,0 +1,20 @@
+.cardProduct {
+  background-color: #f9fafb;
+  padding: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.footerCard {
+  display: flex;
+  gap: 5px;
+}

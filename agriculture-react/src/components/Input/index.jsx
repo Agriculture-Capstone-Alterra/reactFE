@@ -1,4 +1,4 @@
-const Input = ({ value, onChange, type, placeholder, name, className, id }) => {
+const Input = ({ value, onChange, type, placeholder, name, className, id, disabled, checked }) => {
   return (
     <input
       type={type ? type : "text"}
@@ -8,6 +8,8 @@ const Input = ({ value, onChange, type, placeholder, name, className, id }) => {
       name={name}
       className={className ? className : "form-control"}
       id={id ? id : ""}
+      disabled={disabled}
+      checked={checked}
     />
   );
 };
