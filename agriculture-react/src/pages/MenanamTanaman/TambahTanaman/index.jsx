@@ -265,6 +265,14 @@ const TambahTanaman = () => {
     const handleOnClick = () => {
         navigate(`/menanam-tanaman`);
     };
+    const handleRemoveImagePlant = (id) => {
+        const updatedImagePreviews = gambarTanaman.filter((image) => image.id !== id);
+        setGambarTanaman(updatedImagePreviews);
+    };
+    const handleRemoveImageSugg = (id) => {
+        const updatedImagePreviews = gambarSaran.filter((image) => image.id !== id);
+        setGambarSaran(updatedImagePreviews);
+    };
     return (
         <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={breadcrumTambahTanaman}>
         <div className='mt-2' style={{ padding:'0px 0px 30px 30px', marginRight:'0'}}>
@@ -312,6 +320,7 @@ const TambahTanaman = () => {
                     name={'gambartanaman'}
                     value={gambarTanaman}
                     setValue={setGambarTanaman}
+                    onDelete={handleRemoveImagePlant}
                 /> 
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="varietastanaman">Varietas Tanaman</label>
@@ -441,6 +450,7 @@ const TambahTanaman = () => {
                         name={'gambarsaran'}
                         value={gambarSaran}
                         setValue={setGambarSaran}
+                        onDelete={handleRemoveImageSugg}
                     />
                 </div>
                 <div className='form-label fontw600'>Langkah Penanaman</div>

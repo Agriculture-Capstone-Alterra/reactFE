@@ -300,6 +300,12 @@ const EditTanaman = () => {
                 //         'Content-Type': 'multipart/form-data',
                 //     },
                 // });
+                // if (plantImagesResponse.status === 200) {
+                //     const newPlantImages = plantImagesResponse.data;
+                //     setGambarTanaman([...gambarTanaman, ...newPlantImages]);
+                // } else {
+                //     console.error('Failed to delete image:', response.statusText);
+                // }
 
                 navigate('/menanam-tanaman')
             } catch (error) {
@@ -307,6 +313,32 @@ const EditTanaman = () => {
             }
         }
             
+    };
+    const handleRemoveImagePlant = async (id) => {
+        try {
+            const response = await axiosWithAuth.delete(`plant-images/${id}`);
+            if (response.status === 200) {
+              const updatedImages = gambarTanaman.filter((image) => image.id !== id);
+              setGambarTanaman(updatedImages);
+            } else {
+              console.error('Failed to delete image:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error deleting image:', error.message);
+        }
+    };
+    const handleRemoveImageSugg = async (id) => {
+        try {
+            const response = await axiosWithAuth.delete(`planting-medium-images/${id}`);
+            if (response.status === 200) {
+              const updatedImages = gambarSaran.filter((image) => image.id !== id);
+              setGambarSaran(updatedImages);
+            } else {
+              console.error('Failed to delete image:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error deleting image:', error.message);
+        }
     };
     return (
         <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={breadcrumEditTanaman}>
@@ -355,6 +387,7 @@ const EditTanaman = () => {
                     name={'gambartanaman'}
                     value={gambarTanaman}
                     setValue={setGambarTanaman}
+                    onDelete={handleRemoveImagePlant}
                 /> 
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="varietastanaman">Varietas Tanaman</label>
@@ -484,6 +517,7 @@ const EditTanaman = () => {
                         name={'gambarsaran'}
                         value={gambarSaran}
                         setValue={setGambarSaran}
+                        onDelete={handleRemoveImageSugg}
                     />
                 </div>
                 <div className='form-label fontw600'>Langkah Penanaman</div>
