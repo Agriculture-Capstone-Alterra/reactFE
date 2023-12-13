@@ -20,8 +20,7 @@ import { format } from "date-fns";
 import idLocale from "date-fns/locale/id";
 import bayam from "../../../assets/img/bayam.png";
 import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; 
-
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const InfoDetailRiwayatTanaman = () => {
   const breadcrumbsobjectexample = [
@@ -42,12 +41,12 @@ const InfoDetailRiwayatTanaman = () => {
   const [isShowNutrisi, setIsShowNutrisi] = useState(false);
   const [isShowPenanganan, setIsShowPenanganan] = useState(false);
 
-  const { id } = useParams();
+  const { user_id } = useParams();
   const [tanaman, setTanaman] = useState({});
 
   useEffect(() => {
     axiosWithAuth
-      .get(`plants/${id}`)
+      .get(`admin/user-plants/user/${user_id}`)
       .then((result) => {
         setTanaman(result.data.data);
         console.log(result.data.data);
@@ -55,7 +54,19 @@ const InfoDetailRiwayatTanaman = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [id]);
+  }, [user_id]);
+
+  // useEffect(() => {
+  //   axiosWithAuth
+  //     .get(`user-plants/${id}`)
+  //     .then((result) => {
+  //       setPlants(result.data.data);
+  //       console.log(result.data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [id]);
 
   function handleDeleteClick(id) {
     console.log(id);
@@ -117,12 +128,17 @@ const InfoDetailRiwayatTanaman = () => {
                     showArrows={false}
                     showThumbs={false}
                   >
-                    <div>
-                      <img src={bayam} />
-                    </div>
-                    <div>
-                      <img src={bayam} />
-                    </div>
+                    {/* <div key={id}>
+                      <img src={tanaman.plant_images} key={id} />
+                    </div> */}
+                    {tanaman.plant_images &&
+                      tanaman.plant_images.map((image_path, user_id) => (
+                        <img
+                          key={user_id}
+                          src={image_path}
+                          alt={`Gambar tanaman ${user_id}`}
+                        />
+                      ))}
                   </Carousel>
                 </div>
                 <div className="card-body">
@@ -185,46 +201,28 @@ const InfoDetailRiwayatTanaman = () => {
             </div>
             <div className="col" style={{ width: "436px" }}>
               <div>
-              <p
-                    style={{
-                      color: "#111827",
-                      fontSize: "20px",
-                      fontWeight: 600,
-                    }}
-                  >
-                    Tanggal Mulai Menanam
-                  </p>
+                <h4>Tanggal Mulai Menanam</h4>
                 <div className="d-flex gap-2 align-items-center mt-2">
                   <img src={calendar} alt="" />
-                  {tanaman.start_planting_date &&(
-                      <span
-                        style={{
-                          color: "#4B5563",
-                          fontSize: "16px",
-                          fontWeight: 400,
-                        }}
-                      >
-                        {`${format(
-                          new Date(tanaman.start_planting_date),
-                          "dd MMMM yyyy",
-                          { locale: idLocale }
-                        )} 
+                  {tanaman.created_at && (
+                    <span
+                      style={{
+                        color: "#4B5563",
+                        fontSize: "16px",
+                        fontWeight: 400,
+                      }}
+                    >
+                      {`${format(new Date(tanaman.created_at), "dd MMMM yyyy", {
+                        locale: idLocale,
+                      })} 
                         `}
-                      </span>
-                    )}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="mt-4">
                 <div>
-                  <p
-                    style={{
-                      color: "#111827",
-                      fontSize: "20px",
-                      fontWeight: 600,
-                    }}
-                  >
-                    Kalender Musiman
-                  </p>
+                  <h4>Kalender Musiman</h4>
                   <div>
                     <div>
                       <p
@@ -249,11 +247,11 @@ const InfoDetailRiwayatTanaman = () => {
                               }}
                             >
                               {`${format(
-                                new Date(tanaman.rainy_season_start_plant),
+                                new Date(tanaman.dry_season_start_plant),
                                 "dd MMMM yyyy",
                                 { locale: idLocale }
                               )} - ${format(
-                                new Date(tanaman.rainy_season_finish_plant),
+                                new Date(tanaman.dry_season_finish_plant),
                                 "dd MMMM yyyy",
                                 { locale: idLocale }
                               )}`}
