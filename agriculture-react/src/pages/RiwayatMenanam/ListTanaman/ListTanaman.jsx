@@ -45,7 +45,7 @@ const ListTanaman = () => {
     console.log(`Card ${id} clicked`);
 
     //Link ke halaman List Tanaman dari Nama Pengguna
-    navigate(`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman`);
+    navigate(`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/${id}`);
   };
 
   // handle sort change
@@ -83,9 +83,7 @@ const ListTanaman = () => {
           <div className={styles.header}>
             <h4 className={styles.title}>
               List Tanaman{" "}
-              <span className={styles.userName}>
-                {selectedUserName}
-              </span>
+              <span className={styles.userName}>{selectedUserName}</span>
             </h4>
           </div>
           <div className={styles.contentContainer}>
