@@ -43,7 +43,7 @@ function App() {
         {/* Start Riwayat Menanam Pages */}
         <Route path="/riwayat-menanam" element={<RiwayatMenanam />} />
         <Route
-          path="riwayat-menanam/list-tanaman"
+          path="riwayat-menanam/list-tanaman/:user_id"
           element={<RiwayatListTanaman />}
         />
         <Route
