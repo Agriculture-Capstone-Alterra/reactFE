@@ -9,7 +9,7 @@ export default function PrivateRoute(){
         try {
             const resp = await axiosWithAuth.get('users')
             console.log("Response from Private Route : ", resp)
-            const statuserror = resp.status
+            const statuserror = resp.response.status
             if(statuserror === 401){
                 navigate("/login")
             }
