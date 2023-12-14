@@ -1,5 +1,5 @@
 .persentase-div{
-    column-gap: 32px;
+    column-gap: 10px;
     padding: 0px 10px;
 }
 
@@ -10,29 +10,6 @@
 }
 
 .persentase-doughnut-chart{
-    width: 250px;
-    height: 250px;
-}
-.persentase-squares-div{
-    gap: 12px;
-    width: 165px;
-}
-.persentase-square-each{
-    width: 100%;
-}
-
-.persentase-square{
-    width: 24px;
-    height: 24px;
-    border-radius: 5px;
-}
-.persentase-square.persentase-square-baruditanam{
-    color: #059669
-}
-.persentase-square.persentase-square-perawatan{
-    color: #2563EB
-}
-
-.persentase-square.persentase-square-panen{
-    color: #D97706
+    width: 90px;
+    height: 90px;
 }

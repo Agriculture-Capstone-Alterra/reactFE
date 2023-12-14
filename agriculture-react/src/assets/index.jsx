@@ -24,7 +24,6 @@ import GetitGplay from "./img/Get it on Gplay.png"
 import DownloadonAppStore from "./img/Download on the Appstore.png"
 import BGLogin from "./img/Bg Login 1.png"
 import Plant from "./img/Plant.png"
-import Bayam from "./img/bayam.png"
 
 
 
@@ -54,6 +53,5 @@ Avatar5,
 GetitGplay,
 DownloadonAppStore,
 BGLogin,
-Plant,
-Bayam,
+Plant
 };

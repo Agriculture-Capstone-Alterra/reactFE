@@ -12,142 +12,142 @@ import cloud from '../../assets/DashboardCardImg/cloud.svg'
 import CardCuaca from "../../components/CardCuaca/indeks";
 import { Plant } from "../../assets";
 import axiosWithAuth from "../../api/axios";
-import { PersentaseGlobalDatas, TopFarmerDatas } from "../../api/datadashboard/DashboardDatas";
-import axios from "axios";
 
 
 export default function Dashboard(){
+    const [dataBaruDitanam, setDataBaruDitanam] = useState({
+        color: "#059669",
+        halfdone: 20,
+        halfundone: 50,
+        nama: "Baru Ditanam"
+    })
+    const [dataPerawatan, setDataPerawatan] = useState({
+        color: "#D97706",
+        halfdone: 100,
+        halfundone: 50,
+        nama: "Perawatan"
+    })
+    const [dataPanen, setPanen] = useState({
+        color: "#2563EB",
+        halfdone: 80,
+        halfundone: 50,
+        nama: "Panen"
+    })
     // begin : dummy data untuk data pada chart
-    // const generateRandomData = (count) => {
-    //     return Array.from({ length: count }, (_, index) => ({
-    //         month: (index + 1).toString(),
-    //         value: Math.floor(Math.random() * 451),
-    //     }));
-    // };
-    // const data = [
-    //     {
-    //         dataSetName: 'Bulan ini',
-    //         data: generateRandomData(31),
-    //         color: '#2563EB',
-    //     },
-    //     {
-    //         dataSetName: 'Bulan lalu',
-    //         data: generateRandomData(31),
-    //         color: '#059669',
-    //     },
-    // ];
-    // end : dummy data untuk data pada chart
-    // const [dataBaruDitanam, setDataBaruDitanam] = useState({
-    //     color: "#059669",
-    //     halfdone: 20,
-    //     halfundone: 50,
-    //     nama: "Baru Ditanam"
-    // })
-    // const [dataPerawatan, setDataPerawatan] = useState({
-    //     color: "#D97706",
-    //     halfdone: 100,
-    //     halfundone: 50,
-    //     nama: "Perawatan"
-    // })
-    // const [dataPanen, setPanen] = useState({
-    //     color: "#2563EB",
-    //     halfdone: 80,
-    //     halfundone: 50,
-    //     nama: "Panen"
-    // })
-
-
-
-
-    const [datapersentaseglobal, setDataPersentaseGlobal] = useState([
+    const generateRandomData = (count) => {
+        return Array.from({ length: count }, (_, index) => ({
+            month: (index + 1).toString(),
+            value: Math.floor(Math.random() * 451),
+        }));
+    };
+    const data = [
         {
-        nama: "Baru Ditanam",
-        jumlah: 0
+            dataSetName: 'bulan ini',
+            data: generateRandomData(9),
+            color: '#4B567E',
         },
         {
-        nama: "Perawatan",
-        jumlah: 0
+            dataSetName: 'bulan lalu',
+            data: generateRandomData(9),
+            color: '#847042',
         },
-        {
-        nama: "Panen",
-        jumlah: 0
-        },
-        {
-        nama: "Total",
-        jumlah: 0
-        }
-    ])
-
+    ];
     const [datacard, setDataCard] = useState({
         penggunabaru: {
             nama: "Pengguna Baru",
-            jumlah: 0,
+            jumlah: 1000,
             img: card
         },
         tanamanbaru:{
             nama: "Tanaman Baru",
-            jumlah: 0,
+            jumlah: 130,
             img: card1
         },
         riwayattanam:{
             nama: "Riwayat Tanam",
-            jumlah: 0,
+            jumlah: 420,
             img: card2
         }
     })
+    const breadcrumbsobjectexample = [
+    {
+      crumblink: "/dashboard",
+      crumbname: "Dashboard",
+    }]
     const [datasuhu, setDataSuhu] = useState({
-        suhunama: "unknown",
-        suhu: 0,
+        suhunama: "Sedikit Awan",
+        suhu: 25,
         suhupic: cloud
     })
-    const [datalokasi, setDataLokasi] = useState({latitude: 0, longitude:0})
-    const [datafarmer, setDatafarmer] = useState([])
-    const [selecteddatafarmer, setSelectedDataFarmer] = useState([])
-    const [selectedtopfarmermonth, setSelectedTopFarmerMonth] = useState({month: "December", year: 2023})
-    function handleTopFarmerMonth(e){
-        console.log(e.target.value)
-        const parts = e.target.value.split(" "); // Split the string by space 
-        const monthselected = parts[0];
-        const year = parts[1];
-        setSelectedTopFarmerMonth({month: monthselected, year: year})
-        const selectdatafarmerlist = datafarmer.find((data) => data.month_name === monthselected && data.year == year);
-        setSelectedDataFarmer(selectdatafarmerlist.top_farmers)
 
-    }
-    
-    const [datachart, setDataChart]= useState([
+    const [datafarmer, setDatafarmer] = useState([
         {
-            dataSetName: 'Bulan ini',
-            data: [{
-                date: "",
-                value: 0,
-            },],
-            color: '#2563EB',
+            nama: "Farmer 1",
+            farmerpic: "/",
+            leavepoint: 4
         },
         {
-            dataSetName: 'Bulan lalu',
-            data: [{
-                date: "",
-                value: 0,
-            },],
-            color: '#059669',
+            nama: "Farmer 4",
+            farmerpic: "/",
+            leavepoint: 3
+        },
+        {
+            nama: "Farmer 2",
+            farmerpic: "/",
+            leavepoint: 5
         },
     ])
-
-
-    
     async function GetCuaca(){
-        navigator.geolocation.getCurrentPosition((position)=>{
-            setDataLokasi({latitude: position.coords.latitude, longitude: position.coords.longitude})
-        })
-
-
         let weathermap = []
-        await axiosWithAuth.get("https://api.open-meteo.com/v1/forecast?latitude="+datalokasi.latitude+"&longitude="+datalokasi.longitude+"&hourly=temperature_2m,weather_code&timezone=auto&forecast_days=1")
+        await axiosWithAuth.get("https://api.open-meteo.com/v1/forecast?latitude=3.5833&longitude=98.6667&hourly=temperature_2m,weather_code&timezone=auto&forecast_days=1")
         .then((response)=>{
             const resp = response.data
             weathermap = resp.hourly.time.map((value, index)=>{
                 var weather
+                // switch (resp.hourly.weather_code[index]) {
+                //     case 0:
+                //         weather = "Cerah Tanpa Awan"
+                //         break;
+                //     case 1,2,3:
+                //         weather = "Berawan"
+                //         break;
+                //     case 45,48:
+                //         weather = "Berkabut"
+                //         break;
+                //     case 51,53,55:
+                //         weather = "Gerimis"
+                //         break;
+                //     case 56,57:
+                //         weather = "Gerimis dingin"
+                //         break;
+                //     case 61,63,65:
+                //         weather = "Hujan menengah ke atas"
+                //         break;
+                //     case 66,67:
+                //         weather = "Hujan membeku"
+                //         break;
+                //     case 71,73,75:
+                //         weather = "Turun Salju"
+                //         break;
+                //     case 77:
+                //         weather = "Bersalju"
+                //         break;
+                //     case 80,81,82:
+                //         weather = "Hujan deras"
+                //         break;
+                //     case 85,86:
+                //         weather = "Hujan Salju"
+                //         break;
+                //     case 95:
+                //         weather = "Badai"
+                //         break;
+                //     case 96,99:
+                //         weather = "Badah dengan angin"
+                //         break;
+                //     default:
+                //         weather = "Unknown"
+                //         break;
+                // }
                 if (resp.hourly.weather_code[index] === 0) {
                     weather = "Cerah Tanpa Awan";
                 } else if (resp.hourly.weather_code[index] === 1 || resp.hourly.weather_code[index] === 2 || resp.hourly.weather_code[index] === 3) {
@@ -177,14 +177,14 @@ export default function Dashboard(){
                 } else {
                     weather = "Unknown";
                 }
-                // console.log(resp.hourly.weather_code[index])
+                console.log(resp.hourly.weather_code[index])
                 return {
                     time: value,
                     temperature: resp.hourly.temperature_2m[index],
                     weather_name: weather
                 }
             })
-            // console.log(weathermap)
+            console.log(weathermap)
 
         })
         let currenttime = new Date(new Date().toISOString())
@@ -201,114 +201,11 @@ export default function Dashboard(){
         console.log("current time", currentweather)
         setDataSuhu(weatherconverted)
     }
-    async function GetCardsData(){
-        axiosWithAuth.get('/admin/dashboard').then((response) => {
-            const resp = response.data.data
-            setDataCard({...datacard,
-                penggunabaru: {
-                    ...datacard.penggunabaru,
-                    jumlah: resp.total_new_user
-                },
-                tanamanbaru: {
-                    ...datacard.tanamanbaru,
-                    jumlah: resp.total_new_plant
-                },
-                riwayattanam: {
-                    ...datacard.riwayattanam,
-                    jumlah: resp.total_plant_history
-                }
-
-            })
-        })
-    }
-    async function GetTopFarmer(){
-        axiosWithAuth.get('/admin/user-plants/top-farmer').then((response) => {
-            const resp = response.data.data
-            console.log("huh,", resp)
-            setDatafarmer(resp)
-            setSelectedDataFarmer(resp[0].top_farmers)
-
-        })
-    }
-    async function GetAnalyticsData(){
-        axiosWithAuth.get('/admin/user-plants/statistics').then((response) => {
-            const resp = response.data.data
-            const currentmonth = resp[0]
-            const lastmonth = resp[1]
-            var currentmonthdate = {month:0, year:0}
-            var lastmonthdate = {month:0, year:0}
-            // console.log("chart data function currentmonth: ", currentmonth)
-            // console.log("chart data lastmonth: ", lastmonth)
-            // cek dulu exist data atau enggak
-            if(currentmonth.list != null){
-                const parts = currentmonth.list[0].date.split('-');
-                currentmonthdate = {month:parts[1], year:parts[0]}
-            }
-            if(lastmonth.list != null){
-                const parts = lastmonth.list[0].date.split('-');
-                lastmonthdate = {month:parts[1], year:parts[0]}
-            }
-
-            const listcurrentmonth = []
-            const listlastmonth = []
-            for (let day = 1; day <= 31; day++) {
-                const currentDate = `${currentmonthdate.year}-${currentmonthdate.month}-${day.toString().padStart(2, '0')}T00:00:00Z`;
-                const lastDate = `${lastmonthdate.year}-${lastmonthdate.month}-${day.toString().padStart(2, '0')}T00:00:00Z`;
-                const findexistscurrent = currentmonth.list.find((item) => item.date === currentDate);
-                const findexistslast = lastmonth.list ? lastmonth.list.find((item) => item.date === lastDate) : 0
-                if(findexistscurrent){
-                    // listcurrentmonth.push(findexistscurrent)
-                    listcurrentmonth.push({date: day, total: findexistscurrent.total})
-                    // console.log("findexistscurrent value",findexistscurrent)
-                }else{
-                    listcurrentmonth.push({date: day, total: 0})
-                }
-                if(findexistslast){
-                    // listlastmonth.push(findexistslast)
-                    listlastmonth.push({date: day, total: findexistslast.total})
-                }else{
-                    listlastmonth.push({date: day, total: 0})
-                }
-            }
-            // console.log("listcurrentmonth: ", listcurrentmonth)
-            // console.log("listlastmonth: ", listlastmonth)
-            setDataChart([
-                {
-                    dataSetName: 'Bulan ini',
-                    data: listcurrentmonth,
-                    color: '#2563EB',
-                },
-                {
-                    dataSetName: 'Bulan lalu',
-                    data: listlastmonth,
-                    color: '#059669',
-                },
-            ])
-        })
-    }
-    async function GetPercentageData(){
-        axios.get('https://83af003f-e467-4a03-bda6-0cca0323f795.mock.pstmn.io/persentasedata').then((response) => {
-            setDataPersentaseGlobal(response.data.data)
-            console.log(response)
-    
-    })
-    }
-
-
 
     useEffect(()=>{
         GetCuaca()
-        GetCardsData()
-        GetTopFarmer()
-        GetAnalyticsData()
-        GetPercentageData()
     },[])
 
-    const breadcrumbsobjectexample = [
-    {
-      crumblink: "/dashboard",
-      crumbname: "Dashboard",
-    }]
 
 
     return (
@@ -324,7 +221,7 @@ export default function Dashboard(){
                     <div className="dashboard-middlepart">
                         <div className="dashboard-middle-leftpart">
                             <div className="dashboard-chartdiv">
-                                <LineChart data={datachart} />
+                                <LineChart data={data} />
                             </div>
                             <div className="dasboard-persentasediv bg-light container-fluid d-flex flex-column">
                                 <div className="dashboard-persentase-toppart d-flex justify-content-between align-items-center">
@@ -336,11 +233,10 @@ export default function Dashboard(){
                                         <button className="dashboard-btn fonts14 fontw600">2023</button>
                                     </div>
                                 </div>
-                                <div className="dashboard-persentase-bottompart d-flex justify-content-center align-items-center">
-                                    {/* <Persentase datainserted={dataBaruDitanam}/>
+                                <div className="dashboard-persentase-bottompart d-flex justify-content-between align-items-center">
+                                    <Persentase datainserted={dataBaruDitanam}/>
                                     <Persentase datainserted={dataPerawatan}/>
-                                    <Persentase datainserted={dataPanen}/> */}
-                                    <Persentase datainserted={datapersentaseglobal}/>
+                                    <Persentase datainserted={dataPanen}/>
                                 </div>
                             </div>
                         </div>
@@ -353,38 +249,24 @@ export default function Dashboard(){
                             <div className="dashboard-topfarmer">
                                 <div className="d-flex dashboard-topfarmer-toppart">
                                     <p className="fonts20 fontw600 text-removemargin">Top Farmer</p>
-                                    <select onChange={handleTopFarmerMonth} className="dashboard-btn fonts12 fontw400" aria-label="Default select example">
-                                        {
-                                            datafarmer.length > 0 ?
-                                            datafarmer.map((item)=>{
-                                                return (
-                                                    <option key={item.id} value={item.id}>{item.month_name} {item.year}</option>
-                                                )
-                                            }):
-                                            <option>Loading...</option>
-                                        }
-                                    </select>
-                                    {/* <button className="dashboard-btn fonts12 fontw400" type="button" data-bs-toggle="dropdown">Bulan <FaAngleDown /></button>
+                                    <button className="dashboard-btn fonts12 fontw400" type="button" data-bs-toggle="dropdown">Bulan <FaAngleDown /></button>
                                     <ul class="dropdown-menu">
-
-
-
                                         <li><a class="dropdown-item" href="#">Action</a></li>
                                         <li><a class="dropdown-item" href="#">Another action</a></li>
                                         <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                    </ul> */}
+                                    </ul>
                                 </div>
                                 {/* begin: kemungkinaan ada hover effect */}
                                 {
-                                    selecteddatafarmer.length!=0 ?
-                                    selecteddatafarmer.map((item)=>{
+                                    datafarmer.length!=0 ?
+                                    datafarmer.map((item)=>{
                                         return(
                                             <div className="d-flex align-items-center justify-content-between dashboard-topfarmer-farmerdiv">
                                                 <div className="d-flex align-items-center dashboard-farmerdiv-leftpart">
                                                     {/* <object data={item.farmerpic} type="image/png"> */}
-                                                        <img src={item.farmerpic} className="dashboard-farmerimg" width={64} height={64} />
+                                                        <img src={"..//assets/img/avatar/avatar (5).png"} className="dashboard-farmerimg" width={64} height={64} />
                                                     {/* </object> */}
-                                                    <p className="fonts14 fontw600 text-removemargin dashboard-farmername">{item.name}</p>
+                                                    <p className="fonts14 fontw600 text-removemargin dashboard-farmername">{item.nama}</p>
                                                 </div>
                                                 <div className="d-flex align-items-center justify-content-center dashboard-farmerdiv-rightpart">
                                                     <img className="dashboard-leavelogofarmer" src={Plant} width={18} height={18} />
@@ -394,7 +276,7 @@ export default function Dashboard(){
                                         )
                                     }) :
                                     <div className="d-flex align-items-center justify-content-between dashboard-topfarmer-farmerdiv">
-                                        <p></p>
+                                        <p>No Farmer Found...</p>
                                     </div>
                                 }
                                 {/* end : kemungkinaan ada hover effect */}

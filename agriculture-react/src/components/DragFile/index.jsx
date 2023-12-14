@@ -43,7 +43,8 @@ const DragFile = ({ value, name, setValue}) => {
             name: file.name,
           };
 
-          addImage(imagePreview);
+          // addImage(imagePreview);
+          addImage(files);
         };
 
         reader.readAsDataURL(file);
@@ -60,7 +61,7 @@ const DragFile = ({ value, name, setValue}) => {
   return (
     <div>
       <div id="image-preview">
-      {value.map((image) => (
+        {value.map((image) => (
           <div key={image.id} className="preview-container">
             <img src={image.src} alt="Preview" />
             <div className="image-info">
