@@ -1,27 +1,25 @@
-import "./style.module.css";
+// Filter.js
 
-const Filter = () => {
+import React from 'react';
+
+const Filter = ({ selectedTeknologi, selectedJenisTanaman, setSelectedTeknologi, setSelectedJenisTanaman }) => {
   const teknologi = ["Hidroponik", "Aeroponik"];
-  const jenisTanaman = [
-    "Bunga",
-    "Tanaman Hias",
-    "Umbi - umbian",
-    "Kacang - kacangan",
-    "Pohon - pohonan",
-    "Sayuran",
-  ];
+  const jenisTanaman = ["Bunga", "Tanaman Hias", "Umbi - umbian", "Kacang - kacangan", "Pohon - pohonan", "Sayuran"];
 
   const cekValue = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
+
+    if (name === 'teknologi') {
+      setSelectedTeknologi(value);
+    } else if (name === 'tanaman') {
+      setSelectedJenisTanaman(value);
+    }
   };
+
   return (
     <>
       <div>
-        <p
-          className="fw-semibold"
-          style={{ color: "#111827", fontSize: "16px" }}
-        >
+        <p className="fw-semibold" style={{ color: "#111827", fontSize: "16px" }}>
           Filters
         </p>
         <hr />
@@ -38,6 +36,7 @@ const Filter = () => {
                 id={`teknologi${index}`}
                 value={item}
                 onChange={(e) => cekValue(e)}
+                checked={selectedTeknologi === item}
               />
               <label className="form-check-label" htmlFor={`teknologi${index}`}>
                 {item}
@@ -59,6 +58,7 @@ const Filter = () => {
                 id={`tanaman${index}`}
                 value={item}
                 onChange={(e) => cekValue(e)}
+                checked={selectedJenisTanaman === item}
               />
               <label className="form-check-label" htmlFor={`tanaman${index}`}>
                 {item}

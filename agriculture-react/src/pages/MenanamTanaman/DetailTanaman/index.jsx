@@ -257,7 +257,7 @@ const DetailTanaman = () => {
                             className={`d-flex bg-white ${styles.cardInfo}`}
                             key={index}
                           >
-                            <img src={image1} alt="" />
+                            <img src={item.image_path} alt="" />
                             <div className="px-3">
                               <p
                                 style={{
