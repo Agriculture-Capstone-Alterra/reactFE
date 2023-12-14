@@ -26,7 +26,7 @@ export default function ImgModal({modalstatus, modalcloser, imgdatas, imgclicked
     const sliderRef = useRef(null);
     const jumpToSlide = () => {
         if (sliderRef && sliderRef.current) {
-            sliderRef.current.goToSlide(imgclickedindex-1);
+            sliderRef.current.goToSlide(imgclickedindex);
         }
     };
 
@@ -47,7 +47,7 @@ export default function ImgModal({modalstatus, modalcloser, imgdatas, imgclicked
     if(!modalstatus) return null
     return (
         <>
-            <div className="imgmodal-overlay" onClick={modalcloser}>
+            <div className="imgmodal-overlay z-3" onClick={modalcloser}>
                 <div onClick={(e)=>{e.stopPropagation();}}
                 className="imgmodal-container d-flex justify-content-center align-items-center">
                     {/* <CustomLeft/> */}
@@ -56,7 +56,7 @@ export default function ImgModal({modalstatus, modalcloser, imgdatas, imgclicked
                     arrows
                     autoPlaySpeed={3000}
                     centerMode={false}
-                    
+                    sliderClass="align-items-center justify-content-center"    
                     containerClass="container"
                     // customLeftArrow={<CustomLeft />}
                     // customRightArrow={<CustomRight />}
@@ -102,7 +102,6 @@ export default function ImgModal({modalstatus, modalcloser, imgdatas, imgclicked
                     rtl={false}
                     shouldResetAutoplay
                     showDots={false}
-                    sliderClass=""
                     slidesToSlide={1}
                     swipeable
                     ref={sliderRef} //ini untuk biar image yang diclick bisa ditampilkan langsung
@@ -115,8 +114,8 @@ export default function ImgModal({modalstatus, modalcloser, imgdatas, imgclicked
                             imgdatas ?
                             imgdatas.map((imgdata, index) => {
                                 return (
-                                    <div key={index} className="d-flex flex-column imgmodal-imgscontainer">
-                                        <div>
+                                    <div key={index} className="d-flex flex-column imgmodal-imgscontainer justify-content-between">
+                                        <div className="d-flex justify-content-center">
                                             <img className="imgmodal-imgs" src={imgdata.link} />
                                         </div>
                                         <div className="d-flex justify-content-between fontw600 fonts12 text-light imgmodal-belowtext">
