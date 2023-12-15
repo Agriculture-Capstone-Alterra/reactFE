@@ -25,6 +25,12 @@ import axios from "axios";
 import ToastNotification from "../../../components/ToastNotification/ToastNotification";
 
 const InfoDetailRiwayatTanaman = () => {
+  const [isShowDeskripsi, setIsShowDeskripsi] = useState(false);
+  const [isShowNutrisi, setIsShowNutrisi] = useState(false);
+  const [isShowPenanganan, setIsShowPenanganan] = useState(false);
+
+  const { id } = useParams();
+  const [tanaman, setTanaman] = useState([]);
   const breadcrumbsobjectexample = [
     {
       crumbname: "Riwayat Menanam",
@@ -36,15 +42,9 @@ const InfoDetailRiwayatTanaman = () => {
     },
     {
       crumbname: "Info Detail Riwayat Tanaman",
-      crumblink: "/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman",
+      crumblink: "/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/"+id,
     },
   ];
-  const [isShowDeskripsi, setIsShowDeskripsi] = useState(false);
-  const [isShowNutrisi, setIsShowNutrisi] = useState(false);
-  const [isShowPenanganan, setIsShowPenanganan] = useState(false);
-
-  const { id } = useParams();
-  const [tanaman, setTanaman] = useState([]);
   
 
   const fetchPlantsData = async () => {
