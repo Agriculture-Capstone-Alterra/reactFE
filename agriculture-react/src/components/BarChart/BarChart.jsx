@@ -36,7 +36,7 @@ const options = {
       display: true,
       position: 'bottom',
       rotation: 90,
-      text: 'Tinggi Pohon Bayam Perbulan',
+      text: 'Tinggi Tanaman Perbulan',
     },
   },
   scales: {

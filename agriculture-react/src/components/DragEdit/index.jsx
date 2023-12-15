@@ -3,7 +3,7 @@ import Upload from '../../assets/uploadFile.svg'
 import React, { useRef } from 'react';
 import axiosWithAuth from "../../api/axios";
 
-const DragFile = ({ value, name, setValue, onDelete}) => {
+const DragEdit = ({ value, name, setValue, onDelete, idPlant, linkApi}) => {
   const dropAreaRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -30,27 +30,33 @@ const DragFile = ({ value, name, setValue, onDelete}) => {
   const addImage = (imagePreview) => {
     setValue((prevImagePreviews) => [...prevImagePreviews, imagePreview]);
   };
-
-  const handleFiles = (files) => {
+  const handleFiles = async(files) => {
     for (const file of files) {
       if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-
-        reader.onload = () => {
+        try {
           const imagePreview = {
             id: Date.now(),
-            src: reader.result,
+            src: URL.createObjectURL(file),
             name: file.name,
           };
+          
+          const rawset = await fetch(imagePreview.src)
+          const toBlob = await rawset.blob()
+          const formData = new FormData();
+          formData.append('image_files', toBlob);
+          const response = await axiosWithAuth.post(`${linkApi}/${idPlant}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
 
           addImage(imagePreview);
-        };
-
-        reader.readAsDataURL(file);
-      }
+        }catch (error) {
+          console.error('Error uploading image:', error);
+        }
+      };
     }
-  };
-
+  }
   return (
     <div>
       <div id="image-preview">
@@ -99,4 +105,4 @@ const DragFile = ({ value, name, setValue, onDelete}) => {
   );
 };
 
-export default DragFile;
+export default DragEdit;
