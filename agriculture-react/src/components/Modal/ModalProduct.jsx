@@ -3,7 +3,26 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from "react-responsive-carousel";
 import padi from "../../assets/img/Padi.png";
 import { RxCross2 } from "react-icons/rx";
-const ModalProduct = ({ id }) => {
+import { useEffect, useState } from "react";
+import axiosWithAuth from "../../api/axios";
+const ModalProduct = ({ id, idProduct }) => {
+  const [detailProduct, setDetailProduct] = useState({});
+  const [imagesProduct, setImagesProduct] = useState([]);
+  useEffect(() => {
+    axiosWithAuth
+      .get(`plant-products/${idProduct}`)
+      .then((result) => {
+        console.log(result);
+        setDetailProduct(result.data.data);
+      })
+      .catch((error) => {
+        console.log("Error :", error);
+      });
+  }, [idProduct]);
+
+  useEffect(() => {
+    setImagesProduct(detailProduct.images || []);
+  }, [detailProduct]);
   return (
     <>
       <div
@@ -17,12 +36,25 @@ const ModalProduct = ({ id }) => {
             <div className="row">
               <div className="col-4 p-3" style={{ backgroundColor: "#F3F4F6" }}>
                 <Carousel autoPlay={true} showArrows={false} showThumbs={false}>
-                  <div className="mb-5">
-                    <img src={padi} width={"100%"} alt="" />
-                  </div>
-                  <div className="mb-5">
-                    <img src={padi} width={"100%"} alt="" />
-                  </div>
+                  {imagesProduct.length > 0 ? (
+                    imagesProduct.map((item, index) => (
+                      <div className="mb-5" key={index}>
+                        <img
+                          src={item.image_path}
+                          style={{
+                            width: "100%",
+                            height: "204px",
+                            borderRadius: "20px",
+                          }}
+                          alt=""
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    <div className="mb-5">
+                      <img src={padi} width={"100%"} alt="" />
+                    </div>
+                  )}
                 </Carousel>
               </div>
               <div className="col-8 p-3 px-5">
@@ -62,7 +94,7 @@ const ModalProduct = ({ id }) => {
                       id="namatanaman"
                       className="form-control"
                       readOnly
-                      value={"Padi"}
+                      value={detailProduct.name}
                     />
                   </div>
                   <div className="row">
@@ -79,9 +111,9 @@ const ModalProduct = ({ id }) => {
                           aria-label="Default select example"
                           disabled
                         >
-                          <option value={"Kg"}>Kg</option>
-                          <option value={"Gram"}>Gram</option>
-                          <option value={"Liter"}>Liter</option>
+                          <option value={detailProduct.unit}>
+                            {detailProduct.unit}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -101,7 +133,7 @@ const ModalProduct = ({ id }) => {
                           id="tersedia"
                           className="form-control"
                           readOnly
-                          value={1100}
+                          value={detailProduct.stock}
                         />
                       </div>
                     </div>
@@ -119,7 +151,7 @@ const ModalProduct = ({ id }) => {
                           id="terjual"
                           className="form-control"
                           readOnly
-                          value={1100}
+                          value={detailProduct.sold}
                         />
                       </div>
                     </div>
@@ -139,7 +171,16 @@ const ModalProduct = ({ id }) => {
                           id="hargaPokok"
                           className="form-control"
                           readOnly
-                          value={"70.000"}
+                          value={
+                            detailProduct.cost_price
+                              ? detailProduct.cost_price.toLocaleString(
+                                  "id-ID",
+                                  {
+                                    maximumFractionDigits: 0,
+                                  }
+                                )
+                              : ""
+                          }
                         />
                       </div>
                     </div>
@@ -157,7 +198,16 @@ const ModalProduct = ({ id }) => {
                           id="hargaJual"
                           className="form-control"
                           readOnly
-                          value={"80.000"}
+                          value={
+                            detailProduct.sales_price
+                              ? detailProduct.sales_price.toLocaleString(
+                                  "id-ID",
+                                  {
+                                    maximumFractionDigits: 0,
+                                  }
+                                )
+                              : ""
+                          }
                         />
                       </div>
                     </div>
@@ -176,14 +226,12 @@ const ModalProduct = ({ id }) => {
                           <input
                             className="form-check-input"
                             type="radio"
-                            name="inlineRadioOptions"
-                            id="inlineRadio1"
-                            defaultValue="option1"
+                            name="satuanDasar"
+                            id="bibit"
+                            defaultValue="bibit"
+                            checked={detailProduct.plant_type === "bibit"}
                           />
-                          <label
-                            className="form-check-label"
-                            htmlFor="inlineRadio1"
-                          >
+                          <label className="form-check-label" htmlFor="bibit">
                             Bibit
                           </label>
                         </div>
@@ -191,14 +239,12 @@ const ModalProduct = ({ id }) => {
                           <input
                             className="form-check-input"
                             type="radio"
-                            name="inlineRadioOptions"
-                            id="inlineRadio2"
-                            defaultValue="option2"
+                            name="satuanDasar"
+                            id="benih"
+                            defaultValue="benih"
+                            checked={detailProduct.plant_type === "benih"}
                           />
-                          <label
-                            className="form-check-label"
-                            htmlFor="inlineRadio2"
-                          >
+                          <label className="form-check-label" htmlFor="benih">
                             Benih
                           </label>
                         </div>
@@ -217,8 +263,9 @@ const ModalProduct = ({ id }) => {
                       id="deskripsiTanaman"
                       rows="5"
                       className="form-control"
+                      value={detailProduct.description}
                       readOnly
-                    ></textarea>
+                    />
                   </div>
                 </div>
               </div>

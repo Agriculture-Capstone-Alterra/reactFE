@@ -7,9 +7,13 @@ import CardProduct from "../../../components/Card/CardProduct";
 import { useEffect, useState } from "react";
 import ModalProduct from "../../../components/Modal/ModalProduct";
 import FilterProduct from "../../../components/Filter/FilterProduct";
+import axiosWithAuth from "../../../api/axios";
 
 const ListProduct = () => {
+  const [product, setProduct] = useState([]);
+  const [filterProduct, setFilterProduct] = useState([]);
   const [idDetailProduct, setIdDetailProduct] = useState(0);
+  const [filter, setFilter] = useState("");
   const breadcrumbsobjectexample = [
     {
       crumblink: "/produk-lokal",
@@ -17,13 +21,44 @@ const ListProduct = () => {
     },
   ];
 
+  const changeFilter = (e) => {
+    if (e.target.value == "All") {
+      setFilter("");
+    } else {
+      setFilter(e.target.value);
+    }
+    console.log(filter);
+  };
+
   const changeIdDetailProduct = (id) => {
     setIdDetailProduct(id);
   };
 
   useEffect(() => {
-    console.log(idDetailProduct);
-  }, [idDetailProduct]);
+    axiosWithAuth
+      .get("plant-products")
+      .then((result) => {
+        // console.log(result.data.data);
+        setProduct(result.data.data);
+        setFilterProduct(result.data.data);
+      })
+      .catch((error) => {
+        console.log("Error :", error);
+      });
+  }, [product]);
+
+  useEffect(() => {
+    let dataProduct = product;
+    if (filter === "") {
+      setFilterProduct(dataProduct);
+    } else {
+      const dataFilter = dataProduct.filter(
+        (item) => item.plant_type === filter.toLowerCase()
+      );
+      setFilterProduct(dataFilter);
+    }
+    // console.log(filterProduct);
+  }, [filter, filterProduct]);
 
   return (
     <>
@@ -40,30 +75,30 @@ const ListProduct = () => {
             </div>
             <div className="col-md-9">
               <div className="row mt-5">
-                <div className="col-md-3 mt-3">
-                  <CardProduct changeIdDetailProduct={changeIdDetailProduct} />
-                </div>
-                <div className="col-md-3 mt-3">
-                  <CardProduct changeIdDetailProduct={changeIdDetailProduct} />
-                </div>
-                <div className="col-md-3 mt-3">
-                  <CardProduct changeIdDetailProduct={changeIdDetailProduct} />
-                </div>
-                <div className="col-md-3 mt-3">
-                  <CardProduct changeIdDetailProduct={changeIdDetailProduct} />
-                </div>
-                <div className="col-md-3 mt-3">
-                  <CardProduct changeIdDetailProduct={changeIdDetailProduct} />
-                </div>
+                {filterProduct.length > 0 ? (
+                  filterProduct.map((item, index) => (
+                    <div className="col-md-3 mt-3" key={index}>
+                      <CardProduct
+                        product={item}
+                        changeIdDetailProduct={changeIdDetailProduct}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
             <div className="col-md-3 mt-5">
-              <FilterProduct />
+              <FilterProduct changeFilter={changeFilter} />
             </div>
           </div>
         </div>
       </Layout>
-      <ModalProduct id={`product${idDetailProduct}`} />
+      <ModalProduct
+        id={`product${idDetailProduct}`}
+        idProduct={idDetailProduct}
+      />
     </>
   );
 };
