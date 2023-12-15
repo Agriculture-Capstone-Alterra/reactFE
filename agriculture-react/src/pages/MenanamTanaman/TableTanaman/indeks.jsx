@@ -1,124 +1,133 @@
-  import React, { useState, useEffect } from 'react';
-  import { Link, useNavigate } from 'react-router-dom';
-  import axiosWithAuth from '../../../api/axios';
-  import Table from '../../../components/Table/Table';
-  import Layout from '../../../layout/Layout';
-  import EditIcon from '../../../assets/icons/edit.svg';
-  import TrashIcon from '../../../assets/icons/trash.svg';
-  import { TbDots } from 'react-icons/tb';
-  import Pagination from '../../../components/Pagination/Pagination';
-  import Filter from '../../../components/Filter';
-  import Modal from '../../../components/Modal/Modal';
-  import ModalTrigger from '../../../components/Modal/ModalTrigger'; 
-  import ToastNotification from '../../../components/ToastNotification/ToastNotification';
-  import './style.css';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axiosWithAuth from '../../../api/axios';
+import Table from '../../../components/Table/Table';
+import Layout from '../../../layout/Layout';
+import EditIcon from '../../../assets/icons/edit.svg';
+import TrashIcon from '../../../assets/icons/trash.svg';
+import { TbDots } from 'react-icons/tb';
+import Pagination from '../../../components/Pagination/Pagination';
+import Filter from '../../../components/Filter';
+import Modal from '../../../components/Modal/Modal';
+import ModalTrigger from '../../../components/Modal/ModalTrigger';
+import ToastNotification from '../../../components/ToastNotification/ToastNotification';
+import './style.css';
 
-  const TableTanaman = () => {
-    const navigate = useNavigate();
-    const itemsPerPage = 10;
-    const [plantData, setPlantData] = useState([]);
-    const [currentData, setCurrentData] = useState([]);
-    const [selectedItemId, setSelectedItemId] = useState(null);
-    const [showToast, setShowToast] = useState(false);
-    const [toastMessage, setToastMessage] = useState("");
-    const [modalData, setModalData] = useState({});
-    const deleteModalName = "deleteDataTanaman";
-    
+const TableTanaman = () => {
+  const navigate = useNavigate();
+  const itemsPerPage = 10;
+  const [plantData, setPlantData] = useState([]);
+  const [currentData, setCurrentData] = useState([]);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [modalData, setModalData] = useState({});
+  const [selectedTeknologi, setSelectedTeknologi] = useState(null);
+  const [selectedJenisTanaman, setSelectedJenisTanaman] = useState(null);
+  const deleteModalName = "deleteDataTanaman";
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axiosWithAuth.get('/plants');
-          console.log('Response Data:', response.data);
-          setPlantData(response.data.data);
-          setCurrentData(response.data.data); 
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-    
-      fetchData();
-    }, []);
-    
-
-    const handleEdit = ({id}) => {
-      console.log('Edit button clicked for ID ${id}');
-      navigate('/menanam-tanaman/edit-tanaman');
-    };
-
-    const handleDeleteClick = (data) => {
-      setModalData({ ...data });
-      setSelectedItemId(data.id);
-    };  
-
-    const handleDeleteConfirm = async () => {
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        await axiosWithAuth.delete(`/plants/${selectedItemId}`);
-        const updatedData = currentData.filter((plant) => plant.id !== selectedItemId);
-        const updatedDataWithNumbers = updatedData.map((plant, index) => ({
-          ...plant,
-          number: index + 1, 
-          itemsPerPage: 10,
-        }));
+        const response = await axiosWithAuth.get('/plants');
+        console.log('Response Data:', response.data);
 
-        setCurrentData(updatedDataWithNumbers);
-        setModalData({});
-        setShowToast(true);
-        setToastMessage("Data tanaman berhasil dihapus");
-        setTimeout(() => setShowToast(false), 3000);
+        let filteredData = response.data.data;
+        if (selectedTeknologi) {
+          filteredData = filteredData.filter((plant) => plant.technology === selectedTeknologi);
+        }
+        if (selectedJenisTanaman) {
+          filteredData = filteredData.filter((plant) => plant.plant_type === selectedJenisTanaman);
+        }
+
+        setPlantData(filteredData);
+        setCurrentData(filteredData);
       } catch (error) {
-        console.error('Error deleting data:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    const handleRowClick = (id) => {
-      navigate(`/menanam-tanaman/detail-menanam-tanaman/${id}`);
-    };
+    fetchData();
+  }, [selectedTeknologi, selectedJenisTanaman]);
 
-    const crumbs = [
-      {
-        crumblink: '/menanam-tanaman',
-        crumbname: 'Menanam Tanaman',
-      },
-    ];
+  const handleEdit = ({ id }) => {
+    console.log(`Edit button clicked for ID ${id}`);
+    navigate('/menanam-tanaman/edit-tanaman');
+  };
 
-    const tableHeaders = ['No', 'Nama tanaman', 'Jenis Tanaman', 'Varietas', 'Teknologi', ' '];
+  const handleDeleteClick = (data) => {
+    setModalData({ ...data });
+    setSelectedItemId(data.id);
+  };
 
-    const paginationProps = {
-      dataList: currentData,
-      itemsPerPage,
-      setCurrentData: setPlantData,   
-      numberingData: true,
-    };
+  const handleDeleteConfirm = async () => {
+    try {
+      await axiosWithAuth.delete(`/plants/${selectedItemId}`);
+      const updatedData = currentData.filter((plant) => plant.id !== selectedItemId);
+      const updatedDataWithNumbers = updatedData.map((plant, index) => ({
+        ...plant,
+        number: index + 1,
+        itemsPerPage: 10,
+      }));
 
-    return (
-      <>
-        <Layout pagetitle={'Menanam Tanaman'} breadcrumbs={crumbs}>
-          <div className="page-table">
-            <div className="page-table-pagination">
-              <div className="table">
-                <div className="table-list">
-                  <span className="table-text-title">List Tanaman</span>
-                  <Link to="/menanam-tanaman/tambah-tanaman" className="tambah-tanaman">
-                    + Tambah Tanaman
-                  </Link>
-                </div>
-                <Table headers={tableHeaders}>
-                  {plantData.map((plant, index) => (
-                      <tr key={index}>
-                      <td onClick={() => handleRowClick(plant.id)}>{plant.number}</td>
-                      <td onClick={() => handleRowClick(plant.id)}>{plant.name}</td>
-                      <td onClick={() => handleRowClick(plant.id)}>{plant.plant_type}</td>
-                      <td onClick={() => handleRowClick(plant.id)}>{plant.variety}</td>
-                      <td onClick={() => handleRowClick(plant.id)}>{plant.technology}</td>
-                      <td>
-                          <div className="p-2 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                            <TbDots className="fw-bold fs-4 ms-1" />
-                          </div>
-                          <ul className="dropdown-menu">
-                            <li className="d-grid mb-2 ps-3 pe-3">
-                              <div className='link-none'>
-                              <Link to={`/menanam-tanaman/edit-tanaman/${plant.id}`}>
+      setCurrentData(updatedDataWithNumbers);
+      setModalData({});
+      setShowToast(true);
+      setToastMessage("Data tanaman berhasil dihapus");
+      setTimeout(() => setShowToast(false), 3000);
+    } catch (error) {
+      console.error('Error deleting data:', error);
+    }
+  };
+
+  const handleRowClick = (id) => {
+    navigate(`/menanam-tanaman/detail-menanam-tanaman/${id}`);
+  };
+
+  const crumbs = [
+    {
+      crumblink: '/menanam-tanaman',
+      crumbname: 'Menanam Tanaman',
+    },
+  ];
+
+  const tableHeaders = ['No', 'Nama tanaman', 'Jenis Tanaman', 'Varietas', 'Teknologi', ' '];
+
+  const paginationProps = {
+    dataList: currentData,
+    itemsPerPage,
+    setCurrentData: setPlantData,
+    numberingData: true,
+  };
+
+  return (
+    <>
+      <Layout pagetitle={'Menanam Tanaman'} breadcrumbs={crumbs}>
+        <div className="page-table">
+          <div className="page-table-pagination">
+            <div className="table">
+              <div className="table-list">
+                <span className="table-text-title">List Tanaman</span>
+                <Link to="/menanam-tanaman/tambah-tanaman" className="tambah-tanaman">
+                  + Tambah Tanaman
+                </Link>
+              </div>
+              <Table headers={tableHeaders}>
+                {plantData.map((plant, index) => (
+                  <tr key={index}>
+                    <td onClick={() => handleRowClick(plant.id)}>{plant.number}</td>
+                    <td onClick={() => handleRowClick(plant.id)}>{plant.name}</td>
+                    <td onClick={() => handleRowClick(plant.id)}>{plant.plant_type}</td>
+                    <td onClick={() => handleRowClick(plant.id)}>{plant.variety}</td>
+                    <td onClick={() => handleRowClick(plant.id)}>{plant.technology}</td>
+                    <td>
+                      <div className="p-2 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                        <TbDots className="fw-bold fs-4 ms-1" />
+                      </div>
+                      <ul className="dropdown-menu">
+                        <li className="d-grid mb-2 ps-3 pe-3">
+                          <div className='link-none'>
+                            <Link to={`/menanam-tanaman/edit-tanaman/${plant.id}`}>
                               <button
                                 className="btn"
                                 style={{
@@ -129,55 +138,59 @@
                                 <img src={EditIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
                                 <span>Edit</span>
                               </button>
-                              </Link>
-                              </div>
-                            </li>
-                            <li className="d-grid mb-2 ps-3 pe-3">
-                              <ModalTrigger
-                                modalTarget={deleteModalName}
-                                className="btn"
-                                style={{
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                }}
-                                onClick={(e) => handleDeleteClick(plant, e)}
-                              >
-                                <img src={TrashIcon} alt="Delete Icon" className="me-2" width="20" height="20" />
-                                <span>Hapus</span>
-                              </ModalTrigger>
-                            </li>
-                          </ul>
-                        </td>
-                      </tr>
-                    ))
-                  }
-                </Table>
-              </div>
-              <Pagination {...paginationProps} />
+                            </Link>
+                          </div>
+                        </li>
+                        <li className="d-grid mb-2 ps-3 pe-3">
+                          <ModalTrigger
+                            modalTarget={deleteModalName}
+                            className="btn"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                            onClick={(e) => handleDeleteClick(plant, e)}
+                          >
+                            <img src={TrashIcon} alt="Delete Icon" className="me-2" width="20" height="20" />
+                            <span>Hapus</span>
+                          </ModalTrigger>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                ))}
+              </Table>
             </div>
-            <Filter /> 
+            <Pagination {...paginationProps} />
           </div>
-          {showToast && (
-            <ToastNotification
-              position="bottom-left"
-              text={toastMessage}
-              onClose={() => {
-                setShowToast(false);
-                window.history.replaceState(null, null, window.location.pathname);
-              }}
-            />
-          )}
-          <Modal
-            id={deleteModalName}
-            title="Hapus Data Tanaman"
-            content={<p className='text-center'>Apakah anda yakin akan menghapus data tanaman?</p>}
-            onCancel={() => {}}
-            onSubmit={handleDeleteConfirm}
-            type="delete"
+          <Filter
+            selectedTeknologi={selectedTeknologi}
+            selectedJenisTanaman={selectedJenisTanaman}
+            setSelectedTeknologi={setSelectedTeknologi}
+            setSelectedJenisTanaman={setSelectedJenisTanaman}
           />
-        </Layout>
-      </>
-    );
-  };
+        </div>
+        {showToast && (
+          <ToastNotification
+            position="bottom-left"
+            text={toastMessage}
+            onClose={() => {
+              setShowToast(false);
+              window.history.replaceState(null, null, window.location.pathname);
+            }}
+          />
+        )}
+        <Modal
+          id={deleteModalName}
+          title="Hapus Data Tanaman"
+          content={<p className='text-center-modal'>Apakah anda yakin akan menghapus SEMUA DATA TANAMAN PADA USER ? </p>}
+          onCancel={() => {}}
+          onSubmit={handleDeleteConfirm}
+          type="delete"
+        />
+      </Layout>
+    </>
+  );
+};
 
-  export default TableTanaman;
+export default TableTanaman;

@@ -21,11 +21,11 @@ const editPengingat = () => {
     expiration_date: "",
     expiration_occurence: 0,
     name: "",
-    plant_id: null,
+    plant_id: "",
     repeat_date: "",
     repeat_days: [],
     repeat_in: 0,
-    repeat_in_unit: "daily",
+    repeat_in_unit: "weekly",
     schedule_type: "",
     begin_date: "",
     startTime:"",
@@ -61,67 +61,63 @@ const editPengingat = () => {
     },
   ];
   
-  const namaHari = [
-    {
-      label: "Hari",
-      value: "daily",
-    },
-    {
-      label: "Minggu",
-      value: "weekly",
-    },
-    {
-      label: "Bulan",
-      value: "monthly",
-    },
-    {
-      label: "Tahun",
-      value: "year",
-    },
-  ];
-
   //getAPI
   useEffect(() => {
-        axiosWithAuth("https://service.api-agriplant.xyz/plants")
+    
+    Swal.fire({
+      toast: true,
+      position: 'bottom-left',
+      showConfirmButton: false,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      text:"Sedang mendapatkan data tanaman...",
+    });
+    axiosWithAuth("https://service.api-agriplant.xyz/plants")
+    .then((res) => {
+      const mappedData = res.data.data.map((value, key) => ({
+        label: value.name,
+        value: value.id,
+      }));
+      setTanamanOptions(mappedData.length > 0 ? mappedData : []);
+      axiosWithAuth(`https://service.api-agriplant.xyz/recommended-schedule/${id}`)
+      .then((res) => {
+        const endpointData = res.data.data;
+        // console.log("endpoint data : ", endpointData);
+        axios(`https://6575b5f4b2fbb8f6509d68ad.mockapi.io/pengingatanaman/`)
         .then((res) => {
-          const mappedData = res.data.data.map((value, key) => ({
-            label: value.name,
-            value: value.id,
-          }));
-          setTanamanOptions(mappedData);
-          axiosWithAuth(`https://service.api-agriplant.xyz/recommended-schedule/${id}`)
-          .then((res) => {
-            const endpointData = res.data.data;
-            // console.log("endpoint data : ", endpointData);
-            axios(`https://6575b5f4b2fbb8f6509d68ad.mockapi.io/pengingatanaman/`)
-            .then((res) => {
-              const mockData = res.data.find((mock) => mock.schedule_id == endpointData.id);
-              setMockId(mockData.id);
-              // console.log("mock data : ", mockData);
-              const repeatDateParts = mockData.repeat_date.split("/");
-              const startTimeParts = repeatDateParts[1].split("-")[0].split(":");
-              const endTimeParts = repeatDateParts[1].split("-")[1].split(":");
-              setFormData({
-                expiration_date: endpointData.expiration_date,
-                expiration_occurence: endpointData.expiration_occurence,
-                name: endpointData.name,
-                plant_id: endpointData.plant.id,
-                repeat_date: endpointData.repeat_date,
-                repeat_days: mockData.repeat_days.split(", "),
-                repeat_in: endpointData.repeat_in,
-                repeat_in_unit: mockData.repeat_in_unit,
-                schedule_type: endpointData.schedule_type,
-                begin_date: endpointData.repeat_date,
-                startTime: `${startTimeParts[0]}:${startTimeParts[1]}`,
-                endTime: `${endTimeParts[0]}:${endTimeParts[1]}`,  
-              })
-            })
+          const mockData = res.data.find((mock) => mock.schedule_id == endpointData.id);
+          setMockId(mockData.id);
+          // console.log("mock data : ", mockData);
+          const repeatDateParts = mockData.repeat_date.split("/");
+          const startTimeParts = repeatDateParts[1].split("-")[0]?.split(":");
+          const endTimeParts = repeatDateParts[1].split("-")[1]?.split(":");
+          setFormData({
+            expiration_date: endpointData.expiration_date,
+            expiration_occurence: endpointData.expiration_occurence,
+            name: endpointData.name,
+            plant_id: endpointData.plant.id,
+            repeat_date: endpointData.repeat_date,
+            repeat_days: mockData.repeat_days ? mockData.repeat_days.split(", ") : [],
+            repeat_in: endpointData.repeat_in,
+            repeat_in_unit: "weekly",
+            schedule_type: endpointData.schedule_type,
+            begin_date: endpointData.repeat_date,
+            startTime: startTimeParts ? `${startTimeParts[0]}:${startTimeParts[1]}` : '',
+            endTime: endTimeParts ? `${endTimeParts[0]||''}:${endTimeParts[1]||''}` : '',  
           })
-          .catch((err) => {
-            navigate('/errorpage');
-          });
         })
-        .catch((err) => console.log(err));
+      })
+      .catch((err) => {
+        navigate('/errorpage');
+      })
+      .finally(() => {
+        Swal.close();
+        console.log('fetched: ', formData);
+      });
+    })
+    .catch((err) => console.log(err));
   }, []);
   
   // useEffect(() => {
@@ -212,11 +208,19 @@ const editPengingat = () => {
       errors.schedule_type = "Pilih jenis pengingat";
     }
 
-    if (formData.repeat_in_unit === "daily" && formData.repeat_in > 0) {
-      if (formData.repeat_days.length !== formData.repeat_in) {
-        errors.repeat_days = "Jumlah hari dalam satu minggu tidak sesuai";
-      }
+    // if (formData.repeat_in > 0) {
+    //   if (formData.repeat_days.length !== formData.repeat_in) {
+    //     errors.repeat_days = "Jumlah hari dalam satu minggu tidak sesuai";
+    //   }
+    // }
+    if (formData.repeat_in < 0) {
+      errors.repeat_in = "tidak boleh diisi kurang dari 0";
     }
+    
+    if(formData.repeat_days .length == 0 ){
+      errors.repeat_days = "Pilih setidaknya satu hari dalam seminggu";
+    }
+
     if (formData.expiration_date && formData.expiration_date <= formData.begin_date) {
       errors.expiration_date = "Tanggal Berakhir harus lebih besar dari Tanggal Mulai";
     }
@@ -229,6 +233,16 @@ const editPengingat = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if(formValidate()){
+      Swal.fire({
+        toast: true,
+        position: 'bottom-left',
+        showConfirmButton: false,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+        text:"Sedang mendapatkan data tanaman...",
+      });
       axiosWithAuth({
         baseURL:`https://service.api-agriplant.xyz/recommended-schedule/${id}`,
         method:"PUT",
@@ -245,7 +259,7 @@ const editPengingat = () => {
           name: formData.name,
           plant_id: formData.plant_id,
           schedule_type: formData.schedule_type,
-          repeat_date: `${formData.begin_date}/${formData.startTime}-${formData.endTime}`,
+          repeat_date: formData.begin_date + (formData.startTime ? '/' + (formData.startTime + (formData.endTime ? '-' + formData.endTime : ''))  : ''),
           repeat_in: `${formData.repeat_in}`,
           repeat_in_unit: formData.repeat_in_unit,
           repeat_days: `${formData.repeat_days?.join(", ")}`,
@@ -269,6 +283,9 @@ const editPengingat = () => {
             title: 'Oops, ada error ketika mengirim data',
             text: 'silahkan cek output pada console untuk melihat error',
           });
+        })
+        .finally(() => {
+          Swal.close();
         });
       }).catch((err) => {
         console.log(err);
@@ -388,7 +405,9 @@ const editPengingat = () => {
             <ModalTrigger
               modalTarget={"tambahData"}
               className={`btn me-3 tambahPengingat-btnOutline ${styles.btnAction}`}
-              style={{ display: "flex", alignItems: "center" }}>
+              style={{ display: "flex", alignItems: "center" }}
+              onClick={(e) => e.preventDefault()}
+              >
               Simpan dan Bagikan
             </ModalTrigger>
             <button
@@ -409,11 +428,11 @@ const editPengingat = () => {
           submitButtonText={"Ya"}
           cancelButtonText={"Tidak"}
           onCancel={() => {}}
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
           type="edit"
         />
         {/* modal k*/}
-        <div className="modal fade" id="exampleModal" tabindex="-1">
+        <div className="modal fade" id="exampleModal" tabIndex="-1">
           <div className="modal-dialog tambahPengingat-modal">
             <div className="modal-content">
               <div className="modal-header">
@@ -427,7 +446,7 @@ const editPengingat = () => {
                 <form>
                   <div className="mb-3">
                     <label
-                      for="recipient-name"
+                      htmlFor="recipient-name"
                       className="col-form-label tambahPengingat-modalFormLabel">
                       Ulangi Setiap
                     </label>
@@ -450,19 +469,15 @@ const editPengingat = () => {
                           <SlArrowDown size={8} />
                         </button>
                       </div>
-                      <Select
-                        value={formData.repeat_in_unit}
-                        className={"form-select tambahPengingat-modalHari"}
-                        options={namaHari}
-                        onChange={handleChange}
-                        title={"Hari"}
-                        name={"repeat_in_unit"}
-                      />
+                      <div className="ms-1 mt-2">
+                        Minggu
+                      </div>
                     </div>
+                    <p className="text-danger">{formError.repeat_in}</p>
                   </div>
                   <div className="mb-3">
                     <label
-                      for="message-text"
+                      htmlFor="message-text"
                       className="col-form-label tambahPengingat-modalFormLabel">
                       Ulangi Setiap Hari
                     </label>
@@ -541,7 +556,7 @@ const editPengingat = () => {
                   </div>
                   <div className="mb-3">
                     <label
-                      for="message-text"
+                      htmlFor="message-text"
                       className="col-form-label tambahPengingat-modalFormLabel">
                       Berakhir
                     </label>

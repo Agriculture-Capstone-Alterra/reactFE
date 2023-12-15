@@ -13,6 +13,7 @@ import Modal from '../../../components/Modal/Modal.jsx';
 import ModalTrigger from '../../../components/Modal/ModalTrigger.jsx';
 import axios from "axios";
 import axiosWithAuth from '../../../api/axios.jsx';
+import Swal from 'sweetalert2';
 
 
 // start dokumentasi komponen
@@ -47,10 +48,20 @@ const PengingatTanaman = () => {
   }, [location.state]);
 
   useEffect(() => {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-left',
+      showConfirmButton: false,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      text:"Sedang mendapatkan data tanaman...",
+    });
     axiosWithAuth("https://service.api-agriplant.xyz/recommended-schedule")
     .then((res1) => {
       const endpointData = res1.data.data;
-      console.log("Endpoint data : ", endpointData);
+      // console.log("Endpoint data : ", endpointData);
       axios("https://6575b5f4b2fbb8f6509d68ad.mockapi.io/pengingatanaman")
         .then((res2) => {
           const rawData = res2.data;
@@ -67,7 +78,7 @@ const PengingatTanaman = () => {
             };
           });
 
-          // console.log("combined data: ", combinedData);
+          console.log("combined data: ", combinedData);
 
           const penyiramanList = combinedData?.filter((item) => item.schedule_type === 'siram');
           const pemupukanList = combinedData?.filter((item) => item.schedule_type === 'pupuk');
@@ -75,7 +86,10 @@ const PengingatTanaman = () => {
           setDataPenyiramanList(penyiramanList||[]);
           setDataPemupukanList(pemupukanList||[]);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+        .finally(() => {
+          Swal.close();
+        });
     })
     .catch((err) => console.log(err));
     
@@ -137,16 +151,21 @@ const PengingatTanaman = () => {
       })
       .catch((err) => console.log(err));
   };
-  const getPengulangan = (type, days, until) => {
-    let tipe;
-    switch(type){
-      case 'daily': tipe = "Mingguan"; break;
-      case 'weekly': tipe = "Mingguan"; break;
-      case 'monthly': tipe = "Bulanan"; break;
-      case 'year': tipe = "Tahunan"; break;
+  const getPengulangan = (days, until, repeat_in) => {
+    let finalString;
+    if(days == "" && repeat_in == 0){
+      finalString = "Ulangi setiap hari";
+    } else {
+      const untilDate = until === "" ? "" : ", sampai " + until;
+      const mingguCount = repeat_in > 0 ? repeat_in + " minggu sekali " : " minggu ";
+      const hariCount = days ? ", pada hari " + days : "";
+      finalString = "Setiap " +  mingguCount + hariCount + untilDate;
+      const maxLength = 100;
+      if (finalString.length > maxLength) {
+        finalString = finalString.substring(0, maxLength - 3) + "...";
+      }
     }
-    const untilDate = until === "" ? "" : "Sampai " + until;
-    return tipe + " setiap " + days + " " + untilDate;
+    return finalString;
   }
   return (
     <>
@@ -171,8 +190,8 @@ const PengingatTanaman = () => {
                         <td>{item.plant.name}</td>
                         <td>{item.name}</td>
                         <td>{item.repeat_date}</td>
-                        <td>
-                            {getPengulangan(item.repeat_in_unit, item.repeat_days, item.expiration_date)}
+                        <td width={"50%"}>
+                            {getPengulangan(item.repeat_days, item.expiration_date, item.repeat_in)}
                         </td>
                         <td>
                           <div
@@ -180,7 +199,7 @@ const PengingatTanaman = () => {
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                           >
-                            <TbDots className="fw-bold fs-4 ms-1" />
+                            <TbDots className="fw-bold fs-4" />
                           </div>
                           <ul className="dropdown-menu">
                             <li className="d-grid mb-2 ps-3 pe-3">
@@ -248,7 +267,7 @@ const PengingatTanaman = () => {
                         <td>{item.name}</td>
                         <td>{item.repeat_date}</td>
                         <td>
-                            {getPengulangan(item.repeat_in_unit, item.repeat_days, item.expiration_date)}
+                            {getPengulangan(item.repeat_days, item.expiration_date, item.repeat_in)}
                         </td>
                         <td>
                           <div

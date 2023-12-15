@@ -8,7 +8,7 @@ function CardCuaca({data}){
                 <p className='text-suhu'>{data.suhu}° C</p>
                 <p className='text-suhu2'>{data.suhunama} </p>
             </div>
-            <img className="" src={data.suhupic} alt="" />
+            <img className="cardcuaca-img" src={data.suhupic} alt="" />
         </div>
     )
 }

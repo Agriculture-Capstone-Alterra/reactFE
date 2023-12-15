@@ -1,41 +1,50 @@
-import { useEffect, useState } from "react";
-import Card from "../../../components/Card/Card";
-import Layout from "../../../layout/Layout";
-import styles from "./ListTanaman.module.css";
-import Filter from "../../../components/Filter";
-import { useNavigate, useParams } from "react-router-dom";
-import { PiGrainsSlashFill } from "react-icons/pi";
-import axiosWithAuth from "../../../api/axios";
+import React, { useState, useEffect } from 'react';
+import Card from '../../../components/Card/Card';
+import Layout from '../../../layout/Layout';
+import styles from './ListTanaman.module.css';
+import Filter from '../../../components/Filter';
+import { useNavigate, useParams } from 'react-router-dom';
+import { PiGrainsSlashFill } from 'react-icons/pi';
+import axiosWithAuth from '../../../api/axios';
 
 const ListTanaman = () => {
   const navigate = useNavigate();
   const { user_id } = useParams();
   const [cards, setCards] = useState([]);
-  const [selectedSortOption, setSelectedSortOption] = useState("");
-  const selectedUserName = localStorage.getItem("selectedUserName");
+  const [selectedSortOption, setSelectedSortOption] = useState('');
+  const selectedUserName = localStorage.getItem('selectedUserName');
+  const [selectedTeknologi, setSelectedTeknologi] = useState(null);
+  const [selectedJenisTanaman, setSelectedJenisTanaman] = useState(null);
 
   const fetchPlantsData = async () => {
     try {
       const res = await axiosWithAuth.get(`/admin/user-plants/user/${user_id}`);
-      const cards = res.data.data;
+      let cards = res.data.data;
+
+      if (selectedTeknologi) {
+        cards = cards.filter((card) => card.plant.technology.name === selectedTeknologi);
+      }
+      if (selectedJenisTanaman) {
+        cards = cards.filter((card) => card.plant.plant_type.name === selectedJenisTanaman);
+      }
+
       setCards(cards);
-      console.log("cards data => ", cards);
     } catch (err) {
-      console.error("Error fetching data:", err);
+      console.error('Error fetching data:', err);
     }
   };
 
   useEffect(() => {
     fetchPlantsData();
-  }, [user_id]);
+  }, [user_id, selectedTeknologi, selectedJenisTanaman]);
 
   const breadcrumbsobjectexample = [
     {
-      crumbname: "Riwayat Menanam",
-      crumblink: "/riwayat-menanam",
+      crumbname: 'Riwayat Menanam',
+      crumblink: '/riwayat-menanam',
     },
     {
-      crumbname: "List Tanaman",
+      crumbname: 'List Tanaman',
       crumblink: `/riwayat-menanam/list-tanaman/${user_id}`,
     },
   ];
@@ -43,8 +52,6 @@ const ListTanaman = () => {
   // handle card click
   const handleCardClick = (id) => {
     console.log(`Card ${id} clicked`);
-
-    //Link ke halaman List Tanaman dari Nama Pengguna
     navigate(`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/${id}`);
   };
 
@@ -52,38 +59,16 @@ const ListTanaman = () => {
   const handleSortChange = (e) => {
     const selectedOption = e.target.value;
     setSelectedSortOption(selectedOption);
-
-    // sorting card logic
-    let sortedCards = [...cards];
-    switch (selectedOption) {
-      case "oldest":
-        sortedCards.sort((a, b) => a.id - b.id);
-        break;
-      case "newest":
-        sortedCards.sort((a, b) => b.id - a.id);
-        break;
-      case "ascending":
-        sortedCards.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-        break;
-      case "descending":
-        sortedCards.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
-        break;
-      default:
-        break;
-    }
-    console.log("sortedCards => ", sortedCards);
-
-    setCards(sortedCards);
+    // Implement sorting logic if needed
   };
 
   return (
     <div className={styles.container}>
-      <Layout pagetitle={"List Tanaman"} breadcrumbs={breadcrumbsobjectexample}>
+      <Layout pagetitle={'List Tanaman'} breadcrumbs={breadcrumbsobjectexample}>
         <div>
           <div className={styles.header}>
             <h4 className={styles.title}>
-              List Tanaman{" "}
-              <span className={styles.userName}>{selectedUserName}</span>
+              List Tanaman <span className={styles.userName}>{selectedUserName}</span>
             </h4>
           </div>
           <div className={styles.contentContainer}>
@@ -100,6 +85,9 @@ const ListTanaman = () => {
               <option value="ascending">A-Z</option>
               <option value="descending">Z-A</option>
             </select>
+            <div className={styles.filter}>
+              
+            </div>
             <div className={styles.cardContainer}>
               <div className={styles.card}>
                 {cards.length === 0 ? (
@@ -122,9 +110,12 @@ const ListTanaman = () => {
                   ))
                 )}
               </div>
-              <div className={styles.filter}>
-                <Filter />
-              </div>
+              <Filter
+                selectedTeknologi={selectedTeknologi}
+                selectedJenisTanaman={selectedJenisTanaman}
+                setSelectedTeknologi={setSelectedTeknologi}
+                setSelectedJenisTanaman={setSelectedJenisTanaman}
+              />
             </div>
           </div>
         </div>
