@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useState } from "react";
 import Layout from "../../../layout/Layout";
 import MawarPutih from "../../../assets/img/mawarputih.jpg";
@@ -10,8 +10,6 @@ import calendar from "../../../assets/calendar.svg";
 import BarChart from "../../../components/BarChart/BarChart";
 import Accordion from "../../../components/Accordion";
 import "./style.css";
-import SliderImg from "../../../components/SliderImg/SliderImg";
-import ImgCard from "../../../components/SliderImg/ImgCard";
 import axiosWithAuth from "../../../api/axios";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../../../components/Modal/Modal";
@@ -21,6 +19,10 @@ import idLocale from "date-fns/locale/id";
 import bayam from "../../../assets/img/bayam.png";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; 
+import ImgSliderS from "../../../components/ImgModal/ImgSliderS";
+import axios from "axios";
+import ToastNotification from "../../../components/ToastNotification/ToastNotification";
 
 const InfoDetailRiwayatTanaman = () => {
   const breadcrumbsobjectexample = [
@@ -58,44 +60,59 @@ const InfoDetailRiwayatTanaman = () => {
 
   useEffect(() => {
     fetchPlantsData();
+    initialGet() 
   }, [id]);
 
 
   function handleDeleteClick(id) {
     console.log(id);
   }
+  const [plantimages, setPlantImages] = useState([]) 
+  async function initialGet(){
+    await axiosWithAuth
+      .get(`plants/${id}`)
+      .then((result) => {
+        setTanaman(result.data.data);
+        console.log("resr", result.data.data);
+        // const list = 
+        console.log(plantimages);
+        setPlantImages(result.data.data.plant_images.map((item, index) => {
+          return{link: item.image_path, datecreated: item.created_at, id: item.id}
+        }))
 
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  // begin: safutras
   const [modalopen, setModalOpen] = useState(false);
   const [imgmodalcurrentindex, setImgModalCurrentIndex] = useState(0);
+  const [imgidfordelete, setImgIdForDelete]= useState()
+  const [showToast, setShowToast] = useState({status: false, text: ""})
+  async function handleDeleteImg(){
+    await axiosWithAuth.delete('plant-images/'+imgidfordelete).then((response)=>{
+      setShowToast({status: true, text: "Image berhasil di hapus!"})
+    }).catch(err =>{
+      console.log(err)
+    })
+  }
+  function handleSetImgIdDelete(id){
+    setImgIdForDelete(id)
+  }
   function handleonClick(key) {
     console.log(key);
     setImgModalCurrentIndex(key);
     setModalOpen(!modalopen);
   }
-  const dataimage = [
-    {
-      link: "https://loremflickr.com/640/480/abstract",
-      datecreated: "20-20-2907",
-    },
-    {
-      link: "https://loremflickr.com/640/480/abstract",
-      datecreated: "20-20-2907",
-    },
-    {
-      link: "https://loremflickr.com/640/480/nightlife",
-      datecreated: "20-20-2907",
-    },
-    {
-      link: "https://loremflickr.com/640/480/fashion",
-      datecreated: "20-20-2907",
-    },
-  ];
-
+  // end safutras
   return (
     <>
       {/* <ImgModal
         imgclickedindex={imgmodalcurrentindex}
-        imgdatas={dataimage}
+        imgdatas={plantimages}
         modalstatus={modalopen}
         modalcloser={handleonClick}
       /> */}
@@ -107,7 +124,7 @@ const InfoDetailRiwayatTanaman = () => {
           <div className="row">
             <div className="col">
               <div
-                className="card"
+                className="card z-n1"
                 style={{ width: "640px", backgroundColor: "#F3F4F6" }}
               >
                 {/* <img
@@ -295,7 +312,7 @@ const InfoDetailRiwayatTanaman = () => {
                 <BarChart />
               </div>
 
-              <div>
+              <div className="d-flex flex-column">
                 <h4 className="mt-4">Perkembangan Tumbuhan</h4>
                 {/* 
                 <ImgCard
@@ -303,6 +320,8 @@ const InfoDetailRiwayatTanaman = () => {
                   viewImgModal={handleonClick}
                   deleteImgModalName="modalDelete"
                 /> */}
+                <ImgSliderS handleDeleteClick={handleSetImgIdDelete} deleteImgModalName="modalDelete" imagesdata={plantimages} modalImageTrigger={handleonClick} />
+
               </div>
               <div className="d-flex flex-wrap gap-4 mt-4">
                 <Accordion
@@ -346,6 +365,23 @@ const InfoDetailRiwayatTanaman = () => {
           </div>
         </div>
       </Layout>
+      <Modal 
+      id="modalDelete"
+      title="Hapus Gambar Tanaman" 
+      content={<p className='text-center'>Apakah anda yakin akan mengapus data tanaman?</p>}
+      type="delete"
+      onSubmit={handleDeleteImg}
+      />
+
+      {showToast.status && (
+      <ToastNotification 
+      text={showToast.text}
+      onClose={() => {
+        setShowToast({status: false, text: ""})
+        window.history.replaceState(null, null, window.location.pathname);
+      }}
+      />
+      )}
     </>
   );
 };
