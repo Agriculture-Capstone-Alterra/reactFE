@@ -29,6 +29,9 @@ const DetailTanaman = () => {
   const [isShowLangkah, setIsShowLangkah] = useState(false);
   const [isShowMenanam, setIsShowMenanam] = useState(false);
   const [isShowPenanganan, setIsShowPenanganan] = useState(false);
+  const [plantGuides, setPlantGuides] = useState([]);
+  const [plantTools, setPlantTools] = useState([]);
+  const [plantingMediumImages, setPlantingMediumImages] = useState([]);
   const navigate = useNavigate();
   const [widthScroll, setWithScroll] = useState(0);
   const scroll = useRef(null);
@@ -42,7 +45,11 @@ const DetailTanaman = () => {
       .get(`plants/${id}`)
       .then((result) => {
         setTanaman(result.data.data);
-        // console.log(result.data.data);
+        setPlantGuides(result.data.data.planting_guides);
+        setPlantTools(result.data.data.planting_tools);
+        setPlantingMediumImages(result.data.data.planting_medium_images);
+        console.log(result.data.data);
+        // console.log(plantGuides);
       })
       .catch((error) => {
         console.log(error);
@@ -60,38 +67,6 @@ const DetailTanaman = () => {
         console.log("Error :", error);
       });
   };
-
-  const alat = [
-    {
-      name: "Rockwool",
-      description:
-        "Rockwool/media tanaman yang bagus digunakan untuk tanaman hidroponik",
-    },
-    {
-      name: "Rockwool",
-      description:
-        "Rockwool/media tanaman yang bagus digunakan untuk tanaman hidroponik",
-    },
-    {
-      name: "Rockwool",
-      description:
-        "Rockwool/media tanaman yang bagus digunakan untuk tanaman hidroponik",
-    },
-  ];
-  const langkah = [
-    {
-      name: "Tahap 1",
-      description: "Potong rockwool bentuk dadu ukuran 2,5cm x 2,5cm x2,5cm",
-    },
-    {
-      name: "Tahap 1",
-      description: "Potong rockwool bentuk dadu ukuran 2,5cm x 2,5cm x2,5cm",
-    },
-    {
-      name: "Tahap 1",
-      description: "Potong rockwool bentuk dadu ukuran 2,5cm x 2,5cm x2,5cm",
-    },
-  ];
 
   useEffect(() => {
     setWithScroll(scroll.current.scrollWidth - scroll.current.offsetWidth);
@@ -130,18 +105,26 @@ const DetailTanaman = () => {
                 {/* <figure>
                   <img src={bayam} width={"100%"} alt="" />
                 </figure> */}
-                <div style={{ width: "100%" }}>
+                <div style={{ width: "100%", height: "390px" }}>
                   <Carousel
                     autoPlay={true}
                     showArrows={false}
                     showThumbs={false}
                   >
-                    <div>
-                      <img src={bayam} />
-                    </div>
-                    <div>
-                      <img src={bayam} />
-                    </div>
+                    {plantingMediumImages.length > 0 ? (
+                      plantingMediumImages.map((item, index) => (
+                        <div key={index}>
+                          <img
+                            src={plantingMediumImages.image_path}
+                            style={{ width: "100%", height: "390px" }}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <div>
+                        <img src={bayam} />
+                      </div>
+                    )}
                   </Carousel>
                 </div>
                 <h2 className="text-center fw-bolder mt-5 mb-5">
@@ -252,35 +235,47 @@ const DetailTanaman = () => {
                         dragConstraints={{ right: 0, left: -widthScroll }}
                         className={styles.cardScroll}
                       >
-                        {alat.map((item, index) => (
-                          <motion.div
-                            className={`d-flex bg-white ${styles.cardInfo}`}
-                            key={index}
-                          >
-                            <img src={item.image_path} alt="" />
-                            <div className="px-3">
-                              <p
+                        {plantTools.length > 0 ? (
+                          plantTools.map((item, index) => (
+                            <motion.div
+                              className={`d-flex bg-white ${styles.cardInfo}`}
+                              key={index}
+                            >
+                              <img
+                                src={item.image_path}
                                 style={{
-                                  color: "#374151",
-                                  fontWeight: 600,
-                                  fontSize: "16px",
-                                  margin: 0,
+                                  width: "83px",
+                                  height: "85px",
+                                  borderRadius: "16px",
                                 }}
-                              >
-                                {item.name}
-                              </p>
-                              <span
-                                style={{
-                                  color: "#6B7280",
-                                  fontSize: "12px",
-                                  fontWeight: 400,
-                                }}
-                              >
-                                {item.description}
-                              </span>
-                            </div>
-                          </motion.div>
-                        ))}
+                                alt=""
+                              />
+                              <div className="px-3">
+                                <p
+                                  style={{
+                                    color: "#374151",
+                                    fontWeight: 600,
+                                    fontSize: "16px",
+                                    margin: 0,
+                                  }}
+                                >
+                                  {item.name}
+                                </p>
+                                <span
+                                  style={{
+                                    color: "#6B7280",
+                                    fontSize: "12px",
+                                    fontWeight: 400,
+                                  }}
+                                >
+                                  {item.description}
+                                </span>
+                              </div>
+                            </motion.div>
+                          ))
+                        ) : (
+                          <p className="fonts18 fontw600">Tidak Ada</p>
+                        )}
                       </motion.div>
                     </motion.div>
                   </Accordion>
@@ -315,35 +310,47 @@ const DetailTanaman = () => {
                         dragConstraints={{ right: 0, left: -widthScroll }}
                         className={`mt-2 ${styles.cardScroll}`}
                       >
-                        {langkah.map((item, index) => (
-                          <motion.div
-                            className={`d-flex bg-white ${styles.cardInfo}`}
-                            key={index}
-                          >
-                            <img src={langkah1} alt="" />
-                            <div className="px-3">
-                              <p
+                        {plantGuides.length > 0 ? (
+                          plantGuides.map((item, index) => (
+                            <motion.div
+                              className={`d-flex bg-white ${styles.cardInfo}`}
+                              key={index}
+                            >
+                              <img
+                                src={item.image_path}
                                 style={{
-                                  color: "#374151",
-                                  fontWeight: 600,
-                                  fontSize: "16px",
-                                  margin: 0,
+                                  width: "110px",
+                                  height: "125px",
+                                  borderRadius: "16px",
                                 }}
-                              >
-                                {item.name}
-                              </p>
-                              <span
-                                style={{
-                                  color: "#6B7280",
-                                  fontSize: "12px",
-                                  fontWeight: 400,
-                                }}
-                              >
-                                {item.description}
-                              </span>
-                            </div>
-                          </motion.div>
-                        ))}
+                                alt=""
+                              />
+                              <div className="px-3">
+                                <p
+                                  style={{
+                                    color: "#374151",
+                                    fontWeight: 600,
+                                    fontSize: "16px",
+                                    margin: 0,
+                                  }}
+                                >
+                                  {item.name}
+                                </p>
+                                <span
+                                  style={{
+                                    color: "#6B7280",
+                                    fontSize: "12px",
+                                    fontWeight: 400,
+                                  }}
+                                >
+                                  {item.description}
+                                </span>
+                              </div>
+                            </motion.div>
+                          ))
+                        ) : (
+                          <p className="fonts18 fontw600">Tidak Ada</p>
+                        )}
                       </motion.div>
                     </motion.div>
                   </Accordion>
