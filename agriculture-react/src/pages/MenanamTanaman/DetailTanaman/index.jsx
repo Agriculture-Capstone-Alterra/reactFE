@@ -47,6 +47,7 @@ const DetailTanaman = () => {
         setTanaman(result.data.data);
         setPlantGuides(result.data.data.planting_guides);
         setPlantTools(result.data.data.planting_tools);
+        console.log("sdfsdf",result.data.data.planting_tools)
         setPlantingMediumImages(result.data.data.planting_medium_images);
         console.log(result.data.data);
         // console.log(plantGuides);
@@ -115,7 +116,7 @@ const DetailTanaman = () => {
                       plantingMediumImages.map((item, index) => (
                         <div key={index}>
                           <img
-                            src={plantingMediumImages.image_path}
+                            src={item.image_path}
                             style={{ width: "100%", height: "390px" }}
                           />
                         </div>
