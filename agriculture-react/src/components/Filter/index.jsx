@@ -1,8 +1,7 @@
-// Filter.js
-
 import React from 'react';
 
-const Filter = ({ selectedTeknologi, selectedJenisTanaman, setSelectedTeknologi, setSelectedJenisTanaman }) => {
+
+const Filter = ({ selectedTeknologi, selectedJenisTanaman, setSelectedTeknologi, setSelectedJenisTanaman, resetFilters }) => {
   const teknologi = ["Hidroponik", "Aeroponik"];
   const jenisTanaman = ["Bunga", "Tanaman Hias", "Umbi - umbian", "Kacang - kacangan", "Pohon - pohonan", "Sayuran"];
 
@@ -14,6 +13,11 @@ const Filter = ({ selectedTeknologi, selectedJenisTanaman, setSelectedTeknologi,
     } else if (name === 'tanaman') {
       setSelectedJenisTanaman(value);
     }
+  };
+
+  const handleResetFilters = () => {
+    setSelectedTeknologi('');
+    setSelectedJenisTanaman('');
   };
 
   return (
@@ -66,6 +70,19 @@ const Filter = ({ selectedTeknologi, selectedJenisTanaman, setSelectedTeknologi,
             </div>
           ))}
         </div>
+        <hr />
+        <button
+          className='btn-cancel'
+          style={{
+            color: "#F9FAFB",
+            borderRadius: "5px",
+            background: "#51AB8C",
+            border: "1px solid #51AB8C",  
+            transition: "background-color 0.3s ease, border-color 0.3s ease", 
+          }}
+        >
+          Cancel Filter
+        </button>
       </div>
     </>
   );
