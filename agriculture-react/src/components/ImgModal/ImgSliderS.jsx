@@ -8,16 +8,6 @@ import ImgModal from "../ImgModal/ImgModal";
 import "./ImgSliderS.css"
 
 export default function ImgSliderS({imagesdata, deleteImgModalName, handleDeleteClick, modalImageTrigger }){
-    const [showButtons, setShowButtons] = useState(false);
-    const handleMouseEnter = () => {
-        setShowButtons(true);
-    };
-    const handleMouseLeave = () => {
-        setShowButtons(false);
-    };
-
-
-
     const [imagedatastate, setImageDataState] = useState(imagesdata);
     const [showButtonsEach, setShowButtonsEach] = useState(()=>{
         return new Array(imagesdata.length).fill({btnstatus: false})
