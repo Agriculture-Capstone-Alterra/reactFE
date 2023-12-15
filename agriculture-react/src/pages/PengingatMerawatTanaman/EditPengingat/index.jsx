@@ -25,7 +25,7 @@ const editPengingat = () => {
     repeat_date: "",
     repeat_days: [],
     repeat_in: 0,
-    repeat_in_unit: "daily",
+    repeat_in_unit: "weekly",
     schedule_type: "",
     begin_date: "",
     startTime:"",
@@ -61,25 +61,6 @@ const editPengingat = () => {
     },
   ];
   
-  const namaHari = [
-    {
-      label: "Hari",
-      value: "daily",
-    },
-    {
-      label: "Minggu",
-      value: "weekly",
-    },
-    {
-      label: "Bulan",
-      value: "monthly",
-    },
-    {
-      label: "Tahun",
-      value: "year",
-    },
-  ];
-
   //getAPI
   useEffect(() => {
     
@@ -118,9 +99,9 @@ const editPengingat = () => {
             name: endpointData.name,
             plant_id: endpointData.plant.id,
             repeat_date: endpointData.repeat_date,
-            repeat_days: mockData.repeat_days.split(", "),
+            repeat_days: mockData.repeat_days ? mockData.repeat_days.split(", ") : [],
             repeat_in: endpointData.repeat_in,
-            repeat_in_unit: mockData.repeat_in_unit,
+            repeat_in_unit: "weekly",
             schedule_type: endpointData.schedule_type,
             begin_date: endpointData.repeat_date,
             startTime: startTimeParts ? `${startTimeParts[0]}:${startTimeParts[1]}` : '',
@@ -133,6 +114,7 @@ const editPengingat = () => {
       })
       .finally(() => {
         Swal.close();
+        console.log('fetched: ', formData);
       });
     })
     .catch((err) => console.log(err));
@@ -226,7 +208,7 @@ const editPengingat = () => {
       errors.schedule_type = "Pilih jenis pengingat";
     }
 
-    if (formData.repeat_in_unit === "daily" && formData.repeat_in > 0) {
+    if (formData.repeat_in > 0) {
       if (formData.repeat_days.length !== formData.repeat_in) {
         errors.repeat_days = "Jumlah hari dalam satu minggu tidak sesuai";
       }
@@ -269,7 +251,7 @@ const editPengingat = () => {
           name: formData.name,
           plant_id: formData.plant_id,
           schedule_type: formData.schedule_type,
-          repeat_date: `${formData.begin_date}/${formData.startTime}-${formData.endTime}`,
+          repeat_date: formData.begin_date + (formData.startTime ? '/' + (formData.startTime + (formData.endTime ? '-' + formData.endTime : ''))  : ''),
           repeat_in: `${formData.repeat_in}`,
           repeat_in_unit: formData.repeat_in_unit,
           repeat_days: `${formData.repeat_days?.join(", ")}`,
@@ -479,14 +461,9 @@ const editPengingat = () => {
                           <SlArrowDown size={8} />
                         </button>
                       </div>
-                      <Select
-                        value={formData.repeat_in_unit}
-                        className={"form-select tambahPengingat-modalHari"}
-                        options={namaHari}
-                        onChange={handleChange}
-                        title={"Hari"}
-                        name={"repeat_in_unit"}
-                      />
+                      <div className="ms-1 mt-2">
+                        Minggu
+                      </div>
                     </div>
                   </div>
                   <div className="mb-3">
