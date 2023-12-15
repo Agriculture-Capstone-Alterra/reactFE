@@ -80,6 +80,7 @@ const Filter = ({ selectedTeknologi, selectedJenisTanaman, setSelectedTeknologi,
             border: "1px solid #51AB8C",  
             transition: "background-color 0.3s ease, border-color 0.3s ease", 
           }}
+          onClick={handleResetFilters}
         >
           Cancel Filter
         </button>
