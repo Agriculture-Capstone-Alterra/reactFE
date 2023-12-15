@@ -21,7 +21,7 @@ const editPengingat = () => {
     expiration_date: "",
     expiration_occurence: 0,
     name: "",
-    plant_id: null,
+    plant_id: "",
     repeat_date: "",
     repeat_days: [],
     repeat_in: 0,
@@ -82,46 +82,60 @@ const editPengingat = () => {
 
   //getAPI
   useEffect(() => {
-        axiosWithAuth("https://service.api-agriplant.xyz/plants")
+    
+    Swal.fire({
+      toast: true,
+      position: 'bottom-left',
+      showConfirmButton: false,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      text:"Sedang mendapatkan data tanaman...",
+    });
+    axiosWithAuth("https://service.api-agriplant.xyz/plants")
+    .then((res) => {
+      const mappedData = res.data.data.map((value, key) => ({
+        label: value.name,
+        value: value.id,
+      }));
+      setTanamanOptions(mappedData.length > 0 ? mappedData : []);
+      axiosWithAuth(`https://service.api-agriplant.xyz/recommended-schedule/${id}`)
+      .then((res) => {
+        const endpointData = res.data.data;
+        // console.log("endpoint data : ", endpointData);
+        axios(`https://6575b5f4b2fbb8f6509d68ad.mockapi.io/pengingatanaman/`)
         .then((res) => {
-          const mappedData = res.data.data.map((value, key) => ({
-            label: value.name,
-            value: value.id,
-          }));
-          setTanamanOptions(mappedData);
-          axiosWithAuth(`https://service.api-agriplant.xyz/recommended-schedule/${id}`)
-          .then((res) => {
-            const endpointData = res.data.data;
-            // console.log("endpoint data : ", endpointData);
-            axios(`https://6575b5f4b2fbb8f6509d68ad.mockapi.io/pengingatanaman/`)
-            .then((res) => {
-              const mockData = res.data.find((mock) => mock.schedule_id == endpointData.id);
-              setMockId(mockData.id);
-              // console.log("mock data : ", mockData);
-              const repeatDateParts = mockData.repeat_date.split("/");
-              const startTimeParts = repeatDateParts[1].split("-")[0].split(":");
-              const endTimeParts = repeatDateParts[1].split("-")[1].split(":");
-              setFormData({
-                expiration_date: endpointData.expiration_date,
-                expiration_occurence: endpointData.expiration_occurence,
-                name: endpointData.name,
-                plant_id: endpointData.plant.id,
-                repeat_date: endpointData.repeat_date,
-                repeat_days: mockData.repeat_days.split(", "),
-                repeat_in: endpointData.repeat_in,
-                repeat_in_unit: mockData.repeat_in_unit,
-                schedule_type: endpointData.schedule_type,
-                begin_date: endpointData.repeat_date,
-                startTime: `${startTimeParts[0]}:${startTimeParts[1]}`,
-                endTime: `${endTimeParts[0]}:${endTimeParts[1]}`,  
-              })
-            })
+          const mockData = res.data.find((mock) => mock.schedule_id == endpointData.id);
+          setMockId(mockData.id);
+          // console.log("mock data : ", mockData);
+          const repeatDateParts = mockData.repeat_date.split("/");
+          const startTimeParts = repeatDateParts[1].split("-")[0]?.split(":");
+          const endTimeParts = repeatDateParts[1].split("-")[1]?.split(":");
+          setFormData({
+            expiration_date: endpointData.expiration_date,
+            expiration_occurence: endpointData.expiration_occurence,
+            name: endpointData.name,
+            plant_id: endpointData.plant.id,
+            repeat_date: endpointData.repeat_date,
+            repeat_days: mockData.repeat_days.split(", "),
+            repeat_in: endpointData.repeat_in,
+            repeat_in_unit: mockData.repeat_in_unit,
+            schedule_type: endpointData.schedule_type,
+            begin_date: endpointData.repeat_date,
+            startTime: startTimeParts ? `${startTimeParts[0]}:${startTimeParts[1]}` : '',
+            endTime: endTimeParts ? `${endTimeParts[0]||''}:${endTimeParts[1]||''}` : '',  
           })
-          .catch((err) => {
-            navigate('/errorpage');
-          });
         })
-        .catch((err) => console.log(err));
+      })
+      .catch((err) => {
+        navigate('/errorpage');
+      })
+      .finally(() => {
+        Swal.close();
+      });
+    })
+    .catch((err) => console.log(err));
   }, []);
   
   // useEffect(() => {
@@ -229,6 +243,16 @@ const editPengingat = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if(formValidate()){
+      Swal.fire({
+        toast: true,
+        position: 'bottom-left',
+        showConfirmButton: false,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+        text:"Sedang mendapatkan data tanaman...",
+      });
       axiosWithAuth({
         baseURL:`https://service.api-agriplant.xyz/recommended-schedule/${id}`,
         method:"PUT",
@@ -269,6 +293,9 @@ const editPengingat = () => {
             title: 'Oops, ada error ketika mengirim data',
             text: 'silahkan cek output pada console untuk melihat error',
           });
+        })
+        .finally(() => {
+          Swal.close();
         });
       }).catch((err) => {
         console.log(err);
@@ -388,7 +415,9 @@ const editPengingat = () => {
             <ModalTrigger
               modalTarget={"tambahData"}
               className={`btn me-3 tambahPengingat-btnOutline ${styles.btnAction}`}
-              style={{ display: "flex", alignItems: "center" }}>
+              style={{ display: "flex", alignItems: "center" }}
+              onClick={(e) => e.preventDefault()}
+              >
               Simpan dan Bagikan
             </ModalTrigger>
             <button
@@ -409,11 +438,11 @@ const editPengingat = () => {
           submitButtonText={"Ya"}
           cancelButtonText={"Tidak"}
           onCancel={() => {}}
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
           type="edit"
         />
         {/* modal k*/}
-        <div className="modal fade" id="exampleModal" tabindex="-1">
+        <div className="modal fade" id="exampleModal" tabIndex="-1">
           <div className="modal-dialog tambahPengingat-modal">
             <div className="modal-content">
               <div className="modal-header">
@@ -427,7 +456,7 @@ const editPengingat = () => {
                 <form>
                   <div className="mb-3">
                     <label
-                      for="recipient-name"
+                      htmlFor="recipient-name"
                       className="col-form-label tambahPengingat-modalFormLabel">
                       Ulangi Setiap
                     </label>
@@ -462,7 +491,7 @@ const editPengingat = () => {
                   </div>
                   <div className="mb-3">
                     <label
-                      for="message-text"
+                      htmlFor="message-text"
                       className="col-form-label tambahPengingat-modalFormLabel">
                       Ulangi Setiap Hari
                     </label>
@@ -541,7 +570,7 @@ const editPengingat = () => {
                   </div>
                   <div className="mb-3">
                     <label
-                      for="message-text"
+                      htmlFor="message-text"
                       className="col-form-label tambahPengingat-modalFormLabel">
                       Berakhir
                     </label>
