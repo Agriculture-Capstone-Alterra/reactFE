@@ -7,7 +7,7 @@ import TextArea from '../Textarea';
 import Invalid from '../Invalid';
 import DropFile from '../DropFile';
 
-const FormCardTambah = ({ data, setData, onTambah, onHapus, onChange, label, namelabel }) => {
+const FormCardTambah = ({ data, onTambah, onHapus, onChange, label, namelabel }) => {
   return (
     <div>
       {data.map((item, index) => (
