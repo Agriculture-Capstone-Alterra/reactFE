@@ -5,12 +5,11 @@ import TextArea from '../../../components/Textarea'
 import Select from '../../../components/Select'
 import Invalid from '../../../components/Invalid'
 import Layout from '../../../layout/Layout'
-import DragFile from '../../../components/DragFile'
+import DragEdit from '../../../components/DragEdit'
 import { useNavigate, useParams } from 'react-router-dom'
 import FormCardTambah from '../../../components/FormCardTambah'
 import React, { useState, useEffect } from 'react'
 import axiosWithAuth from '../../../api/axios'
-import DropFile from '../../../components/DropFile'
 
 const EditTanaman = () => {
     const { id } = useParams();
@@ -27,13 +26,11 @@ const EditTanaman = () => {
     const [hujanAkhir, setHujanAkhir] = useState('');
     const [hama, setHama] = useState('');
     const [pupuk, setPupuk] = useState('');
-    // const [alatPenanaman, setAlatPenanaman] = useState([]);
     const [alatPenanaman, setAlatPenanaman] = useState([
         { id: 0, namaAlat: '', gambarAlat: null, deskripsiAlat: '' },
     ]);
     const [saran, setSaran] = useState('');
     const [gambarSaran, setGambarSaran] = useState([]);
-    // const [langkahPenanaman, setLangkahPenanaman] = useState([]);
     const [langkahPenanaman, setLangkahPenanaman] = useState([
         { id: 0, namaLangkah: '', gambarLangkah: null, deskripsiLangkah: '' },
     ]);
@@ -59,7 +56,6 @@ const EditTanaman = () => {
             label: item.name,
           }));
           setJenisTanamanOptions(transformedData);
-          console.log('get type:', transformedData);
         } catch (error) {
           console.error('Error fetching data from API:', error);
         }
@@ -73,7 +69,6 @@ const EditTanaman = () => {
             label: item.name,
           }));
           setTeknologiTanamanOptions(transformedData);
-          console.log('get tech:', transformedData);
         } catch (error) {
           console.error('Error fetching data from API:', error);
         }
@@ -105,22 +100,30 @@ const EditTanaman = () => {
             setPupuk(tanaman.pest_info)
             setSaran(tanaman.planting_suggestions)
             setRawat(tanaman.how_to_maintain)
-            const gambarSaranFiles = await tanaman.planting_medium_image;
-            setGambarSaran([gambarSaranFiles])
-            const tools = tanaman.planting_tools;
+            const tools = await tanaman.planting_tools;
             setAlatPenanaman(tools.map((getAlat) => ({
                 id: getAlat.id,
                 namaAlat: getAlat.name,
                 gambarAlat: getAlat.image_path,
                 deskripsiAlat: getAlat.description
             })))
-            const guides = tanaman.planting_guides
+            const guides = await tanaman.planting_guides
             setLangkahPenanaman(guides.map((getLangkah) => ({
                 id: getLangkah.id,
                 namaLangkah: getLangkah.name,
                 gambarLangkah: getLangkah.image_path,
                 deskripsiLangkah: getLangkah.description
             })))
+            const gambarSaranFiles = await tanaman.planting_medium_images.map((saranGambar) => {
+                const imgURL = saranGambar.image_path;
+                const fileName=  imgURL.substring(imgURL.lastIndexOf('/') + 1);
+                return {
+                    id: saranGambar.id,
+                    name: fileName,
+                    src: saranGambar.image_path,
+                };
+            });
+            setGambarSaran(gambarSaranFiles)
         } catch (error) {
             console.error('Error fetching data from API:', error);
         }
@@ -154,14 +157,14 @@ const EditTanaman = () => {
         },
         ]);
     };
-    const hapusLangkahPenanaman = (id) => {
+    const hapusLangkahPenanaman = (idLangkah) => {
         setLangkahPenanaman((prevLangkah) =>
-        prevLangkah.filter((langkah) => langkah.id !== id)
+        prevLangkah.filter((langkah) => langkah.id !== idLangkah)
         );
     };
-    const hapusAlatPenanaman = (id) => {
+    const hapusAlatPenanaman = async (idAlat) => {
         setAlatPenanaman((prevAlat) =>
-        prevAlat.filter((alat) => alat.id !== id)
+        prevAlat.filter((alat) => alat.id !== idAlat)
         );
     };
     const handleAlatPenanamanChange = (index, field, value) => {
@@ -198,20 +201,19 @@ const EditTanaman = () => {
         || hujanAkhir===''
         || hama===''
         || pupuk===''
-        // || gambarSaran===null
+        || gambarSaran===null
         || saran===''
         || rawat===''
         || langkahPenanaman.namaLangkah===''
-        // || langkahPenanaman.gambarLangkah===null
+        || langkahPenanaman.gambarLangkah===null
         || langkahPenanaman.deskripsiLangkah===''
         || alatPenanaman.namaAlat===''
-        // || alatPenanaman.gambarAlat===null
+        || alatPenanaman.gambarAlat===null
         || alatPenanaman.deskripsiAlat===''
         ){
             alert('Tolong lengkapi form!')
         }else{
             try {
-                // Step 1
                 const plantResponse = await axiosWithAuth.put(`plants/${id}`, {
                     description: deskTanaman,
                     dry_season_finish_plant: kemarauAkhir,
@@ -241,12 +243,9 @@ const EditTanaman = () => {
             
                 const response = await axiosWithAuth.get(`plants/${id}`);
                 const tanaman = response.data.data;
-                
-                //
 
                 const toolData = tanaman.planting_tools;
                 const idsToolArray = toolData.map((tool) => tool.id);
-                console.log('id guides, ',idsToolArray)
                 const toolIDs = idsToolArray.join(',');
                 const plantingToolsFormData = new FormData();
                 plantingToolsFormData.append('plant_id', id);
@@ -254,7 +253,6 @@ const EditTanaman = () => {
                 for (const imgalat of alatPenanaman) {
                     const base64toRes = await fetch(imgalat.gambarAlat.src)
                     const base64toBlob = await base64toRes.blob()
-                    console.log("images load, ", base64toBlob)
                     plantingToolsFormData.append('image_files', base64toBlob);
                 }
                 const plantingToolsResponse = await axiosWithAuth.post(`planting-tools/upload/${id}`, plantingToolsFormData, {
@@ -262,12 +260,9 @@ const EditTanaman = () => {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-                
-                //
-                
+
                 const guideData = tanaman.planting_guides;
                 const idsGuideArray = guideData.map((guide) => guide.id);
-                console.log('id guides, ',idsGuideArray)
                 const guideIDs = idsGuideArray.join(',');
                 const plantingGuideFormData = new FormData();
                 plantingGuideFormData.append('plant_id', id);
@@ -275,7 +270,6 @@ const EditTanaman = () => {
                 for (const imglangkah of langkahPenanaman) {
                     const base64toRes = await fetch(imglangkah.gambarLangkah.src)
                     const base64toBlob = await base64toRes.blob()
-                    console.log("images load, ", base64toBlob)
                     plantingGuideFormData.append('image_files', base64toBlob);
                 }
                 const plantingGuideResponse = await axiosWithAuth.post(`planting-guides/upload/${id}`, plantingGuideFormData, {
@@ -283,6 +277,7 @@ const EditTanaman = () => {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
+
                 navigate('/menanam-tanaman')
             } catch (error) {
                 console.error('Error updating form:', error);
@@ -290,6 +285,42 @@ const EditTanaman = () => {
         }
             
     };
+    const timestampRegExp = /\b\d{13}\b/;
+    const handleRemoveImagePlant = async (id) => {
+        try {
+            if(timestampRegExp.test(id)){
+                alert('Reload website!')
+            } else {
+                const response = await axiosWithAuth.delete(`plant-images/${id}`);
+                if (response.status === 200) {
+                    const updatedImages = gambarTanaman.filter((image) => image.id !== id);
+                    setGambarTanaman(updatedImages);
+                } else {
+                    console.error('Failed to delete image:', response.statusText);
+                }
+            }
+        } catch (error) {
+            console.error('Error deleting image:', error.message);
+        }
+    };
+    const handleRemoveImageSugg = async (id) => {
+        try {
+            if(timestampRegExp.test(id)){
+                alert('Reload website!')
+            }else{
+                const response = await axiosWithAuth.delete(`planting-medium-images/${id}`);
+                if (response.status === 200) {
+                    const updatedImages = gambarSaran.filter((image) => image.id !== id);
+                    setGambarSaran(updatedImages);
+                } else {
+                    console.error('Failed to delete image:', response.statusText);
+                }
+            }
+        } catch (error) {
+            console.error('Error deleting image:', error.message);
+        }
+    };
+    
     return (
         <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={breadcrumEditTanaman}>
         <div className='mt-2' style={{ padding:'0px 0px 30px 30px', marginRight:'0'}}>
@@ -333,10 +364,13 @@ const EditTanaman = () => {
                     <Invalid errormsg={"Tolong masukkan deskripsi tanaman."}/>
                 </div>
                 <label className="form-label fontw600" htmlFor="gambartanaman">Gambar Tanaman</label> 
-                <DragFile 
+                <DragEdit 
                     name={'gambartanaman'}
                     value={gambarTanaman}
                     setValue={setGambarTanaman}
+                    onDelete={handleRemoveImagePlant}
+                    idPlant={id}
+                    linkApi={`plant-images`}
                 /> 
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="varietastanaman">Varietas Tanaman</label>
@@ -440,7 +474,6 @@ const EditTanaman = () => {
                 <p className='p-label'>Alat yang Dibutuhkan</p>
                 <FormCardTambah
                     data={alatPenanaman}
-                    setData={setAlatPenanaman}
                     onTambah={tambahkanAlatPenanaman}
                     onHapus={hapusAlatPenanaman}
                     onChange={handleAlatPenanamanChange}
@@ -462,16 +495,18 @@ const EditTanaman = () => {
                         <Invalid errormsg={"Tolong masukkan saran untuk tempat penanaman."}/>
                     </div>
                     <label className="form-label fontw600" htmlFor="gambarsaran">Foto</label>
-                    <DropFile 
+                    <DragEdit 
                         name={'gambarsaran'}
                         value={gambarSaran}
                         setValue={setGambarSaran}
+                        onDelete={handleRemoveImageSugg}
+                        idPlant={id}
+                        linkApi={`planting-medium-images`}
                     />
                 </div>
                 <div className='form-label fontw600'>Langkah Penanaman</div>
                 <FormCardTambah
                     data={langkahPenanaman}
-                    setData={setLangkahPenanaman}
                     onTambah={tambahkanLangkahPenanaman}
                     onHapus={hapusLangkahPenanaman}
                     onChange={handleLangkahPenanamanChange}

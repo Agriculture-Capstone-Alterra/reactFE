@@ -3,18 +3,20 @@ import Card from "../../../components/Card/Card";
 import Layout from "../../../layout/Layout";
 import styles from "./ListTanaman.module.css";
 import Filter from "../../../components/Filter";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PiGrainsSlashFill } from "react-icons/pi";
 import axiosWithAuth from "../../../api/axios";
 
 const ListTanaman = () => {
   const navigate = useNavigate();
+  const { user_id } = useParams();
   const [cards, setCards] = useState([]);
   const [selectedSortOption, setSelectedSortOption] = useState("");
+  const selectedUserName = localStorage.getItem("selectedUserName");
 
   const fetchPlantsData = async () => {
     try {
-      const res = await axiosWithAuth.get("/plants");
+      const res = await axiosWithAuth.get(`/admin/user-plants/user/${user_id}`);
       const cards = res.data.data;
       setCards(cards);
       console.log("cards data => ", cards);
@@ -23,11 +25,9 @@ const ListTanaman = () => {
     }
   };
 
-  // untuk debbugging
-
   useEffect(() => {
     fetchPlantsData();
-  }, []);
+  }, [user_id]);
 
   const breadcrumbsobjectexample = [
     {
@@ -36,7 +36,7 @@ const ListTanaman = () => {
     },
     {
       crumbname: "List Tanaman",
-      crumblink: "/riwayat-menanam/list-tanaman",
+      crumblink: `/riwayat-menanam/list-tanaman/${user_id}`,
     },
   ];
 
@@ -45,7 +45,7 @@ const ListTanaman = () => {
     console.log(`Card ${id} clicked`);
 
     //Link ke halaman List Tanaman dari Nama Pengguna
-    navigate(`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman`);
+    navigate(`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/${id}`);
   };
 
   // handle sort change
@@ -71,6 +71,7 @@ const ListTanaman = () => {
       default:
         break;
     }
+    console.log("sortedCards => ", sortedCards);
 
     setCards(sortedCards);
   };
@@ -80,7 +81,10 @@ const ListTanaman = () => {
       <Layout pagetitle={"List Tanaman"} breadcrumbs={breadcrumbsobjectexample}>
         <div>
           <div className={styles.header}>
-            <h4 className={styles.title}>List Tanaman </h4>
+            <h4 className={styles.title}>
+              List Tanaman{" "}
+              <span className={styles.userName}>{selectedUserName}</span>
+            </h4>
           </div>
           <div className={styles.contentContainer}>
             <select
@@ -108,11 +112,11 @@ const ListTanaman = () => {
                     <Card
                       key={card.id}
                       cardHover={styles.cardItem}
-                      image={card.plant_image_thumbnail}
-                      alt={`Image of ${card.name}`}
-                      title={card.name}
-                      type={card.plant_type.name}
-                      technology={card.technology.name}
+                      title={card.plant.name}
+                      image={card.plant.plant_images}
+                      alt={`Image of ${card.plant.name}`}
+                      type={card.plant.plant_type.name}
+                      technology={card.plant.technology.name}
                       onClick={() => handleCardClick(card.id)}
                     />
                   ))

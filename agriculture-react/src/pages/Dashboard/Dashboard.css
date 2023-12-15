@@ -17,7 +17,6 @@
 
 .dashboard-chartdiv{
     margin-bottom: 20px;
-    width: 800px; 
 }
 
 .dasboard-persentasediv{
@@ -25,8 +24,11 @@
     row-gap: 20px;
     border-radius: 10px;
 }
+.dashboard-middle-leftpart{
+    width: 745px;
+}
 .dashboard-middle-rightpart{
-    width: 100%;
+    width: 40%;
 }
 
 .dashboard-topfarmer{
@@ -49,7 +51,7 @@
     padding: 4px 15px;
     border-radius: 10px;
     display: flex;
-    width: 80px;
+    min-width: 80px;
     height: 31px;
     padding: var(--spacing-space-0, 0px) var(--corner-radius-l, 10px);
     justify-content: center;

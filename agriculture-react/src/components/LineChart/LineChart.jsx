@@ -12,11 +12,12 @@ const LineChart = ({ data }) => {
     // dimana dataSetName akan dijadikan nama label / legend pada line chart, data berisi array yang menampung object beratribut month (string) dan value (numeric)
     // color jadi field yang menampung warna untuk legends nya, berikan dalam format hexadesimal
 
-    const labels = data[0].data.map((item) => item.month);
+    // const labels = data[0].data.map((item) => item.month);
+    const labels = data[0].data.map((item) => item.date);
 
     const datasets = data.map((dataset) => ({
         label: dataset.dataSetName,
-        data: dataset.data.map((item) => item.value),
+        data: dataset.data.map((item) => item.total),
         fill: 'origin',
         backgroundColor: `${dataset.color}80`,
         borderColor: dataset.color,

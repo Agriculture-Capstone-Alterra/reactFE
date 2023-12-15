@@ -26,7 +26,6 @@ const DropFile = ({ name, value, setValue }) => {
 
   const handleFileInputChange = (e) => {
     const files = fileInputRef.current.files;
-    console.log("file, ", files)
     handleFiles(files);
   };
 
@@ -80,9 +79,6 @@ const DropFile = ({ name, value, setValue }) => {
               <img src={value} alt="Preview" />
               <div className="image-info">
                 <div className="image-name">{fileName}</div>
-                <button className="remove-image" onClick={handleDelete}>
-                  Remove
-                </button>
               </div>
               </>
             )}

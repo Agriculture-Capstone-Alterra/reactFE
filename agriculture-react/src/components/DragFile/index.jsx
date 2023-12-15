@@ -1,8 +1,9 @@
 import "./drag-drop.css";
 import Upload from '../../assets/uploadFile.svg'
 import React, { useRef } from 'react';
+import axiosWithAuth from "../../api/axios";
 
-const DragFile = ({ value, name, setValue}) => {
+const DragFile = ({ value, name, setValue, onDelete}) => {
   const dropAreaRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -24,7 +25,6 @@ const DragFile = ({ value, name, setValue}) => {
 
   const handleFileInputChange = () => {
     const files = fileInputRef.current.files;
-    console.log("file, ", files)
     handleFiles(files);
   };
   const addImage = (imagePreview) => {
@@ -49,12 +49,6 @@ const DragFile = ({ value, name, setValue}) => {
         reader.readAsDataURL(file);
       }
     }
-    
-  };
-
-  const handleRemoveImage = (id) => {
-    const updatedImagePreviews = value.filter((image) => image.id !== id);
-    setValue(updatedImagePreviews);
   };
 
   return (
@@ -65,7 +59,7 @@ const DragFile = ({ value, name, setValue}) => {
             <img src={image.src} alt="Preview" />
             <div className="image-info">
               <div className="image-name">{image.name}</div>
-              <button className="remove-image" onClick={() => handleRemoveImage(image.id)}>
+              <button type="button" className="remove-image" onClick={() => onDelete(image.id)}>
                 Remove
               </button>
             </div>

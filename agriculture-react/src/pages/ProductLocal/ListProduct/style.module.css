@@ -1,0 +1,10 @@
+.tambahProduct {
+  padding: 10px 14px;
+  align-items: center;
+  border-radius: 4px;
+  border: 1px solid var(--btn-primary-default, #51ab8c);
+  background: var(--btn-primary-default, #51ab8c);
+  color: var(--netral-50, #f9fafb);
+  text-decoration: none;
+  /* transition: background-color 0.3s ease; */
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../../../layout/Layout";
 import Table from "../../../components/Table/Table";
-import styles from "./riwayatMenanam.module.css";
+import styles from "./RiwayatMenanam.module.css";
 import { MdArrowBackIos, MdArrowForwardIos, MdSearch } from "react-icons/md";
 import { FaUsersSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -19,14 +19,14 @@ const RiwayatMenanam = () => {
 
   // Filter data dari search input
   const filteredData = usersData.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    item.user_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
   // TODO : GET Users Data from API
   const fetchUsersData = async () => {
     try {
-      const res = await axiosWithAuth.get("/users");
+      const res = await axiosWithAuth.get("/admin/user-plants/user-list");
       const usersData = res.data.data;
       setUsersData(usersData);
       console.log("users data => ", usersData);
@@ -58,16 +58,18 @@ const RiwayatMenanam = () => {
     setCurrentPage(pageNumber);
   };
 
+  // Set search table
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1);
   };
 
-  const handleRowClick = (id) => {
-    console.log("Row clicked:", id);
+  // Set row click
+  const handleRowClick = (user_id, user_name) => {
+    // set selected user id to local storage
+    localStorage.setItem("selectedUserName", user_name);
 
-    //Link ke halaman List Tanaman dari Nama Pengguna
-    navigate(`/riwayat-menanam/list-tanaman`);
+    navigate(`/riwayat-menanam/list-tanaman/${user_id}`);
   };
 
   return (
@@ -110,13 +112,15 @@ const RiwayatMenanam = () => {
                   {currentItems.map((item, index) => (
                     <tr
                       key={index + indexOfFirstItem}
-                      onClick={() => handleRowClick(item.id)}
+                      onClick={() =>
+                        handleRowClick(item.user_id, item.user_name)
+                      }
                       className={styles.rowClickable}
                     >
                       <td>{index + indexOfFirstItem + 1}</td>
-                      <td>{item.name}</td>
-                      <td>{}</td>
-                      <td>{item.updated_at}</td>
+                      <td>{item.user_name}</td>
+                      <td>{item.total_plant}</td>
+                      <td>{item.last_update}</td>
                     </tr>
                   ))}
                 </Table>

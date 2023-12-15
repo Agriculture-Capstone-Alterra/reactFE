@@ -7,8 +7,7 @@ const Select = ({ id, name, value, className, onChange, options, title }) => {
       value={value}
       onChange={onChange}
       required>
-
-      <option value="" disabled selected>
+      <option value="" disabled>
         {title}
       </option>
       {options.map((option) => (

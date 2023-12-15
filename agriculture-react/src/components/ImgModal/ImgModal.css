@@ -1,0 +1,55 @@
+.imgmodal-overlay{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: rgb(0, 0, 0,0.75);
+}
+
+.imgmodal-container{
+    max-width: 800px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* box-shadow: 10px 10px 24px -12px rgba(0,0,0,0.75); */
+}
+
+.imgmodal-imgs{ 
+    max-width: 750px;
+    max-height: 750px;
+}
+
+.imgmodal-carousel{
+    width: 750px;
+    padding: 0px;
+}
+
+.imgmodal-imgscontainer{
+    row-gap: 5px;
+}
+.imgmodal-belowtext{
+    padding: 0px 12px;
+}
+
+.imgmodal-btn{
+    background-color: rgb(0, 0, 0,0);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    width: 48px;
+    height: 48px;
+    border-style: solid;
+    border-color: white;
+    border: 1px solid var(--netral-100, #F3F4F6);
+
+    transition: 0.2s;
+}
+.imgmodal-btn:hover{
+    background-color: #F3F4F6;
+    color: black;
+    transition: 0.2s;
+}
+.imgmodal-btn:active{
+    background-color: #cdcdcd;
+    color: black;
+}

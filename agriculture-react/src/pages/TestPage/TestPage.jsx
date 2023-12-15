@@ -1,4 +1,8 @@
+import { useState } from "react";
+import ImgModal from "../../components/ImgModal/ImgModal";
 import Layout from "../../layout/Layout";
+// import { Bayam } from "../../assets";
+import Carousel from "react-multi-carousel";
 export default function TestPage() {
   const headers = ["Ngetest ioni satu", "kedua", "Ketiga", "keempat"];
 
@@ -41,14 +45,47 @@ export default function TestPage() {
   ];
   //end : dummy data untuk breadcrumbs
 
+  // begin : yang dibutuhkan untuk menggunakan imgmodal
+  const [modalopen, setModalOpen] = useState(false)
+  const [imgmodalcurrentindex, setImgModalCurrentIndex] = useState(0)
+  function handleonClick(key){
+    console.log(key)
+    setImgModalCurrentIndex(key)
+    setModalOpen(!modalopen)
+  }
+  const dataimage = [
+    {
+      link:"https://loremflickr.com/640/480/abstract",
+      datecreated:"20-20-2907"
+    },
+    {
+      link:"https://loremflickr.com/640/480/abstract",
+      datecreated:"20-20-2907"
+    },
+    {
+      link:"https://loremflickr.com/640/480/nightlife",
+      datecreated:"20-20-2907"
+    },
+    {
+      link:"https://loremflickr.com/640/480/fashion",
+      datecreated:"20-20-2907"
+    }
+  ]
+  // end : yang dibutuhkan untuk menggunakan imgmodal
+
+
   return (
     <>
+      <ImgModal imgclickedindex={imgmodalcurrentindex} imgdatas={dataimage} modalstatus={modalopen} modalcloser={handleonClick} />
       <Layout pagetitle={"Nama Header"} breadcrumbs={breadcrumbsobjectexample}>
         {/* begin main content */}
         <div>
-          <div
-            className="mt-2"
-            style={{ width: "800px", height: "400px" }}></div>
+          {/* begin : contoh pemaanggil imgmodal */}
+          <button onClick={()=>handleonClick(1)} >Show modal 1</button>
+          <button onClick={()=>handleonClick(2)} >Show modal 2</button>
+          <button onClick={()=>handleonClick(3)} >Show modal 3</button>
+          <button onClick={()=>handleonClick(4)} >Show modal 4</button>
+          {/* end: contoh pemanggil imgmodal */}
         </div>
         {/* end main content */}
       </Layout>
