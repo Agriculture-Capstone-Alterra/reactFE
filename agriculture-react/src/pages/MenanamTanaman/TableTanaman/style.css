@@ -119,3 +119,8 @@
     color: #000!important;
     text-decoration: none!important;
 }
+
+.text-center-modal{
+  color : red;
+  text-align: center;
+}
