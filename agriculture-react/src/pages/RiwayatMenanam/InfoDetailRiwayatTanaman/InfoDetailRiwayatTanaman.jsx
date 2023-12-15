@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useState } from "react";
 import Layout from "../../../layout/Layout";
 import MawarPutih from "../../../assets/img/mawarputih.jpg";
@@ -10,8 +10,6 @@ import calendar from "../../../assets/calendar.svg";
 import BarChart from "../../../components/BarChart/BarChart";
 import Accordion from "../../../components/Accordion";
 import "./style.css";
-import SliderImg from "../../../components/SliderImg/SliderImg";
-import ImgCard from "../../../components/SliderImg/ImgCard";
 import axiosWithAuth from "../../../api/axios";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../../../components/Modal/Modal";
@@ -20,8 +18,11 @@ import { format } from "date-fns";
 import idLocale from "date-fns/locale/id";
 import bayam from "../../../assets/img/bayam.png";
 import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
-
+import ImgSliderS from "../../../components/ImgModal/ImgSliderS";
+import axios from "axios";
+import ToastNotification from "../../../components/ToastNotification/ToastNotification";
 
 const InfoDetailRiwayatTanaman = () => {
   const breadcrumbsobjectexample = [
@@ -31,7 +32,7 @@ const InfoDetailRiwayatTanaman = () => {
     },
     {
       crumbname: "List Tanaman",
-      crumblink: "/riwayat-menanam/list-tanaman",
+      crumblink: "/riwayat-menanam/list-tanaman/",
     },
     {
       crumbname: "Info Detail Riwayat Tanaman",
@@ -43,58 +44,78 @@ const InfoDetailRiwayatTanaman = () => {
   const [isShowPenanganan, setIsShowPenanganan] = useState(false);
 
   const { id } = useParams();
-  const [tanaman, setTanaman] = useState({});
+  const [tanaman, setTanaman] = useState([]);
+  
+
+  const fetchPlantsData = async () => {
+    try {
+      const res = await axiosWithAuth.get(`/user-plants/${id}`);
+      const tanaman = res.data.data;
+      setTanaman(tanaman);
+      console.log("tanaman data => ", tanaman);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    }
+  };
 
   useEffect(() => {
-    axiosWithAuth
-      .get(`plants/${id}`)
-      .then((result) => {
-        setTanaman(result.data.data);
-        console.log(result.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    fetchPlantsData();
+    initialGet() 
   }, [id]);
+
 
   function handleDeleteClick(id) {
     console.log(id);
   }
+  const [plantimages, setPlantImages] = useState([]) 
+  async function initialGet(){
+    await axiosWithAuth
+      .get(`plants/${id}`)
+      .then((result) => {
+        setTanaman(result.data.data);
+        console.log("resr", result.data.data);
+        // const list = 
+        console.log(plantimages);
+        setPlantImages(result.data.data.plant_images.map((item, index) => {
+          return{link: item.image_path, datecreated: item.created_at, id: item.id}
+        }))
 
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  // begin: safutras
   const [modalopen, setModalOpen] = useState(false);
   const [imgmodalcurrentindex, setImgModalCurrentIndex] = useState(0);
+  const [imgidfordelete, setImgIdForDelete]= useState()
+  const [showToast, setShowToast] = useState({status: false, text: ""})
+  async function handleDeleteImg(){
+    await axiosWithAuth.delete('plant-images/'+imgidfordelete).then((response)=>{
+      setShowToast({status: true, text: "Image berhasil di hapus!"})
+    }).catch(err =>{
+      console.log(err)
+    })
+  }
+  function handleSetImgIdDelete(id){
+    setImgIdForDelete(id)
+  }
   function handleonClick(key) {
     console.log(key);
     setImgModalCurrentIndex(key);
     setModalOpen(!modalopen);
   }
-  const dataimage = [
-    {
-      link: "https://loremflickr.com/640/480/abstract",
-      datecreated: "20-20-2907",
-    },
-    {
-      link: "https://loremflickr.com/640/480/abstract",
-      datecreated: "20-20-2907",
-    },
-    {
-      link: "https://loremflickr.com/640/480/nightlife",
-      datecreated: "20-20-2907",
-    },
-    {
-      link: "https://loremflickr.com/640/480/fashion",
-      datecreated: "20-20-2907",
-    },
-  ];
-
+  // end safutras
   return (
     <>
-      <ImgModal
+      {/* <ImgModal
         imgclickedindex={imgmodalcurrentindex}
-        imgdatas={dataimage}
+        imgdatas={plantimages}
         modalstatus={modalopen}
         modalcloser={handleonClick}
-      />
+      /> */}
       <Layout
         pagetitle={"Info Detail History Tanaman"}
         breadcrumbs={breadcrumbsobjectexample}
@@ -103,7 +124,7 @@ const InfoDetailRiwayatTanaman = () => {
           <div className="row">
             <div className="col">
               <div
-                className="card"
+                className="card z-n1"
                 style={{ width: "640px", backgroundColor: "#F3F4F6" }}
               >
                 {/* <img
@@ -117,17 +138,22 @@ const InfoDetailRiwayatTanaman = () => {
                     showArrows={false}
                     showThumbs={false}
                   >
-                    <div>
-                      <img src={bayam} />
-                    </div>
-                    <div>
-                      <img src={bayam} />
-                    </div>
+                    {/* <div key={id}>
+                      <img src={tanaman.plant_images} key={id} />
+                    </div> */}
+                    {tanaman.plant &&
+                      tanaman.plant.plant_images.map((image_path, id) => (
+                        <img
+                          key={id}
+                          src={image_path}
+                          alt={`Gambar tanaman ${tanaman.plant && tanaman.plant.name}`}
+                        />
+                      ))}
                   </Carousel>
                 </div>
                 <div className="card-body">
-                  <h5 className="card-title text-center fw-bold">
-                    {tanaman.name}
+                <h5 className="card-title text-center fw-bold">
+                    {tanaman.plant && tanaman.plant.name}
                   </h5>
                   <div
                     className="content d-flex justify-content-between"
@@ -144,21 +170,21 @@ const InfoDetailRiwayatTanaman = () => {
                       <div className="">
                         <img src={Varietas} alt="" />
                         <div className="fw-bold">Varietas</div>
-                        <p>{tanaman.variety}</p>
+                        <p>{tanaman.plant && tanaman.plant.variety}</p>
                       </div>
                     </div>
                     <div className="text-center">
                       <div className="">
                         <img src={JenisTanaman} alt="" />
                         <div className="fw-bold">Jenis Tanaman</div>
-                        <p>{tanaman.plant_type}</p>
+                        <p>{tanaman.plant && tanaman.plant.type}</p>
                       </div>
                     </div>
                     <div className="text-center">
                       <div className="">
                         <img src={Teknologi} alt="" />
                         <div className="fw-bold">Teknologi</div>
-                        <p>{tanaman.technology}</p>
+                        <p>{tanaman.plant && tanaman.plant.technology}</p>
                       </div>
                     </div>
                   </div>
@@ -177,7 +203,7 @@ const InfoDetailRiwayatTanaman = () => {
                         paddingRight: "22px",
                       }}
                     >
-                      {tanaman.description}
+                      {tanaman.plant && tanaman.plant.description}
                     </p>
                   </Accordion>
                 </div>
@@ -185,46 +211,28 @@ const InfoDetailRiwayatTanaman = () => {
             </div>
             <div className="col" style={{ width: "436px" }}>
               <div>
-              <p
-                    style={{
-                      color: "#111827",
-                      fontSize: "20px",
-                      fontWeight: 600,
-                    }}
-                  >
-                    Tanggal Mulai Menanam
-                  </p>
+                <h4>Tanggal Mulai Menanam</h4>
                 <div className="d-flex gap-2 align-items-center mt-2">
                   <img src={calendar} alt="" />
-                  {tanaman.start_planting_date &&(
-                      <span
-                        style={{
-                          color: "#4B5563",
-                          fontSize: "16px",
-                          fontWeight: 400,
-                        }}
-                      >
-                        {`${format(
-                          new Date(tanaman.start_planting_date),
-                          "dd MMMM yyyy",
-                          { locale: idLocale }
-                        )} 
+                  {tanaman.start_planting_date && (
+                    <span
+                      style={{
+                        color: "#4B5563",
+                        fontSize: "16px",
+                        fontWeight: 400,
+                      }}
+                    >
+                      {`${format(new Date(tanaman.start_planting_date), "dd MMMM yyyy", {
+                        locale: idLocale,
+                      })} 
                         `}
-                      </span>
-                    )}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="mt-4">
                 <div>
-                  <p
-                    style={{
-                      color: "#111827",
-                      fontSize: "20px",
-                      fontWeight: 600,
-                    }}
-                  >
-                    Kalender Musiman
-                  </p>
+                  <h4>Kalender Musiman</h4>
                   <div>
                     <div>
                       <p
@@ -239,8 +247,8 @@ const InfoDetailRiwayatTanaman = () => {
                       </p>
                       <div className="d-flex gap-2 align-items-center mt-2">
                         <img src={calendar} alt="" />
-                        {tanaman.dry_season_start_plant &&
-                          tanaman.dry_season_finish_plant && (
+                        {tanaman.plant && tanaman.plant.dry_season_start_plant &&
+                          tanaman.plant && tanaman.plant.dry_season_finish_plant && (
                             <span
                               style={{
                                 color: "#4B5563",
@@ -249,11 +257,11 @@ const InfoDetailRiwayatTanaman = () => {
                               }}
                             >
                               {`${format(
-                                new Date(tanaman.rainy_season_start_plant),
+                                new Date(tanaman.plant && tanaman.plant.dry_season_start_plant),
                                 "dd MMMM yyyy",
                                 { locale: idLocale }
                               )} - ${format(
-                                new Date(tanaman.rainy_season_finish_plant),
+                                new Date(tanaman.plant && tanaman.plant.dry_season_finish_plant),
                                 "dd MMMM yyyy",
                                 { locale: idLocale }
                               )}`}
@@ -273,8 +281,8 @@ const InfoDetailRiwayatTanaman = () => {
                       </p>
                       <div className="d-flex gap-2 align-items-center mt-2">
                         <img src={calendar} alt="" />
-                        {tanaman.rainy_season_start_plant &&
-                          tanaman.rainy_season_finish_plant && (
+                        {tanaman.plant && tanaman.plant.rainy_season_start_plant &&
+                          tanaman.plant && tanaman.plant.rainy_season_finish_plant && (
                             <span
                               style={{
                                 color: "#4B5563",
@@ -283,11 +291,11 @@ const InfoDetailRiwayatTanaman = () => {
                               }}
                             >
                               {`${format(
-                                new Date(tanaman.rainy_season_start_plant),
+                                new Date(tanaman.plant && tanaman.plant.rainy_season_start_plant),
                                 "dd MMMM yyyy",
                                 { locale: idLocale }
                               )} - ${format(
-                                new Date(tanaman.rainy_season_finish_plant),
+                                new Date(tanaman.plant && tanaman.plant.rainy_season_finish_plant),
                                 "dd MMMM yyyy",
                                 { locale: idLocale }
                               )}`}
@@ -304,7 +312,7 @@ const InfoDetailRiwayatTanaman = () => {
                 <BarChart />
               </div>
 
-              <div>
+              <div className="d-flex flex-column">
                 <h4 className="mt-4">Perkembangan Tumbuhan</h4>
                 {/* 
                 <ImgCard
@@ -312,6 +320,8 @@ const InfoDetailRiwayatTanaman = () => {
                   viewImgModal={handleonClick}
                   deleteImgModalName="modalDelete"
                 /> */}
+                <ImgSliderS handleDeleteClick={handleSetImgIdDelete} deleteImgModalName="modalDelete" imagesdata={plantimages} modalImageTrigger={handleonClick} />
+
               </div>
               <div className="d-flex flex-wrap gap-4 mt-4">
                 <Accordion
@@ -329,7 +339,7 @@ const InfoDetailRiwayatTanaman = () => {
                       paddingRight: "22px",
                     }}
                   >
-                    {tanaman.pest_info}
+                    {tanaman.plant && tanaman.plant.pest_info}
                   </p>
                 </Accordion>
                 <Accordion
@@ -347,7 +357,7 @@ const InfoDetailRiwayatTanaman = () => {
                       paddingRight: "22px",
                     }}
                   >
-                    {tanaman.fertilizer_info}
+                    {tanaman.plant && tanaman.plant.fertilizer_info}
                   </p>
                 </Accordion>
               </div>
@@ -355,6 +365,23 @@ const InfoDetailRiwayatTanaman = () => {
           </div>
         </div>
       </Layout>
+      <Modal 
+      id="modalDelete"
+      title="Hapus Gambar Tanaman" 
+      content={<p className='text-center'>Apakah anda yakin akan mengapus data tanaman?</p>}
+      type="delete"
+      onSubmit={handleDeleteImg}
+      />
+
+      {showToast.status && (
+      <ToastNotification 
+      text={showToast.text}
+      onClose={() => {
+        setShowToast({status: false, text: ""})
+        window.history.replaceState(null, null, window.location.pathname);
+      }}
+      />
+      )}
     </>
   );
 };

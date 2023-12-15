@@ -29,7 +29,7 @@ export const SidebarData = [
   },
   {
     title: "Produk Lokal",
-    path: "#",
+    path: "/produk-lokal",
     icon: <MdOutlineShoppingCart />,
   },
 ];

@@ -201,12 +201,15 @@ const tambahPengingat = () => {
     if (!formData.schedule_type) {
       errors.schedule_type = "Pilih jenis pengingat";
     }
-
-    if (formData.repeat_in_unit === "daily" && formData.repeat_in > 0) {
-      if (formData.repeat_days.length !== formData.repeat_in) {
-        errors.repeat_days = "Jumlah hari dalam satu minggu tidak sesuai";
-      }
+    
+    if (formData.repeat_in < 0) {
+      errors.repeat_in = "tidak boleh diisi kurang dari 0";
     }
+
+    if(formData.repeat_days .length == 0 ){
+      errors.repeat_days = "Pilih setidaknya satu hari dalam seminggu";
+    }
+
     if (formData.expiration_date && formData.expiration_date <= formData.begin_date) {
       errors.expiration_date = "Tanggal Berakhir harus lebih besar dari Tanggal Mulai";
     }
@@ -460,15 +463,11 @@ const tambahPengingat = () => {
                           <SlArrowDown size={8} />
                         </button>
                       </div>
-                      <Select
-                        value={formData.repeat_in_unit}
-                        className={"form-select tambahPengingat-modalHari"}
-                        options={namaHari}
-                        onChange={handleChange}
-                        title={"Hari"}
-                        name={"repeat_in_unit"}
-                      />
+                      <div className="ms-1 mt-2">
+                        Minggu
+                      </div>
                     </div>
+                    <p className="text-danger">{formError.repeat_in}</p>
                   </div>
                   <div className="mb-3">
                     <label
