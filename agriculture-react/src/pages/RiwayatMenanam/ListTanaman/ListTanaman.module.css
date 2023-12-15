@@ -7,6 +7,10 @@
   padding: 12px;
 }
 
+.userName {
+  color: #448e75;
+}
+
 .cardContainer {
   display: flex;
   justify-content: space-between;
