@@ -202,7 +202,7 @@ const tambahPengingat = () => {
       errors.schedule_type = "Pilih jenis pengingat";
     }
 
-    if (formData.repeat_in_unit === "daily" && formData.repeat_in > 0) {
+    if (formData.repeat_in > 0) {
       if (formData.repeat_days.length !== formData.repeat_in) {
         errors.repeat_days = "Jumlah hari dalam satu minggu tidak sesuai";
       }
@@ -460,14 +460,9 @@ const tambahPengingat = () => {
                           <SlArrowDown size={8} />
                         </button>
                       </div>
-                      <Select
-                        value={formData.repeat_in_unit}
-                        className={"form-select tambahPengingat-modalHari"}
-                        options={namaHari}
-                        onChange={handleChange}
-                        title={"Hari"}
-                        name={"repeat_in_unit"}
-                      />
+                      <div className="ms-1 mt-2">
+                        Minggu
+                      </div>
                     </div>
                   </div>
                   <div className="mb-3">
