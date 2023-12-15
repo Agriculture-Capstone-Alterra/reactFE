@@ -25,6 +25,12 @@ import axios from "axios";
 import ToastNotification from "../../../components/ToastNotification/ToastNotification";
 
 const InfoDetailRiwayatTanaman = () => {
+  const [isShowDeskripsi, setIsShowDeskripsi] = useState(false);
+  const [isShowNutrisi, setIsShowNutrisi] = useState(false);
+  const [isShowPenanganan, setIsShowPenanganan] = useState(false);
+
+  const { id } = useParams();
+  const [tanaman, setTanaman] = useState([]);
   const breadcrumbsobjectexample = [
     {
       crumbname: "Riwayat Menanam",
@@ -36,15 +42,9 @@ const InfoDetailRiwayatTanaman = () => {
     },
     {
       crumbname: "Info Detail Riwayat Tanaman",
-      crumblink: "/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman",
+      crumblink: "/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/"+id,
     },
   ];
-  const [isShowDeskripsi, setIsShowDeskripsi] = useState(false);
-  const [isShowNutrisi, setIsShowNutrisi] = useState(false);
-  const [isShowPenanganan, setIsShowPenanganan] = useState(false);
-
-  const { id } = useParams();
-  const [tanaman, setTanaman] = useState([]);
   
 
   const fetchPlantsData = async () => {
@@ -70,13 +70,13 @@ const InfoDetailRiwayatTanaman = () => {
   const [plantimages, setPlantImages] = useState([]) 
   async function initialGet(){
     await axiosWithAuth
-      .get(`plants/${id}`)
+      .get(`/user-plants/${id}`)
       .then((result) => {
         setTanaman(result.data.data);
         console.log("resr", result.data.data);
         // const list = 
         console.log(plantimages);
-        setPlantImages(result.data.data.plant_images.map((item, index) => {
+        setPlantImages(result.data.data.plant.plant_images.map((item, index) => {
           return{link: item.image_path, datecreated: item.created_at, id: item.id}
         }))
 
@@ -110,12 +110,12 @@ const InfoDetailRiwayatTanaman = () => {
   // end safutras
   return (
     <>
-      {/* <ImgModal
+      <ImgModal
         imgclickedindex={imgmodalcurrentindex}
         imgdatas={plantimages}
         modalstatus={modalopen}
         modalcloser={handleonClick}
-      /> */}
+      />
       <Layout
         pagetitle={"Info Detail History Tanaman"}
         breadcrumbs={breadcrumbsobjectexample}
@@ -124,7 +124,7 @@ const InfoDetailRiwayatTanaman = () => {
           <div className="row">
             <div className="col">
               <div
-                className="card z-n1"
+                className="card z-n0"
                 style={{ width: "640px", backgroundColor: "#F3F4F6" }}
               >
                 {/* <img
@@ -142,10 +142,10 @@ const InfoDetailRiwayatTanaman = () => {
                       <img src={tanaman.plant_images} key={id} />
                     </div> */}
                     {tanaman.plant &&
-                      tanaman.plant.plant_images.map((image_path, id) => (
+                      tanaman.plant.plant_images.map((items, id) => (
                         <img
                           key={id}
-                          src={image_path}
+                          src={items.image_path}
                           alt={`Gambar tanaman ${tanaman.plant && tanaman.plant.name}`}
                         />
                       ))}
