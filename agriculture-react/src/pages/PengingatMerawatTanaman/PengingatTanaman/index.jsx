@@ -13,6 +13,7 @@ import Modal from '../../../components/Modal/Modal.jsx';
 import ModalTrigger from '../../../components/Modal/ModalTrigger.jsx';
 import axios from "axios";
 import axiosWithAuth from '../../../api/axios.jsx';
+import Swal from 'sweetalert2';
 
 
 // start dokumentasi komponen
@@ -47,6 +48,16 @@ const PengingatTanaman = () => {
   }, [location.state]);
 
   useEffect(() => {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-left',
+      showConfirmButton: false,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      text:"Sedang mendapatkan data tanaman...",
+    });
     axiosWithAuth("https://service.api-agriplant.xyz/recommended-schedule")
     .then((res1) => {
       const endpointData = res1.data.data;
@@ -75,7 +86,10 @@ const PengingatTanaman = () => {
           setDataPenyiramanList(penyiramanList||[]);
           setDataPemupukanList(pemupukanList||[]);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+        .finally(() => {
+          Swal.close();
+        });
     })
     .catch((err) => console.log(err));
     
@@ -146,7 +160,7 @@ const PengingatTanaman = () => {
       case 'year': tipe = "Tahunan"; break;
     }
     const untilDate = until === "" ? "" : "Sampai " + until;
-    return tipe + " setiap " + days + " " + untilDate;
+    return tipe + (days ? " setiap " + days : "") + " " + untilDate;
   }
   return (
     <>
