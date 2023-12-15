@@ -1,7 +1,9 @@
 .border-cuaca {
     position: relative;
     display: flex;
-    width: 320px;
+    /* max-width: 320px; */
+    width: 100%;
+    max-width: 280px;
     height: 120px;
     padding: 30px 20px;
     align-items: center;
@@ -14,7 +16,7 @@
 .text-suhu{
     color: var(--netral-50, #F9FAFB);
     font-family: Inter;
-    font-size: 40px;
+    font-size: 32px;
     font-style: normal;
     font-weight: 800;
     line-height: normal;
@@ -23,9 +25,9 @@
 .text-suhu2{
     color: var(--netral-50, #F9FAFB);
     font-family: Inter;
-    font-size: 14px;
+    font-size: 16px;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 600;
     line-height: normal;
 }
 

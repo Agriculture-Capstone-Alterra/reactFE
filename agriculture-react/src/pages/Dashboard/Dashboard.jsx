@@ -9,6 +9,10 @@ import card1 from '../../assets/DashboardCardImg/card1.svg'
 import card from '../../assets/DashboardCardImg/card.svg'
 import card2 from '../../assets/DashboardCardImg/card2.svg'
 import cloud from '../../assets/DashboardCardImg/cloud.svg'
+import { CuacaBerawan, CuacaBerkabut, CuacaHujan, CuacaHujanPetir, CuacaSedikitBerawan, CuacaCerah } from "../../assets";
+
+
+
 import CardCuaca from "../../components/CardCuaca/indeks";
 import { Plant } from "../../assets";
 import axiosWithAuth from "../../api/axios";
@@ -17,48 +21,6 @@ import axios from "axios";
 
 
 export default function Dashboard(){
-    // begin : dummy data untuk data pada chart
-    // const generateRandomData = (count) => {
-    //     return Array.from({ length: count }, (_, index) => ({
-    //         month: (index + 1).toString(),
-    //         value: Math.floor(Math.random() * 451),
-    //     }));
-    // };
-    // const data = [
-    //     {
-    //         dataSetName: 'Bulan ini',
-    //         data: generateRandomData(31),
-    //         color: '#2563EB',
-    //     },
-    //     {
-    //         dataSetName: 'Bulan lalu',
-    //         data: generateRandomData(31),
-    //         color: '#059669',
-    //     },
-    // ];
-    // end : dummy data untuk data pada chart
-    // const [dataBaruDitanam, setDataBaruDitanam] = useState({
-    //     color: "#059669",
-    //     halfdone: 20,
-    //     halfundone: 50,
-    //     nama: "Baru Ditanam"
-    // })
-    // const [dataPerawatan, setDataPerawatan] = useState({
-    //     color: "#D97706",
-    //     halfdone: 100,
-    //     halfundone: 50,
-    //     nama: "Perawatan"
-    // })
-    // const [dataPanen, setPanen] = useState({
-    //     color: "#2563EB",
-    //     halfdone: 80,
-    //     halfundone: 50,
-    //     nama: "Panen"
-    // })
-
-
-
-
     const [datapersentaseglobal, setDataPersentaseGlobal] = useState([
         {
         nama: "Baru Ditanam",
@@ -148,40 +110,56 @@ export default function Dashboard(){
             const resp = response.data
             weathermap = resp.hourly.time.map((value, index)=>{
                 var weather
+                var weather_img
                 if (resp.hourly.weather_code[index] === 0) {
                     weather = "Cerah Tanpa Awan";
+                    weather_img = CuacaCerah
                 } else if (resp.hourly.weather_code[index] === 1 || resp.hourly.weather_code[index] === 2 || resp.hourly.weather_code[index] === 3) {
                     weather = "Berawan";
+                    weather_img = CuacaBerawan
                 } else if (resp.hourly.weather_code[index] === 45 || resp.hourly.weather_code[index] === 48) {
                     weather = "Berkabut";
+                    weather_img = CuacaBerkabut
                 } else if (resp.hourly.weather_code[index] === 51 || resp.hourly.weather_code[index] === 53 || resp.hourly.weather_code[index] === 55) {
                     weather = "Gerimis";
+                    weather_img = CuacaHujan
                 } else if (resp.hourly.weather_code[index] === 56 || resp.hourly.weather_code[index] === 57) {
                     weather = "Gerimis dingin";
+                    weather_img = CuacaHujan
                 } else if (resp.hourly.weather_code[index] === 61 || resp.hourly.weather_code[index] === 63 || resp.hourly.weather_code[index] === 65) {
                     weather = "Hujan menengah ke atas";
+                    weather_img = CuacaHujan
                 } else if (resp.hourly.weather_code[index] === 66 || resp.hourly.weather_code[index] === 67) {
                     weather = "Hujan membeku";
+                    weather_img = CuacaHujan
                 } else if (resp.hourly.weather_code[index] === 71 || resp.hourly.weather_code[index] === 73 || resp.hourly.weather_code[index] === 75) {
                     weather = "Turun Salju";
+                    weather_img = CuacaHujan
                 } else if (resp.hourly.weather_code[index] === 77) {
                     weather = "Bersalju";
+                    weather_img = CuacaHujan
                 } else if (resp.hourly.weather_code[index] === 80 || resp.hourly.weather_code[index] === 81 || resp.hourly.weather_code[index] === 82) {
                     weather = "Hujan deras";
+                    weather_img = CuacaHujanPetir
                 } else if (resp.hourly.weather_code[index] === 85 || resp.hourly.weather_code[index] === 86) {
                     weather = "Hujan salju";
+                    weather_img = CuacaHujan
                 } else if (resp.hourly.weather_code[index] === 95) {
                     weather = "Badai";
+                    weather_img = CuacaHujanPetir
                 } else if (resp.hourly.weather_code[index] === 96 || resp.hourly.weather_code[index] === 99) {
                     weather = "Badai dengan hujan es";
+                    weather_img = CuacaHujanPetir
                 } else {
                     weather = "Unknown";
+                    weather_img = CuacaCerah
                 }
                 // console.log(resp.hourly.weather_code[index])
                 return {
                     time: value,
                     temperature: resp.hourly.temperature_2m[index],
-                    weather_name: weather
+                    weather_name: weather,
+                    weather_img: weather_img
                 }
             })
             // console.log(weathermap)
@@ -196,7 +174,7 @@ export default function Dashboard(){
         const weatherconverted = {
             suhunama: currentweather[0].weather_name,
             suhu: currentweather[0].temperature,
-            suhupic: cloud
+            suhupic: currentweather[0].weather_img
         }
         console.log("current time", currentweather)
         setDataSuhu(weatherconverted)
@@ -344,11 +322,6 @@ export default function Dashboard(){
                                 </div>
                             </div>
                         </div>
-                        
-                        
-                        
-                        
-                        
                         <div className="dashboard-middle-rightpart">
                             <div className="dashboard-topfarmer">
                                 <div className="d-flex dashboard-topfarmer-toppart">
@@ -364,15 +337,6 @@ export default function Dashboard(){
                                             <option>Loading...</option>
                                         }
                                     </select>
-                                    {/* <button className="dashboard-btn fonts12 fontw400" type="button" data-bs-toggle="dropdown">Bulan <FaAngleDown /></button>
-                                    <ul class="dropdown-menu">
-
-
-
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                    </ul> */}
                                 </div>
                                 {/* begin: kemungkinaan ada hover effect */}
                                 {
@@ -388,7 +352,7 @@ export default function Dashboard(){
                                                 </div>
                                                 <div className="d-flex align-items-center justify-content-center dashboard-farmerdiv-rightpart">
                                                     <img className="dashboard-leavelogofarmer" src={Plant} width={18} height={18} />
-                                                    <p className="fonts14 fontw600 text-removemargin">{item.leavepoint}</p>
+                                                    <p className="fonts14 fontw600 text-removemargin">{item.leave_point}</p>
                                                 </div>
                                             </div>
                                         )

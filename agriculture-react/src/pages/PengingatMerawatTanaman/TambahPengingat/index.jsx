@@ -19,7 +19,7 @@ const tambahPengingat = () => {
     expiration_date: "",
     expiration_occurence: 0,
     name: "",
-    plant_id: null,
+    plant_id: "",
     repeat_date: "",
     repeat_days: [],
     repeat_in: 0,
@@ -149,14 +149,26 @@ const tambahPengingat = () => {
         //   label: value.name,
         //   value: value.id,
         // }));
+        Swal.fire({
+          toast: true,
+          position: 'bottom-left',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          text:"Sedang mendapatkan data tanaman...",
+        });
         const res = await axiosWithAuth("https://service.api-agriplant.xyz/plants");
-        const mappedData = res.data.data.map((value, key) => ({
+        const mappedData = res?.data.data.map((value, key) => ({
           label: value.name,
           value: value.id,
         }));
-        setTanamanOptions(mappedData);
+        setTanamanOptions(mappedData.length > 0 ? mappedData : []);
       } catch (error) {
         console.error("Error fetching tanaman data:", error);
+      } finally{
+        Swal.close();
       }
     };
 
@@ -190,7 +202,7 @@ const tambahPengingat = () => {
       errors.schedule_type = "Pilih jenis pengingat";
     }
 
-    if (formData.repeat_in_unit === "daily" && formData.repeat_in > 0) {
+    if (formData.repeat_in > 0) {
       if (formData.repeat_days.length !== formData.repeat_in) {
         errors.repeat_days = "Jumlah hari dalam satu minggu tidak sesuai";
       }
@@ -207,6 +219,16 @@ const tambahPengingat = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if(formValidate()){
+      Swal.fire({
+        toast: true,
+        position: 'bottom-left',
+        showConfirmButton: false,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+        text: "Sedang mengirim data...",
+      });
       axiosWithAuth({
         baseURL:"https://service.api-agriplant.xyz/recommended-schedule",
         method:"POST",
@@ -233,7 +255,7 @@ const tambahPengingat = () => {
               name: formData.name,
               plant_id: formData.plant_id,
               schedule_type: formData.schedule_type,
-              repeat_date: `${formData.begin_date}/${formData.startTime}-${formData.endTime}`,
+              repeat_date: formData.begin_date + (formData.startTime ? '/' + (formData.startTime + (formData.endTime ? '-' + formData.endTime : ''))  : ''),
               repeat_in: `${formData.repeat_in}`,
               repeat_in_unit: formData.repeat_in_unit,
               repeat_days: `${formData.repeat_days?.join(", ")}`,
@@ -246,6 +268,7 @@ const tambahPengingat = () => {
             ).then((res) => {
               // console.log(res);
               // console.log("data saved to mockapi : ", postData);
+              Swal.close();
               navigate('/pengingat-tanaman', { state: { savedData: true } });
             })
             .catch((err) => {
@@ -264,7 +287,7 @@ const tambahPengingat = () => {
           title: 'Oops, ada error ketika mengirim data',
           text: 'silahkan cek output pada console untuk melihat error',
         });
-      });
+      })
     } else {
       Swal.fire({
         icon: 'error',
@@ -373,7 +396,9 @@ const tambahPengingat = () => {
             <ModalTrigger
               modalTarget={"tambahData"}
               className={`btn me-3 tambahPengingat-btnOutline ${styles.btnAction}`}
-              style={{ display: "flex", alignItems: "center" }}>
+              style={{ display: "flex", alignItems: "center" }}
+              onClick={(e) => e.preventDefault()}
+            >
               Simpan dan Bagikan
             </ModalTrigger>
             <button
@@ -394,11 +419,11 @@ const tambahPengingat = () => {
           submitButtonText={"Ya"}
           cancelButtonText={"Tidak"}
           onCancel={() => {}}
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
           type="edit"
         />
         {/* modal k*/}
-        <div className="modal fade" id="exampleModal" tabindex="-1">
+        <div className="modal fade" id="exampleModal" tabIndex="-1">
           <div className="modal-dialog tambahPengingat-modal">
             <div className="modal-content">
               <div className="modal-header">
@@ -435,14 +460,9 @@ const tambahPengingat = () => {
                           <SlArrowDown size={8} />
                         </button>
                       </div>
-                      <Select
-                        value={formData.repeat_in_unit}
-                        className={"form-select tambahPengingat-modalHari"}
-                        options={namaHari}
-                        onChange={handleChange}
-                        title={"Hari"}
-                        name={"repeat_in_unit"}
-                      />
+                      <div className="ms-1 mt-2">
+                        Minggu
+                      </div>
                     </div>
                   </div>
                   <div className="mb-3">
