@@ -134,7 +134,7 @@ const EditTanaman = () => {
         getDataPlantTech();
         getDataEdit();
     },[])
-    
+
     const tambahkanLangkahPenanaman = () => {
         setLangkahPenanaman((prevLangkah) => [
         ...prevLangkah,
@@ -175,7 +175,7 @@ const EditTanaman = () => {
         };
         setAlatPenanaman(updatedData);
     };
-    
+
     const handleLangkahPenanamanChange = (index, field, value) => {
         const updatedData = [...langkahPenanaman];
         updatedData[index] = {
@@ -240,50 +240,78 @@ const EditTanaman = () => {
                     name: alat.namaAlat,
                     })),
                 });
-            
+
                 const response = await axiosWithAuth.get(`plants/${id}`);
                 const tanaman = response.data.data;
 
                 const toolData = tanaman.planting_tools;
-                const idsToolArray = toolData.map((tool) => tool.id);
+                const newTools = toolData.filter(tool => !tool.image_path);
+                const idsToolArray = newTools.map((tool) => tool.id);
                 const toolIDs = idsToolArray.join(',');
-                const plantingToolsFormData = new FormData();
-                plantingToolsFormData.append('plant_id', id);
-                plantingToolsFormData.append('planting_tool_ids', toolIDs);
-                for (const imgalat of alatPenanaman) {
-                    const base64toRes = await fetch(imgalat.gambarAlat.src)
-                    const base64toBlob = await base64toRes.blob()
-                    plantingToolsFormData.append('image_files', base64toBlob);
-                }
-                const plantingToolsResponse = await axiosWithAuth.post(`planting-tools/upload/${id}`, plantingToolsFormData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
+                console.log('id alat baru,', toolIDs)
+                if(idsToolArray.length > 0){
+                    const plantingToolsFormData = new FormData();
+                    plantingToolsFormData.append('plant_id', id);
+                    plantingToolsFormData.append('planting_tool_ids', toolIDs);
+                    for (const imgalat of alatPenanaman) {
+                        //console.log('img alat,', imgalat.gambarAlat)
+                        //console.log('img alat src,', imgalat.gambarAlat.src)
+                        if(imgalat.gambarAlat.src === undefined && imgalat.gambarAlat !== null && imgalat.gambarAlat !== ''){
+                            //console.log('img alat blob,', imgalat.gambarAlat)
+                            console.log('img alat blob status true')
+                        }else if(imgalat.gambarAlat.src !== null && imgalat.gambarAlat !== ''){
+                            // console.log('img alat base64,', imgalat.gambarAlat.src)
+                            // console.log('img alat base64 status true')
+                            const base64toRes = await fetch(imgalat.gambarAlat.src)
+                            const base64toBlob = await base64toRes.blob()
+                            plantingToolsFormData.append('image_files', base64toBlob);
+                        }else{
+                            console.log('img alat kosong')
+                        }
+                    }
+                    const plantingToolsResponse = await axiosWithAuth.post(`planting-tools/upload/${id}`, plantingToolsFormData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+                }else{}
 
                 const guideData = tanaman.planting_guides;
-                const idsGuideArray = guideData.map((guide) => guide.id);
+                const newGuides = guideData.filter(tool => !tool.image_path);
+                const idsGuideArray = newGuides.map((guide) => guide.id);
                 const guideIDs = idsGuideArray.join(',');
-                const plantingGuideFormData = new FormData();
-                plantingGuideFormData.append('plant_id', id);
-                plantingGuideFormData.append('planting_guide_ids', guideIDs);
-                for (const imglangkah of langkahPenanaman) {
-                    const base64toRes = await fetch(imglangkah.gambarLangkah.src)
-                    const base64toBlob = await base64toRes.blob()
-                    plantingGuideFormData.append('image_files', base64toBlob);
-                }
-                const plantingGuideResponse = await axiosWithAuth.post(`planting-guides/upload/${id}`, plantingGuideFormData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-
+                console.log('id langkah baru,', guideIDs)
+                if(idsGuideArray.length > 0){
+                    const plantingGuideFormData = new FormData();
+                    plantingGuideFormData.append('plant_id', id);
+                    plantingGuideFormData.append('planting_guide_ids', guideIDs);
+                    for (const imglangkah of langkahPenanaman) {
+                        if(imglangkah.gambarLangkah.src === undefined && imglangkah.gambarLangkah !== null && imglangkah.gambarLangkah !== ''){
+                            // console.log('img blob,', imglangkah.gambarLangkah)
+                            console.log('img blob status true')
+                        }else if(imglangkah.gambarLangkah.src !== null && imglangkah.gambarLangkah !== ''){
+                            // console.log('img base64,', imglangkah.gambarLangkah.src)
+                            // console.log('img base64 status true')
+                            const base64toRes = await fetch(imglangkah.gambarLangkah.src)
+                            const base64toBlob = await base64toRes.blob()
+                            plantingGuideFormData.append('image_files', base64toBlob);
+                        }else{
+                            console.log('img langkah kosong')
+                        }
+                    }
+                    const plantingGuideResponse = await axiosWithAuth.post(`planting-guides/upload/${id}`, plantingGuideFormData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+                }else{}
+                
                 navigate('/menanam-tanaman')
             } catch (error) {
                 console.error('Error updating form:', error);
             }
         }
-            
+
     };
     const timestampRegExp = /\b\d{13}\b/;
     const handleRemoveImagePlant = async (id) => {
@@ -320,7 +348,7 @@ const EditTanaman = () => {
             console.error('Error deleting image:', error.message);
         }
     };
-    
+
     return (
         <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={breadcrumEditTanaman}>
         <div className='mt-2' style={{ padding:'0px 0px 30px 30px', marginRight:'0'}}>
@@ -363,15 +391,15 @@ const EditTanaman = () => {
                     />
                     <Invalid errormsg={"Tolong masukkan deskripsi tanaman."}/>
                 </div>
-                <label className="form-label fontw600" htmlFor="gambartanaman">Gambar Tanaman</label> 
-                <DragEdit 
+                <label className="form-label fontw600" htmlFor="gambartanaman">Gambar Tanaman</label>
+                <DragEdit
                     name={'gambartanaman'}
                     value={gambarTanaman}
                     setValue={setGambarTanaman}
                     onDelete={handleRemoveImagePlant}
                     idPlant={id}
                     linkApi={`plant-images`}
-                /> 
+                />
                 <div className="form-group mb-3">
                     <label className="form-label fontw600" htmlFor="varietastanaman">Varietas Tanaman</label>
                     <Input
@@ -495,7 +523,7 @@ const EditTanaman = () => {
                         <Invalid errormsg={"Tolong masukkan saran untuk tempat penanaman."}/>
                     </div>
                     <label className="form-label fontw600" htmlFor="gambarsaran">Foto</label>
-                    <DragEdit 
+                    <DragEdit
                         name={'gambarsaran'}
                         value={gambarSaran}
                         setValue={setGambarSaran}
