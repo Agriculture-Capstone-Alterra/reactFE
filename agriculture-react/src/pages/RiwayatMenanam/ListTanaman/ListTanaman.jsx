@@ -20,6 +20,7 @@ const ListTanaman = () => {
     try {
       const res = await axiosWithAuth.get(`/admin/user-plants/user/${user_id}`);
       let cards = res.data.data;
+      console.log(res.data.data)
 
       if (selectedTeknologi) {
         cards = cards.filter((card) => card.plant.technology.name === selectedTeknologi);
@@ -52,7 +53,7 @@ const ListTanaman = () => {
   // handle card click
   const handleCardClick = (id) => {
     console.log(`Card ${id} clicked`);
-    navigate(`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/${id}`);
+    navigate(`/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/${user_id}/${id}`);
   };
 
   // handle sort change

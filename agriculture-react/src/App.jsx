@@ -38,46 +38,47 @@ function App() {
             path="/menanam-tanaman/edit-tanaman/:id"
             element={<EditTanaman />}
           />
+          {/* Start Riwayat Menanam Pages */}
+          <Route path="/riwayat-menanam" element={<RiwayatMenanam />} />
+          <Route
+            path="riwayat-menanam/list-tanaman/:user_id"
+            element={<RiwayatListTanaman />}
+          />
+          <Route
+            path="riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/:user_id/:id"
+            element={<InfoDetailRiwayatTanaman />}
+          />
+          {/* End Riwayat Menanam Pages */}
+
+          <Route path="/menanam-tanaman" element={<TableTanaman />} />
+          <Route
+            path="/menanam-tanaman/detail-menanam-tanaman/:id"
+            element={<DetailTanaman />}
+          />
+
+          {/* rute pengingat */}
+          <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
+          <Route
+            path="/pengingat-tanaman/tambah-pengingat"
+            element={<TambahPengingat />}
+          />
+          <Route
+            path="/pengingat-tanaman/edit-pengingat/:id"
+            element={<EditPengingat />}
+          />
+          {/* end rute pengingat */}
+
+          <Route path="/testpage" element={<TestPage />} />
+
+          <Route path="/login" element={<Login />} />
+          <Route path="/errorpage" element={<ErrorPage />} />
+
+          <Route path="/produk-lokal" element={<ListProduct />} />
+          <Route path="/produk-lokal/tambah-produk" element={<TambahProduct />} />
+
         </Route>
 
-        {/* Start Riwayat Menanam Pages */}
-        <Route path="/riwayat-menanam" element={<RiwayatMenanam />} />
-        <Route
-          path="riwayat-menanam/list-tanaman/:user_id"
-          element={<RiwayatListTanaman />}
-        />
-        <Route
-          path="riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/:id"
-          element={<InfoDetailRiwayatTanaman />}
-        />
-        {/* End Riwayat Menanam Pages */}
-
-        <Route path="/menanam-tanaman" element={<TableTanaman />} />
-        {/* <Route path="/" element={<TestPage />} /> */}
-        <Route
-          path="/menanam-tanaman/detail-menanam-tanaman/:id"
-          element={<DetailTanaman />}
-        />
-
-        {/* rute pengingat */}
-        <Route path="/pengingat-tanaman" element={<PengingatTanaman />} />
-        <Route
-          path="/pengingat-tanaman/tambah-pengingat"
-          element={<TambahPengingat />}
-        />
-        <Route
-          path="/pengingat-tanaman/edit-pengingat/:id"
-          element={<EditPengingat />}
-        />
-        {/* end rute pengingat */}
-
-        <Route path="/testpage" element={<TestPage />} />
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/errorpage" element={<ErrorPage />} />
-
-        <Route path="/produk-lokal" element={<ListProduct />} />
-        <Route path="/produk-lokal/tambah-produk" element={<TambahProduct />} />
+        
       </Routes>
     </BrowserRouter>
   );
