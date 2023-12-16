@@ -30,6 +30,7 @@ const InfoDetailRiwayatTanaman = () => {
   const [isShowPenanganan, setIsShowPenanganan] = useState(false);
 
   const { id } = useParams();
+  const { user_id } = useParams();
   const [tanaman, setTanaman] = useState([]);
   const breadcrumbsobjectexample = [
     {
@@ -38,11 +39,11 @@ const InfoDetailRiwayatTanaman = () => {
     },
     {
       crumbname: "List Tanaman",
-      crumblink: "/riwayat-menanam/list-tanaman/",
+      crumblink: "/riwayat-menanam/list-tanaman/"+user_id,
     },
     {
       crumbname: "Info Detail Riwayat Tanaman",
-      crumblink: "/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/"+id,
+      crumblink: "/riwayat-menanam/list-tanaman/info-detail-riwayat-tanaman/"+user_id+"/"+id,
     },
   ];
   
