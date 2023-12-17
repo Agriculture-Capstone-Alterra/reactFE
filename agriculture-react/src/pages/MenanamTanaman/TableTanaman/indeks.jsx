@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axiosWithAuth from '../../../api/axios';
-import Table from '../../../components/Table/Table';
-import Layout from '../../../layout/Layout';
-import EditIcon from '../../../assets/icons/edit.svg';
-import TrashIcon from '../../../assets/icons/trash.svg';
-import { TbDots } from 'react-icons/tb';
-import Pagination from '../../../components/Pagination/Pagination';
-import Filter from '../../../components/Filter';
-import Modal from '../../../components/Modal/Modal';
-import ModalTrigger from '../../../components/Modal/ModalTrigger';
-import ToastNotification from '../../../components/ToastNotification/ToastNotification';
-import './style.css';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axiosWithAuth from "../../../api/axios";
+import Table from "../../../components/Table/Table";
+import Layout from "../../../layout/Layout";
+import EditIcon from "../../../assets/icons/edit.svg";
+import TrashIcon from "../../../assets/icons/trash.svg";
+import { TbDots } from "react-icons/tb";
+import Pagination from "../../../components/Pagination/Pagination";
+import Filter from "../../../components/Filter";
+import Modal from "../../../components/Modal/Modal";
+import ModalTrigger from "../../../components/Modal/ModalTrigger";
+import ToastNotification from "../../../components/ToastNotification/ToastNotification";
+import "./style.css";
 
 const TableTanaman = () => {
   const navigate = useNavigate();
@@ -29,21 +29,25 @@ const TableTanaman = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosWithAuth.get('/plants');
-        console.log('Response Data:', response.data);
+        const response = await axiosWithAuth.get("/plants");
+        console.log("Response Data:", response.data);
 
         let filteredData = response.data.data;
         if (selectedTeknologi) {
-          filteredData = filteredData.filter((plant) => plant.technology === selectedTeknologi);
+          filteredData = filteredData.filter(
+            (plant) => plant.technology === selectedTeknologi
+          );
         }
         if (selectedJenisTanaman) {
-          filteredData = filteredData.filter((plant) => plant.plant_type === selectedJenisTanaman);
+          filteredData = filteredData.filter(
+            (plant) => plant.plant_type === selectedJenisTanaman
+          );
         }
 
         setPlantData(filteredData);
         setCurrentData(filteredData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -52,7 +56,7 @@ const TableTanaman = () => {
 
   const handleEdit = ({ id }) => {
     console.log(`Edit button clicked for ID ${id}`);
-    navigate('/menanam-tanaman/edit-tanaman');
+    navigate("/menanam-tanaman/edit-tanaman");
   };
 
   const handleDeleteClick = (data) => {
@@ -63,7 +67,9 @@ const TableTanaman = () => {
   const handleDeleteConfirm = async () => {
     try {
       await axiosWithAuth.delete(`/plants/${selectedItemId}`);
-      const updatedData = currentData.filter((plant) => plant.id !== selectedItemId);
+      const updatedData = currentData.filter(
+        (plant) => plant.id !== selectedItemId
+      );
       const updatedDataWithNumbers = updatedData.map((plant, index) => ({
         ...plant,
         number: index + 1,
@@ -76,7 +82,7 @@ const TableTanaman = () => {
       setToastMessage("Data tanaman berhasil dihapus");
       setTimeout(() => setShowToast(false), 3000);
     } catch (error) {
-      console.error('Error deleting data:', error);
+      console.error("Error deleting data:", error);
     }
   };
 
@@ -86,12 +92,19 @@ const TableTanaman = () => {
 
   const crumbs = [
     {
-      crumblink: '/menanam-tanaman',
-      crumbname: 'Menanam Tanaman',
+      crumblink: "/menanam-tanaman",
+      crumbname: "Menanam Tanaman",
     },
   ];
 
-  const tableHeaders = ['No', 'Nama tanaman', 'Jenis Tanaman', 'Varietas', 'Teknologi', ' '];
+  const tableHeaders = [
+    "No",
+    "Nama tanaman",
+    "Jenis Tanaman",
+    "Varietas",
+    "Teknologi",
+    " ",
+  ];
 
   const paginationProps = {
     dataList: currentData,
@@ -102,40 +115,65 @@ const TableTanaman = () => {
 
   return (
     <>
-      <Layout pagetitle={'Menanam Tanaman'} breadcrumbs={crumbs}>
+      <Layout pagetitle={"Menanam Tanaman"} breadcrumbs={crumbs}>
         <div className="page-table">
           <div className="page-table-pagination">
             <div className="table">
               <div className="table-list">
                 <span className="table-text-title">List Tanaman</span>
-                <Link to="/menanam-tanaman/tambah-tanaman" className="tambah-tanaman">
+                <Link
+                  to="/menanam-tanaman/tambah-tanaman"
+                  className="tambah-tanaman"
+                >
                   + Tambah Tanaman
                 </Link>
               </div>
               <Table headers={tableHeaders}>
                 {plantData.map((plant, index) => (
                   <tr key={index}>
-                    <td onClick={() => handleRowClick(plant.id)}>{plant.number}</td>
-                    <td onClick={() => handleRowClick(plant.id)}>{plant.name}</td>
-                    <td onClick={() => handleRowClick(plant.id)}>{plant.plant_type}</td>
-                    <td onClick={() => handleRowClick(plant.id)}>{plant.variety}</td>
-                    <td onClick={() => handleRowClick(plant.id)}>{plant.technology}</td>
+                    <td onClick={() => handleRowClick(plant.id)}>
+                      {plant.number}
+                    </td>
+                    <td onClick={() => handleRowClick(plant.id)}>
+                      {plant.name}
+                    </td>
+                    <td onClick={() => handleRowClick(plant.id)}>
+                      {plant.plant_type}
+                    </td>
+                    <td onClick={() => handleRowClick(plant.id)}>
+                      {plant.variety}
+                    </td>
+                    <td onClick={() => handleRowClick(plant.id)}>
+                      {plant.technology}
+                    </td>
                     <td>
-                      <div className="p-2 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                      <div
+                        className="p-2 dropdown-toggle-split"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
                         <TbDots className="fw-bold fs-4 ms-1" />
                       </div>
                       <ul className="dropdown-menu">
                         <li className="d-grid mb-2 ps-3 pe-3">
-                          <div className='link-none'>
-                            <Link to={`/menanam-tanaman/edit-tanaman/${plant.id}`}>
+                          <div className="link-none">
+                            <Link
+                              to={`/menanam-tanaman/edit-tanaman/${plant.id}`}
+                            >
                               <button
                                 className="btn"
                                 style={{
-                                  display: 'flex',
-                                  alignItems: 'center',
+                                  display: "flex",
+                                  alignItems: "center",
                                 }}
                               >
-                                <img src={EditIcon} alt="Edit Icon" className="me-2" width="20" height="20" />
+                                <img
+                                  src={EditIcon}
+                                  alt="Edit Icon"
+                                  className="me-2"
+                                  width="20"
+                                  height="20"
+                                />
                                 <span>Edit</span>
                               </button>
                             </Link>
@@ -146,12 +184,18 @@ const TableTanaman = () => {
                             modalTarget={deleteModalName}
                             className="btn"
                             style={{
-                              display: 'flex',
-                              alignItems: 'center',
+                              display: "flex",
+                              alignItems: "center",
                             }}
                             onClick={(e) => handleDeleteClick(plant, e)}
                           >
-                            <img src={TrashIcon} alt="Delete Icon" className="me-2" width="20" height="20" />
+                            <img
+                              src={TrashIcon}
+                              alt="Delete Icon"
+                              className="me-2"
+                              width="20"
+                              height="20"
+                            />
                             <span>Hapus</span>
                           </ModalTrigger>
                         </li>
@@ -183,7 +227,11 @@ const TableTanaman = () => {
         <Modal
           id={deleteModalName}
           title="Hapus Data Tanaman"
-          content={<p className='text-center-modal'>Apakah anda yakin akan menghapus SEMUA DATA TANAMAN PADA USER ? </p>}
+          content={
+            <p className="text-center-modal">
+              Apakah anda yakin akan menghapus SEMUA DATA TANAMAN PADA USER ?{" "}
+            </p>
+          }
           onCancel={() => {}}
           onSubmit={handleDeleteConfirm}
           type="delete"

@@ -29,6 +29,7 @@ const DetailTanaman = () => {
   const [isShowLangkah, setIsShowLangkah] = useState(false);
   const [isShowMenanam, setIsShowMenanam] = useState(false);
   const [isShowPenanganan, setIsShowPenanganan] = useState(false);
+  const [plantImages, setPlantImages] = useState([]);
   const [plantGuides, setPlantGuides] = useState([]);
   const [plantTools, setPlantTools] = useState([]);
   const [plantingMediumImages, setPlantingMediumImages] = useState([]);
@@ -47,7 +48,8 @@ const DetailTanaman = () => {
         setTanaman(result.data.data);
         setPlantGuides(result.data.data.planting_guides);
         setPlantTools(result.data.data.planting_tools);
-        console.log("sdfsdf",result.data.data.planting_tools)
+        console.log("sdfsdf", result.data.data.planting_tools);
+        setPlantImages(result.data.data.plant_images);
         setPlantingMediumImages(result.data.data.planting_medium_images);
         console.log(result.data.data);
         // console.log(plantGuides);
@@ -84,7 +86,7 @@ const DetailTanaman = () => {
     },
   ];
   const handleOnClick = () => {
-    navigate(`/menanam-tanaman/edit-tanaman`);
+    navigate(`/menanam-tanaman/edit-tanaman/${id}`);
   };
   return (
     <>
@@ -112,8 +114,8 @@ const DetailTanaman = () => {
                     showArrows={false}
                     showThumbs={false}
                   >
-                    {plantingMediumImages.length > 0 ? (
-                      plantingMediumImages.map((item, index) => (
+                    {plantImages.length > 0 ? (
+                      plantImages.map((item, index) => (
                         <div key={index}>
                           <img
                             src={item.image_path}
@@ -285,8 +287,33 @@ const DetailTanaman = () => {
                     onClick={() => setIsShowSaran(!isShowSaran)}
                     isShowAccordion={isShowSaran}
                   >
+                    <div
+                      className="mt-3"
+                      style={{ width: "100%", height: "200px" }}
+                    >
+                      <Carousel
+                        autoPlay={true}
+                        showArrows={false}
+                        showThumbs={false}
+                      >
+                        {plantingMediumImages.length > 0 ? (
+                          plantingMediumImages.map((item, index) => (
+                            <div key={index}>
+                              <img
+                                src={item.image_path}
+                                style={{ width: "100%", height: "200px" }}
+                              />
+                            </div>
+                          ))
+                        ) : (
+                          <div>
+                            <></>
+                          </div>
+                        )}
+                      </Carousel>
+                    </div>
                     <p
-                      className="mt-2"
+                      className="mt-1"
                       style={{
                         color: "#4B5563",
                         fontSize: "16px",
