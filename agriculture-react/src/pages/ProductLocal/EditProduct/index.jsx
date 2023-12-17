@@ -8,9 +8,10 @@ import TextArea from "../../../components/Textarea";
 import DragFile from "../../../components/DragFile";
 import FormLayout from "../../../components/FormLayout";
 import axiosWithAuth from "../../../api/axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const TambahProduct = () => {
+const EditProduct = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [dataProduct, setDataProduct] = useState({
     name: "",
@@ -23,6 +24,7 @@ const TambahProduct = () => {
     description: "",
   });
   const [imageProduct, setImageProduct] = useState([]);
+  const [oldImageProduct, setOldImageProduct] = useState([]);
   const dataSelect = [
     {
       label: "Kg",
@@ -66,9 +68,12 @@ const TambahProduct = () => {
     };
 
     try {
-      const productResponse = await axiosWithAuth.post(`plant-products`, data);
+      const productResponse = await axiosWithAuth.put(
+        `plant-products/${id}`,
+        data
+      );
       // console.log(productResponse);
-      const product_id = productResponse.data.data.id;
+      const product_id = id;
       const productFormData = new FormData();
       for (const image of imageProduct) {
         const base64toRes = await fetch(image.src);
@@ -76,6 +81,16 @@ const TambahProduct = () => {
         productFormData.append("plant_product_id", product_id);
         productFormData.append("image_files", base64toBlob);
       }
+      oldImageProduct.map((item) => {
+        axiosWithAuth
+          .delete(`plant-product-images/${item.id}`)
+          .then((result) => {
+            console.log(result);
+          })
+          .catch((error) => {
+            console.log("Error :", error);
+          });
+      });
       const productImageResponse = await axiosWithAuth.post(
         `plant-product-images/${product_id}`,
         productFormData,
@@ -85,11 +100,45 @@ const TambahProduct = () => {
           },
         }
       );
-      navigate("/produk-lokal");
+      navigate("produk-lokal");
     } catch (error) {
       console.log("Error :", error);
     }
   };
+  const getDataProduct = async () => {
+    try {
+      const response = await axiosWithAuth.get(`plant-products/${id}`);
+      const product = response.data.data;
+      console.log(product);
+      const images = await product.images.map((item) => {
+        const imagePath = item.image_path;
+        const fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1);
+        return {
+          id: item.id,
+          name: fileName,
+          src: item.image_path,
+        };
+      });
+      setDataProduct({
+        name: product.name,
+        unit: product.unit,
+        stock: product.stock,
+        soldOut: product.sold,
+        costPrice: product.cost_price,
+        salesPrice: product.sales_price,
+        plantType: product.plant_type,
+        description: product.description,
+      });
+      setImageProduct(images);
+      setOldImageProduct(images);
+      console.log(images);
+    } catch (error) {
+      console.log("Error :", error);
+    }
+  };
+  useEffect(() => {
+    getDataProduct();
+  }, [id]);
   useEffect(() => {
     console.log(imageProduct);
   }, [imageProduct]);
@@ -234,6 +283,7 @@ const TambahProduct = () => {
                     className="form-check-input"
                     id={item.toLowerCase()}
                     onChange={(e) => onChangeValue(e)}
+                    checked={item.toLowerCase() === dataProduct.plantType}
                   />
                   <label
                     className="form-check-label"
@@ -298,4 +348,4 @@ const TambahProduct = () => {
   );
 };
 
-export default TambahProduct;
+export default EditProduct;

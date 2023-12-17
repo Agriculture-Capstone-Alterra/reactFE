@@ -8,8 +8,11 @@ import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import ModalTrigger from "../Modal/ModalTrigger";
 import "./CustomDot.css";
-const CardProduct = ({ product, changeIdDetailProduct }) => {
-  const deleteModalName = "deletaDataTanaman";
+const CardProduct = ({ product, changeIdDetailProduct, deleteProduct }) => {
+  const deleteModalName = `deletaDataTanaman${product.id}`;
+  const showDelete = (id) => {
+    console.log(id);
+  };
   return (
     <>
       <div className={styles.cardProduct}>
@@ -74,7 +77,7 @@ const CardProduct = ({ product, changeIdDetailProduct }) => {
         </div>
         <div className={`mt-3 ${styles.footerCard}`}>
           <Link
-            to={"/menanam-tanaman"}
+            to={`/produk-lokal/edit-produk/${product.id}`}
             className={`btn btn-outline-primary`}
             style={{ whiteSpace: "nowrap" }}
           >
@@ -97,14 +100,14 @@ const CardProduct = ({ product, changeIdDetailProduct }) => {
       </div>
       <Modal
         id={deleteModalName}
-        title="Hapus Data Tanaman"
+        title="Hapus Data Product"
         content={
           <p className="text-center">
-            Apakah anda yakin akan mengapus data tanaman?
+            Apakah anda yakin akan mengapus data product?
           </p>
         }
         onCancel={() => {}}
-        onSubmit={() => console.log("Oke")}
+        onSubmit={() => deleteProduct(product.id)}
         type="delete"
       />
     </>
