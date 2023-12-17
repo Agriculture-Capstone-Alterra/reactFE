@@ -114,7 +114,7 @@ const DetailTanaman = () => {
                     showArrows={false}
                     showThumbs={false}
                   >
-                    {plantImages.length > 0 ? (
+                    {plantImages && plantImages.length > 0 ? (
                       plantImages.map((item, index) => (
                         <div key={index}>
                           <img

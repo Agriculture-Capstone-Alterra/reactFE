@@ -277,7 +277,7 @@ const TambahProduct = () => {
               <button
                 type="button"
                 className="btn btn-outline-green"
-                onClick={() => {}}
+                onClick={() => {navigate("/produk-lokal")}}
               >
                 Batal
               </button>
