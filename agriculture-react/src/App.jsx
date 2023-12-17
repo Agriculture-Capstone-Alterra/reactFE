@@ -19,6 +19,7 @@ import DetailTanaman from "./pages/MenanamTanaman/DetailTanaman";
 import EditTanaman from "./pages/MenanamTanaman/EditTanaman";
 import ListProduct from "./pages/ProductLocal/ListProduct";
 import TambahProduct from "./pages/ProductLocal/TambahProduct.jsx";
+import EditProduct from "./pages/ProductLocal/EditProduct/index.jsx";
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
 
         <Route path="/produk-lokal" element={<ListProduct />} />
         <Route path="/produk-lokal/tambah-produk" element={<TambahProduct />} />
+        <Route path="/produk-lokal/edit-produk/:id" element={<EditProduct />} />
       </Routes>
     </BrowserRouter>
   );
