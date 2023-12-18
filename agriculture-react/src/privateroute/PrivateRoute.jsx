@@ -9,18 +9,19 @@ export default function PrivateRoute(){
         try {
             const resp = await axiosWithAuth.get('users')
             console.log("Response from Private Route : ", resp)
-            const statuserror = resp.response.status
-            if(resp.response.status == 401){
-                navigate("/login")
-            }
-            if(resp.response.status == 201 && locate.pathname == "/"){
-                
-                console.log("it went to it")
-                navigate("/dashboard")
+            if(typeof resp.status !== 'undefined'){
+                if(resp.status && resp.status == 200 && locate.pathname == "/"){
+                    console.log("it went to it")
+                    navigate("/dashboard")
+                }
+            }else{
+                if(resp.response.status && resp.response.status == 401){
+                    navigate("/login")
+                }
             }
 
         } catch (error) {
-            console.log("error private route : ", error.status)
+            console.log("error private route : ", error)
             const statuserror = error.response.status
             // buat case dia unauthorized sama no page
             if(statuserror === 401){
