@@ -24,6 +24,13 @@ import GetitGplay from "./img/Get it on Gplay.png"
 import DownloadonAppStore from "./img/Download on the Appstore.png"
 import BGLogin from "./img/Bg Login 1.png"
 import Plant from "./img/Plant.png"
+import Bayam from "./img/bayam.png"
+import CuacaCerah from "./img/cuaca/Cerah.png"
+import CuacaSedikitBerawan from "./img/cuaca/Sedikit Berawan.png"
+import CuacaBerawan from "./img/cuaca/Berawan.png"
+import CuacaBerkabut from "./img/cuaca/Berkabut.png"
+import CuacaHujan from "./img/cuaca/Hujan.png"
+import CuacaHujanPetir from "./img/cuaca/Hujan Petir.png"
 
 
 
@@ -53,5 +60,12 @@ Avatar5,
 GetitGplay,
 DownloadonAppStore,
 BGLogin,
-Plant
+Plant,
+Bayam,
+CuacaSedikitBerawan,
+CuacaBerawan,
+CuacaBerkabut,
+CuacaHujan,
+CuacaCerah,
+CuacaHujanPetir,
 };

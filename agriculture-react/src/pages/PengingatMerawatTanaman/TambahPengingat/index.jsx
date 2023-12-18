@@ -10,23 +10,43 @@ import ModalTrigger from "../../../components/Modal/ModalTrigger";
 import { SlArrowUp, SlArrowDown } from "react-icons/sl";
 import axiosWithAuth from "../../../api/axios";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 const tambahPengingat = () => {
-  const [radio, setRadio] = useState("");
-  const [modalRadio, setModalRadio] = useState("");
-  const [selectedTanaman, setSelectedTanaman] = useState("");
-  const [number, setNumber] = useState(0);
-  const [counter, setCounter] = useState(0);
-  const [formData, setFormData] = useState(null);
-  const [selectedDay, setSelectedDay] = useState([]);
-  const [dateValue, setDateValue] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [dateModal, setDateModal] = useState(0);
   const [tanamanOptions, setTanamanOptions] = useState([]);
+  const [expirationActive, setExpirationActive] = useState("none");
+  const [formData, setFormData] = useState({
+    expiration_date: "",
+    expiration_occurence: 0,
+    name: "",
+    plant_id: "",
+    repeat_date: "",
+    repeat_days: [],
+    repeat_in: 0,
+    repeat_in_unit: "daily",
+    schedule_type: "",
+    begin_date: "",
+    startTime:"",
+    endTime:"",
+  });
+  const [formError, setFormError] = useState({
+    expiration_date: "",
+    expiration_occurence: "",
+    name: "",
+    plant_id: "",
+    repeat_date: "",
+    repeat_days: "",
+    repeat_in: "",
+    repeat_in_unit: "",
+    schedule_type: "",
+    begin_date: "",
+    startTime:"",
+    endTime:"",
+  });
+  
   const navigate = useNavigate();
-  const minggu = "minggu";
-  console.log(typeof dateModal);
+  // const minggu = "minggu";
+  // console.log(typeof dateModal);
 
   const breadcrumbsobjectexample = [
     {
@@ -38,186 +58,288 @@ const tambahPengingat = () => {
       crumblink: "/pengingat-tanaman/tambah-pengingat",
     },
   ];
+  
+  const namaHari = [
+    {
+      label: "Hari",
+      value: "daily",
+    },
+    {
+      label: "Minggu",
+      value: "weekly",
+    },
+    {
+      label: "Bulan",
+      value: "monthly",
+    },
+    {
+      label: "Tahun",
+      value: "year",
+    },
+  ];
 
-  const handleSelectChange = (e) => {
-    setSelectedTanaman(e.target.value);
-  };
-
-  const handleRadioChange = (e) => {
-    setRadio(e.target.value);
-  };
-
-  const handleRadioModal = (e) => {
-    setModalRadio(e.target.value);
-  };
-
-  const handleDateModal = (e) => {
-    setDateModal(e.target.value);
-  };
-
-  const increment = (e) => {
+  const increment = (e, field) => {
     e.preventDefault();
-    setNumber(number + 1);
+    setFormData({
+      ...formData,
+      [field]: parseInt(formData[field], 10) + 1
+    });
   };
-
-  const decrement = (e) => {
+  
+  const decrement = (e, field) => {
     e.preventDefault();
-    if (number > 0) {
-      setNumber((prev) => prev - 1);
-    }
-  };
-
-  const tambah = (e) => {
-    e.preventDefault();
-    setCounter(counter + 1);
-  };
-
-  const kurang = (e) => {
-    e.preventDefault();
-
-    if (counter > 0) {
-      setCounter((prev) => prev - 1);
-    }
+    setFormData({
+      ...formData,
+      [field]: parseInt(formData[field], 10) > 0 ? parseInt(formData[field], 10) - 1 : 0
+    });
   };
 
   const handleKostumPengulangan = (e) => {
     e.preventDefault();
   };
-  // Validasi form
-
-  // checkbox hari
-  const handleCheckboxChangeDay = (value) => {
-    if (selectedDay.includes(value)) {
-      setSelectedDay(selectedDay.filter((item) => item !== value));
-    } else {
-      if (selectedDay.length < 3) {
-        setSelectedDay([...selectedDay, value]);
+  
+  const handleChange = (e) => {
+    const value = e.target.value;
+    const name = e.target.name;
+    setFormData({...formData, [name]: value});
+  }
+  const handleCheckboxChange = (e) => {
+    const day = e.target.getAttribute("data-day");
+    const isChecked = e.target.checked;
+    setFormData((prevFormData) => {
+      if (isChecked) {
+        return { ...prevFormData, repeat_days: [...prevFormData.repeat_days, day] };
+      } else {
+        return { ...prevFormData, repeat_days: prevFormData.repeat_days.filter(item => item !== day) };
       }
-    }
+    });
   };
+
+  const handleExpirationType = (e) => {
+    const value = e.target.value;
+    switch(value){
+      case "none": {
+        setExpirationActive("none");
+        break;
+      };
+      case "date": {
+        setExpirationActive("date");
+        break;
+      };
+      case "occurence": {
+        setExpirationActive("occurence");
+        break;
+      };
+    }
+    setFormData({
+      ...formData,
+      expiration_date:"",
+      expiration_occurence: 0,
+    });
+  }
 
   //getAPI
   useEffect(() => {
     const fetchNamaTanaman = async () => {
       try {
-        const response = await axios.get(
-          "https://6575b5f4b2fbb8f6509d68ad.mockapi.io/namatanaman"
-        );
-        const mappedData = response.data.map((value) => ({
+        // const response = await axios.get(
+        //   "https://6575b5f4b2fbb8f6509d68ad.mockapi.io/namatanaman"
+        // );
+        // const mappedData = response.data.map((value) => ({
+        //   label: value.name,
+        //   value: value.id,
+        // }));
+        Swal.fire({
+          toast: true,
+          position: 'bottom-left',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          text:"Sedang mendapatkan data tanaman...",
+        });
+        const res = await axiosWithAuth("https://service.api-agriplant.xyz/plants");
+        const mappedData = res?.data.data.map((value, key) => ({
           label: value.name,
           value: value.id,
         }));
-
-        setTanamanOptions(mappedData);
+        setTanamanOptions(mappedData.length > 0 ? mappedData : []);
       } catch (error) {
         console.error("Error fetching tanaman data:", error);
+      } finally{
+        Swal.close();
       }
     };
 
     fetchNamaTanaman();
   }, []);
+  
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
 
-  // post API
-  const handleSimpan = async (e) => {
-    e.preventDefault();
 
-    try {
-      let postData;
-      {
-      }
-      if (counter) {
-        postData = {
-          plant_id: selectedTanaman,
-          schedule_type: radio,
-          repeat_date: `${dateValue}/${startTime}-${endTime}`,
-          repeat_in: `${formData.ulangiSetiap}`,
-          repeat_in_unit: minggu,
-          repeat_days: `${formData.ulangiHari?.join(", ")}`,
-          expiration_date: `${modalRadio}`,
-          expiration_occurence: `${counter} Kali`,
-        };
-      } else if (dateModal) {
-        postData = {
-          plant_id: selectedTanaman,
-          schedule_type: radio,
-          repeat_date: `${dateValue}/${startTime}-${endTime}`,
-          repeat_in: `${formData.ulangiSetiap}`,
-          repeat_in_unit: minggu,
-          repeat_days: `${formData.ulangiHari?.join(", ")}`,
-          expiration_date: `${modalRadio} `,
-          expiration_occurence: `${dateModal}`,
-        };
-      } else {
-        postData = {
-          plant_id: selectedTanaman,
-          schedule_type: radio,
-          repeat_date: `${dateValue}/${startTime}-${endTime}`,
-          repeat_in: `${formData.ulangiSetiap}`,
-          repeat_in_unit: minggu,
-          repeat_days: `${formData.ulangiHari?.join(", ")}`,
-          expiration_date: `${modalRadio}`,
-          expiration_occurence: "",
-        };
-      }
-
-      const response = await axios.post(
-        "https://6575b5f4b2fbb8f6509d68ad.mockapi.io/pengingatanaman",
-        postData
-      );
-
-      navigate("/pengingat-tanaman");
-      console.log("Response:", response.data, dateModal);
-    } catch (error) {
-      console.error("Error:", error);
+  const formValidate = () => {
+    const errors = {};
+  
+    if (!formData.begin_date) {
+      errors.begin_date = "Tanggal Mulai Tidak Boleh Kosong";
     }
-  };
+    if (!formData.startTime) {
+      errors.startTime = "Isi jam pertama";
+    }
+  
+    if (!formData.name) {
+      errors.name = "Nama pengingat tidak boleh kosong";
+    }
+  
+    if (!formData.plant_id) {
+      errors.plant_id = "Pilih tanaman";
+    }
+  
+    if (!formData.schedule_type) {
+      errors.schedule_type = "Pilih jenis pengingat";
+    }
+    
+    if (formData.repeat_in < 0) {
+      errors.repeat_in = "tidak boleh diisi kurang dari 0";
+    }
 
-  const handleDone = () => {
-    setFormData({
-      ulangiSetiap: number,
-      ulangiHari: selectedDay,
-    });
+    if(formData.repeat_days .length == 0 ){
+      errors.repeat_days = "Pilih setidaknya satu hari dalam seminggu";
+    }
+
+    if (formData.expiration_date && formData.expiration_date <= formData.begin_date) {
+      errors.expiration_date = "Tanggal Berakhir harus lebih besar dari Tanggal Mulai";
+    }
+    setFormError(errors);
+    const isFormValid = Object.keys(errors).every((key) => !errors[key]);
+    return isFormValid;
   };
+  
+  // post API
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(formValidate()){
+      Swal.fire({
+        toast: true,
+        position: 'bottom-left',
+        showConfirmButton: false,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+        text: "Sedang mengirim data...",
+      });
+      axiosWithAuth({
+        baseURL:"https://service.api-agriplant.xyz/recommended-schedule",
+        method:"POST",
+        data:{
+          ...formData,
+          plant_id: parseInt(formData.plant_id, 10),
+          repeat_date: `${formData.begin_date}`,
+          repeat_in_unit: "daily",
+        },
+        headers:"Content-Type: application/json",
+      }).then((res) => {
+        // console.log("data saved to endpoint schedule : ", {
+        //   ...formData,
+        //   plant_id: parseInt(formData.plant_id, 10),
+        //   repeat_date: `${formData.begin_date}`,
+        //   repeat_in_unit: "daily",
+        // },);
+        axiosWithAuth("https://service.api-agriplant.xyz/recommended-schedule")
+          .then((res) => {
+            const data = res.data.data;
+            const lastId = data.reduce((max, item) => (item.id > max ? item.id : max), data[0].id);
+            const postData = {
+              schedule_id: lastId,
+              name: formData.name,
+              plant_id: formData.plant_id,
+              schedule_type: formData.schedule_type,
+              repeat_date: formData.begin_date + (formData.startTime ? '/' + (formData.startTime + (formData.endTime ? '-' + formData.endTime : ''))  : ''),
+              repeat_in: `${formData.repeat_in}`,
+              repeat_in_unit: formData.repeat_in_unit,
+              repeat_days: `${formData.repeat_days?.join(", ")}`,
+              expiration_date: `${formData.expiration_date}`,
+              expiration_occurence: `${formData.expiration_occurence} Kali`,
+            }
+            axios.post(
+              "https://6575b5f4b2fbb8f6509d68ad.mockapi.io/pengingatanaman",
+              postData
+            ).then((res) => {
+              // console.log(res);
+              // console.log("data saved to mockapi : ", postData);
+              Swal.close();
+              navigate('/pengingat-tanaman', { state: { savedData: true } });
+            })
+            .catch((err) => {
+              console.log(err);
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops, ada error ketika mengirim data',
+                text: 'silahkan cek output pada console untuk melihat error',
+              });
+            });
+          });
+      }).catch((err) => {
+        console.log(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops, ada error ketika mengirim data',
+          text: 'silahkan cek output pada console untuk melihat error',
+        });
+      })
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Data tidak dapat dikirim',
+        text: 'silahkan cek data yang belum diisi, kemudian isi dengan benar',
+      });
+    }
+  }
 
   return (
     <>
       <Layout
         pagetitle={"Pengingat Tanaman"}
         breadcrumbs={breadcrumbsobjectexample}>
-        <form className="container ms-3 mt-4" onSubmit={handleSimpan}>
+        <form className="container ms-3 mt-4" onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label
-              htmlFor="validationDefault04"
-              className="tambahPengingat-label d-flex mb-2">
+            <label className="tambahPengingat-label d-flex mb-2">
               Jenis Tanaman
             </label>
             <Select
-              id={"validationDefault04"}
-              value={selectedTanaman}
+              value={formData.plant_id}
               className={"form-select tambahPengingat-select"}
               options={tanamanOptions}
-              onChange={handleSelectChange}
+              onChange={handleChange}
+              name={"plant_id"}
               title={"Pilih nama tanaman"}
             />
+            <p className="text-danger">{formError.plant_id}</p>
           </div>
           <div className="mb-4">
             <label className="tambahPengingat-label d-flex mb-2">
               Nama Pengingat Tanaman
             </label>
-            <input
-              value={radio}
+            <Input
+              value={formData.name}
               className={"tambahPengingat-Input form-control"}
-              required
+              name={"name"}
+              onChange={handleChange}
             />
+            <p className="text-danger">{formError.name}</p>
             <div className="d-flex gap-5 mt-3">
               <div className="form-check">
                 <Input
                   className="form-check-input"
                   type="radio"
                   id={"penyiramanRadio"}
-                  name="flexRadioDefault"
-                  value="Penyiraman"
-                  onChange={handleRadioChange}
+                  name="schedule_type"
+                  value="siram"
+                  onChange={handleChange}
                 />
                 <label className="form-check-label" htmlFor="penyiramanRadio">
                   Penyiraman
@@ -228,55 +350,42 @@ const tambahPengingat = () => {
                   className="form-check-input"
                   type="radio"
                   id={"pemupukanRadio"}
-                  name="flexRadioDefault"
-                  value="Pemupukan"
-                  onChange={handleRadioChange}
+                  name="schedule_type"
+                  value="pupuk"
+                  onChange={handleChange}
                 />
                 <label className="form-check-label" htmlFor="pemupukanRadio">
                   Pemupukan
                 </label>
               </div>
             </div>
+            <p className="text-danger">{formError.schedule_type}</p>
           </div>
           <label className="tambahPengingat-label d-flex mb-2">Waktu</label>
           <div className="d-flex gap-3 mb-1">
-            <input
+            <Input
               type={"date"}
               className={"tambahPengingat-date form-control"}
-              onChange={(e) => setDateValue(e.target.value)}
-              required
+              name={"begin_date"}
+              value={formData.begin_date}
+              onChange={handleChange}
             />
             <input
               type={"time"}
               className={"tambahPengingat-time form-control"}
-              onChange={(e) => setStartTime(e.target.value)}
-              required
+              name={"startTime"}
+              value={formData.startTime}
+              onChange={handleChange}
             />
             <input
               type={"time"}
               className={"tambahPengingat-time form-control"}
-              onChange={(e) => setEndTime(e.target.value)}
-              required
+              onChange={handleChange}
+              name={"endTime"}
+              value={formData.endTime}
             />
           </div>
-          {formData !== null && modalRadio === "Tidak Pernah" && (
-            <p className="d-flex tambahPengingat-stateKostumPengingat">
-              {formData.ulangiSetiap} Minggu tiap hari{" "}
-              {formData.ulangiHari?.join(", ")} Berakhir sampai {modalRadio}
-            </p>
-          )}
-          {formData !== null && modalRadio === "Berlaku Sampai" && (
-            <p className="d-flex tambahPengingat-stateKostumPengingat">
-              {formData.ulangiSetiap} Minggu tiap hari{" "}
-              {formData.ulangiHari?.join(", ")} {modalRadio} {dateModal}
-            </p>
-          )}
-          {formData !== null && modalRadio === "Setelah" && (
-            <p className="d-flex tambahPengingat-stateKostumPengingat">
-              {formData.ulangiSetiap} Minggu tiap hari{" "}
-              {formData.ulangiHari?.join(", ")} {modalRadio} {counter} Kali
-            </p>
-          )}
+          <p className="text-danger">{formError.begin_date || formError.startTime}</p>
           {/* modalTrigger */}
           <button
             className="btn btn-outline-primary tambahPengingat-kustom"
@@ -290,7 +399,9 @@ const tambahPengingat = () => {
             <ModalTrigger
               modalTarget={"tambahData"}
               className={`btn me-3 tambahPengingat-btnOutline ${styles.btnAction}`}
-              style={{ display: "flex", alignItems: "center" }}>
+              style={{ display: "flex", alignItems: "center" }}
+              onClick={(e) => e.preventDefault()}
+            >
               Simpan dan Bagikan
             </ModalTrigger>
             <button
@@ -311,11 +422,11 @@ const tambahPengingat = () => {
           submitButtonText={"Ya"}
           cancelButtonText={"Tidak"}
           onCancel={() => {}}
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
           type="edit"
         />
-        {/* modal kostum*/}
-        <div className="modal fade" id="exampleModal" tabindex="-1">
+        {/* modal k*/}
+        <div className="modal fade" id="exampleModal" tabIndex="-1">
           <div className="modal-dialog tambahPengingat-modal">
             <div className="modal-content">
               <div className="modal-header">
@@ -335,97 +446,108 @@ const tambahPengingat = () => {
                     </label>
                     <div className="d-flex gap-1">
                       <input
-                        value={number}
-                        onChange={(e) => setNumber(e.target.value)}
+                        value={formData.repeat_in}
                         className="form-control tambahPengingat-modalInputnumber text-center"
+                        name="repeat_in"
+                        onChange={handleChange}
                       />
                       <div className="d-flex flex-column gap-2 tambahPengingat-modalInputnumberControl">
                         <button
                           className="tambahPengingat-modalControl"
-                          onClick={increment}>
+                          onClick={(e) => increment(e,"repeat_in")}>
                           <SlArrowUp size={8} />
                         </button>
                         <button
                           className="tambahPengingat-modalControl"
-                          onClick={decrement}>
+                          onClick={(e) => decrement(e,"repeat_in")}>
                           <SlArrowDown size={8} />
                         </button>
                       </div>
-                      <span className="mt-2">Minggu</span>
+                      <div className="ms-1 mt-2">
+                        Minggu
+                      </div>
                     </div>
+                    <p className="text-danger">{formError.repeat_in}</p>
                   </div>
                   <div className="mb-3">
                     <label
                       for="message-text"
-                      className="col-form-label editPengingat-modalFormLabel">
+                      className="col-form-label tambahPengingat-modalFormLabel">
                       Ulangi Setiap Hari
                     </label>
                     <div className="weekDays-selector">
                       <input
                         type="checkbox"
-                        id="weekday-senin"
-                        value="senin"
+                        id="weekday-mon"
                         className="weekday"
-                        checked={selectedDay.includes("senin")}
-                        onChange={() => handleCheckboxChangeDay("senin")}
+                        data-day="Senin"
+                        onChange={handleCheckboxChange}
+                        checked={formData.repeat_days.includes("Senin")}
                       />
-                      <label htmlFor="weekday-senin">S</label>
+                      <label htmlFor="weekday-mon">S</label>
+
                       <input
                         type="checkbox"
-                        id="weekday-selasa"
-                        value="senin"
+                        id="weekday-tue"
                         className="weekday"
-                        checked={selectedDay.includes("selasa")}
-                        onChange={() => handleCheckboxChangeDay("selasa")}
+                        data-day="Selasa"
+                        onChange={handleCheckboxChange}
+                        checked={formData.repeat_days.includes("Selasa")}
                       />
-                      <label htmlFor="weekday-selasa">S</label>
+                      <label htmlFor="weekday-tue">S</label>
+
                       <input
                         type="checkbox"
-                        id="weekday-rabu"
-                        value="rabu"
+                        id="weekday-wed"
                         className="weekday"
-                        checked={selectedDay.includes("rabu")}
-                        onChange={() => handleCheckboxChangeDay("rabu")}
+                        data-day="Rabu"
+                        onChange={handleCheckboxChange}
+                        checked={formData.repeat_days.includes("Rabu")}
                       />
-                      <label htmlFor="weekday-rabu">R</label>
+                      <label htmlFor="weekday-wed">R</label>
+
                       <input
                         type="checkbox"
-                        id="weekday-kamis"
-                        value="kamis"
+                        id="weekday-thu"
                         className="weekday"
-                        checked={selectedDay.includes("kamis")}
-                        onChange={() => handleCheckboxChangeDay("kamis")}
+                        data-day="Kamis"
+                        onChange={handleCheckboxChange}
+                        checked={formData.repeat_days.includes("Kamis")}
                       />
-                      <label htmlFor="weekday-kamis">K</label>
+                      <label htmlFor="weekday-thu">K</label>
+
                       <input
                         type="checkbox"
-                        id="weekday-jumat"
-                        value="jumat"
+                        id="weekday-fri"
                         className="weekday"
-                        checked={selectedDay.includes("jumat")}
-                        onChange={() => handleCheckboxChangeDay("jumat")}
+                        data-day="Jumat"
+                        onChange={handleCheckboxChange}
+                        checked={formData.repeat_days.includes("Jumat")}
                       />
-                      <label htmlFor="weekday-jumat">J</label>
+                      <label htmlFor="weekday-fri">J</label>
+
                       <input
                         type="checkbox"
-                        id="weekday-sabtu"
-                        value="sabtu"
+                        id="weekday-sat"
                         className="weekday"
-                        checked={selectedDay.includes("sabtu")}
-                        onChange={() => handleCheckboxChangeDay("sabtu")}
+                        data-day="Sabtu"
+                        onChange={handleCheckboxChange}
+                        checked={formData.repeat_days.includes("Sabtu")}
                       />
-                      <label htmlFor="weekday-sabtu">S</label>
+                      <label htmlFor="weekday-sat">S</label>
+
                       <input
                         type="checkbox"
-                        id="weekday-minggu"
+                        id="weekday-sun"
                         className="weekday"
-                        checked={selectedDay.includes("minggu")}
-                        onChange={() => handleCheckboxChangeDay("minggu")}
+                        data-day="Minggu"
+                        onChange={handleCheckboxChange}
+                        checked={formData.repeat_days.includes("Minggu")}
                       />
-                      <label htmlFor="weekday-minggu">M</label>
+                      <label htmlFor="weekday-sun">M</label>
                     </div>
+                    <p className="text-danger">{formError.repeat_days}</p>
                   </div>
-                  {/* Berakhir */}
                   <div className="mb-3">
                     <label
                       for="message-text"
@@ -436,68 +558,76 @@ const tambahPengingat = () => {
                       <div className="form-check">
                         <Input
                           className="form-check-input"
-                          id={"tidakPernah"}
                           type="radio"
+                          id={"radioTidakPernah"}
                           name="flexRadioDefault"
-                          value="Tidak Pernah"
-                          onChange={handleRadioModal}
+                          value="none"
+                          onChange={handleExpirationType}
+                          checked={expirationActive == "none" ? true : false}
                         />
-                        <label
-                          htmlFor="tidakPernah"
-                          className="form-check-label">
-                          Tidak Pernah
-                        </label>
+                        <label className="form-check-label" htmlFor="radioTidakPernah">Tidak Pernah</label>
                       </div>
                       <div className="d-flex gap-3">
                         <div className="form-check  mt-2">
                           <Input
                             className="form-check-input"
-                            id={"berlakuSampai"}
                             type="radio"
+                            id={"radioBerlakuSampai"}
                             name="flexRadioDefault"
-                            value="Berlaku Sampai"
-                            onChange={handleRadioModal}
+                            value="date"
+                            onChange={handleExpirationType}
+                            checked={expirationActive == "date" ? true : false}
                           />
-                          <label
-                            htmlFor="berlakuSampai"
-                            className="form-check-label">
+                          <label className="form-check-label" htmlFor="radioBerlakuSampai">
                             Berlaku Sampai
                           </label>
                         </div>
                         <div>
-                          <Input type={"date"} onChange={handleDateModal} />
+                          <Input 
+                            type={"date"}
+                            disabled={expirationActive == "date" ? false : true}
+                            value={formData.expiration_date}
+                            onChange={handleChange}
+                            name={"expiration_date"}
+                          />
                         </div>
                       </div>
+                      <p className="text-danger">{formError.expiration_date}</p>
                     </div>
                     <div>
                       <div className="d-flex tambahpPengingat-modalGap mt-2">
                         <div className="form-check  mt-2">
                           <Input
                             className="form-check-input"
-                            id={"setelah"}
                             type="radio"
+                            id={"radioSetelah"}
                             name="flexRadioDefault"
-                            value="Setelah"
-                            onChange={handleRadioModal}
+                            value="occurence"
+                            onChange={handleExpirationType}
+                            checked={expirationActive == "occurence" ? true : false}
                           />
-                          <label htmlFor="setelah" className="form-check-label">
-                            Setelah
-                          </label>
+                          <label className="form-check-label" htmlFor="radioSetelah">Setelah</label>
                         </div>
                         <div className="d-flex gap-1">
                           <input
-                            value={counter}
+                            value={formData.expiration_occurence}
                             className="form-control tambahPengingat-modalInputnumber text-center"
+                            name="expiration_occurence"
+                            onChange={handleChange}
+                            disabled={expirationActive == "occurence" ? false : true}
                           />
                           <div className="d-flex flex-column gap-2 tambahPengingat-modalInputnumberControl">
                             <button
                               className="tambahPengingat-modalControl"
-                              onClick={tambah}>
+                              onClick={(e) => increment(e,"expiration_occurence")}
+                              disabled={expirationActive == "occurence" ? false : true}
+                              >
                               <SlArrowUp size={8} />
                             </button>
                             <button
                               className="tambahPengingat-modalControl"
-                              onClick={kurang}>
+                              onClick={(e) => decrement(e,"expiration_occurence")}
+                              disabled={expirationActive == "occurence" ? false : true}>
                               <SlArrowDown size={8} />
                             </button>
                           </div>
@@ -517,9 +647,8 @@ const tambahPengingat = () => {
                 </button>
                 <button
                   type="button"
-                  onClick={handleDone}
-                  data-bs-dismiss="modal"
-                  className="btn btn-primary tambahPengingat-modalFormBtnDone">
+                  className="btn btn-primary tambahPengingat-modalFormBtnDone"
+                  data-bs-dismiss="modal">
                   Done
                 </button>
               </div>

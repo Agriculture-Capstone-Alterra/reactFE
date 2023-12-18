@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import Layout from "../../../layout/Layout";
-import Carousel from "react-multi-carousel";
+// import Carousel from "react-multi-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
 import bayam from "../../../assets/img/bayam.png";
 import varietas from "../../../assets/img/varietas-detail.png";
 import jenisTanaman from "../../../assets/img/jenis-tanaman-detail.png";
@@ -27,6 +29,10 @@ const DetailTanaman = () => {
   const [isShowLangkah, setIsShowLangkah] = useState(false);
   const [isShowMenanam, setIsShowMenanam] = useState(false);
   const [isShowPenanganan, setIsShowPenanganan] = useState(false);
+  const [plantImages, setPlantImages] = useState([]);
+  const [plantGuides, setPlantGuides] = useState([]);
+  const [plantTools, setPlantTools] = useState([]);
+  const [plantingMediumImages, setPlantingMediumImages] = useState([]);
   const navigate = useNavigate();
   const [widthScroll, setWithScroll] = useState(0);
   const scroll = useRef(null);
@@ -40,44 +46,30 @@ const DetailTanaman = () => {
       .get(`plants/${id}`)
       .then((result) => {
         setTanaman(result.data.data);
-        // console.log(result.data.data);
+        setPlantGuides(result.data.data.planting_guides);
+        setPlantTools(result.data.data.planting_tools);
+        console.log("sdfsdf", result.data.data.planting_tools);
+        setPlantImages(result.data.data.plant_images);
+        setPlantingMediumImages(result.data.data.planting_medium_images);
+        console.log(result.data.data);
+        // console.log(plantGuides);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [id]);
 
-  const alat = [
-    {
-      name: "Rockwool",
-      description:
-        "Rockwool/media tanaman yang bagus digunakan untuk tanaman hidroponik",
-    },
-    {
-      name: "Rockwool",
-      description:
-        "Rockwool/media tanaman yang bagus digunakan untuk tanaman hidroponik",
-    },
-    {
-      name: "Rockwool",
-      description:
-        "Rockwool/media tanaman yang bagus digunakan untuk tanaman hidroponik",
-    },
-  ];
-  const langkah = [
-    {
-      name: "Tahap 1",
-      description: "Potong rockwool bentuk dadu ukuran 2,5cm x 2,5cm x2,5cm",
-    },
-    {
-      name: "Tahap 1",
-      description: "Potong rockwool bentuk dadu ukuran 2,5cm x 2,5cm x2,5cm",
-    },
-    {
-      name: "Tahap 1",
-      description: "Potong rockwool bentuk dadu ukuran 2,5cm x 2,5cm x2,5cm",
-    },
-  ];
+  const deleteTanaman = (id) => {
+    axiosWithAuth
+      .delete(`plants/${id}`)
+      .then((result) => {
+        console.log(result);
+        navigate("/menanam-tanaman");
+      })
+      .catch((error) => {
+        console.log("Error :", error);
+      });
+  };
 
   useEffect(() => {
     setWithScroll(scroll.current.scrollWidth - scroll.current.offsetWidth);
@@ -94,7 +86,7 @@ const DetailTanaman = () => {
     },
   ];
   const handleOnClick = () => {
-    navigate(`/menanam-tanaman/edit-tanaman`);
+    navigate(`/menanam-tanaman/edit-tanaman/${id}`);
   };
   return (
     <>
@@ -113,82 +105,31 @@ const DetailTanaman = () => {
                   padding: 0,
                 }}
               >
-                <figure>
+                {/* <figure>
                   <img src={bayam} width={"100%"} alt="" />
-                </figure>
-                {/* <div style={{ width: "100%" }}>
+                </figure> */}
+                <div style={{ width: "100%", height: "390px" }}>
                   <Carousel
-                    additionalTransfrom={0}
-                    arrows={false}
-                    autoPlaySpeed={3000}
-                    centerMode={false}
-                    className={""}
-                    containerClass="container"
-                    dotListClass=""
-                    draggable
-                    focusOnSelect={false}
-                    infinite
-                    itemClass=""
-                    keyBoardControl
-                    minimumTouchDrag={80}
-                    pauseOnHover
-                    renderArrowsWhenDisabled={false}
-                    renderButtonGroupOutside={false}
-                    renderDotsOutside={false}
-                    responsive={{
-                      desktop: {
-                        breakpoint: {
-                          max: 3000,
-                          min: 1024,
-                        },
-                        items: 1,
-                      },
-                      mobile: {
-                        breakpoint: {
-                          max: 464,
-                          min: 0,
-                        },
-                        items: 1,
-                      },
-                      tablet: {
-                        breakpoint: {
-                          max: 1024,
-                          min: 464,
-                        },
-                        items: 1,
-                      },
-                    }}
-                    rewind={false}
-                    rewindWithAnimation={false}
-                    rtl={false}
-                    shouldResetAutoplay
-                    showDots
-                    sliderClass=""
-                    slidesToSlide={1}
-                    swipeable
+                    autoPlay={true}
+                    showArrows={false}
+                    showThumbs={false}
                   >
-                    <img
-                      src={bayam}
-                      style={{
-                        display: "block",
-                        height: "100%",
-                        // margin: "auto",
-                        width: "100%",
-                      }}
-                      alt=""
-                    />
-                    <img
-                      src={bayam}
-                      style={{
-                        display: "block",
-                        height: "100%",
-                        // margin: "auto",
-                        width: "100%",
-                      }}
-                      alt=""
-                    />
+                    {plantImages.length > 0 ? (
+                      plantImages.map((item, index) => (
+                        <div key={index}>
+                          <img
+                            src={item.image_path}
+                            style={{ width: "100%", height: "390px" }}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <div>
+                        <img src={bayam} />
+                      </div>
+                    )}
                   </Carousel>
-                </div> */}
+                </div>
                 <h2 className="text-center fw-bolder mt-5 mb-5">
                   {tanaman.name}
                 </h2>
@@ -297,35 +238,47 @@ const DetailTanaman = () => {
                         dragConstraints={{ right: 0, left: -widthScroll }}
                         className={styles.cardScroll}
                       >
-                        {alat.map((item, index) => (
-                          <motion.div
-                            className={`d-flex bg-white ${styles.cardInfo}`}
-                            key={index}
-                          >
-                            <img src={image1} alt="" />
-                            <div className="px-3">
-                              <p
+                        {plantTools.length > 0 ? (
+                          plantTools.map((item, index) => (
+                            <motion.div
+                              className={`d-flex bg-white ${styles.cardInfo}`}
+                              key={index}
+                            >
+                              <img
+                                src={item.image_path}
                                 style={{
-                                  color: "#374151",
-                                  fontWeight: 600,
-                                  fontSize: "16px",
-                                  margin: 0,
+                                  width: "83px",
+                                  height: "85px",
+                                  borderRadius: "16px",
                                 }}
-                              >
-                                {item.name}
-                              </p>
-                              <span
-                                style={{
-                                  color: "#6B7280",
-                                  fontSize: "12px",
-                                  fontWeight: 400,
-                                }}
-                              >
-                                {item.description}
-                              </span>
-                            </div>
-                          </motion.div>
-                        ))}
+                                alt=""
+                              />
+                              <div className="px-3">
+                                <p
+                                  style={{
+                                    color: "#374151",
+                                    fontWeight: 600,
+                                    fontSize: "16px",
+                                    margin: 0,
+                                  }}
+                                >
+                                  {item.name}
+                                </p>
+                                <span
+                                  style={{
+                                    color: "#6B7280",
+                                    fontSize: "12px",
+                                    fontWeight: 400,
+                                  }}
+                                >
+                                  {item.description}
+                                </span>
+                              </div>
+                            </motion.div>
+                          ))
+                        ) : (
+                          <p className="fonts18 fontw600">Tidak Ada</p>
+                        )}
                       </motion.div>
                     </motion.div>
                   </Accordion>
@@ -334,8 +287,33 @@ const DetailTanaman = () => {
                     onClick={() => setIsShowSaran(!isShowSaran)}
                     isShowAccordion={isShowSaran}
                   >
+                    <div
+                      className="mt-3"
+                      style={{ width: "100%", height: "200px" }}
+                    >
+                      <Carousel
+                        autoPlay={true}
+                        showArrows={false}
+                        showThumbs={false}
+                      >
+                        {plantingMediumImages.length > 0 ? (
+                          plantingMediumImages.map((item, index) => (
+                            <div key={index}>
+                              <img
+                                src={item.image_path}
+                                style={{ width: "100%", height: "200px" }}
+                              />
+                            </div>
+                          ))
+                        ) : (
+                          <div>
+                            <></>
+                          </div>
+                        )}
+                      </Carousel>
+                    </div>
                     <p
-                      className="mt-2"
+                      className="mt-1"
                       style={{
                         color: "#4B5563",
                         fontSize: "16px",
@@ -360,35 +338,47 @@ const DetailTanaman = () => {
                         dragConstraints={{ right: 0, left: -widthScroll }}
                         className={`mt-2 ${styles.cardScroll}`}
                       >
-                        {langkah.map((item, index) => (
-                          <motion.div
-                            className={`d-flex bg-white ${styles.cardInfo}`}
-                            key={index}
-                          >
-                            <img src={langkah1} alt="" />
-                            <div className="px-3">
-                              <p
+                        {plantGuides.length > 0 ? (
+                          plantGuides.map((item, index) => (
+                            <motion.div
+                              className={`d-flex bg-white ${styles.cardInfo}`}
+                              key={index}
+                            >
+                              <img
+                                src={item.image_path}
                                 style={{
-                                  color: "#374151",
-                                  fontWeight: 600,
-                                  fontSize: "16px",
-                                  margin: 0,
+                                  width: "110px",
+                                  height: "125px",
+                                  borderRadius: "16px",
                                 }}
-                              >
-                                {item.name}
-                              </p>
-                              <span
-                                style={{
-                                  color: "#6B7280",
-                                  fontSize: "12px",
-                                  fontWeight: 400,
-                                }}
-                              >
-                                {item.description}
-                              </span>
-                            </div>
-                          </motion.div>
-                        ))}
+                                alt=""
+                              />
+                              <div className="px-3">
+                                <p
+                                  style={{
+                                    color: "#374151",
+                                    fontWeight: 600,
+                                    fontSize: "16px",
+                                    margin: 0,
+                                  }}
+                                >
+                                  {item.name}
+                                </p>
+                                <span
+                                  style={{
+                                    color: "#6B7280",
+                                    fontSize: "12px",
+                                    fontWeight: 400,
+                                  }}
+                                >
+                                  {item.description}
+                                </span>
+                              </div>
+                            </motion.div>
+                          ))
+                        ) : (
+                          <p className="fonts18 fontw600">Tidak Ada</p>
+                        )}
                       </motion.div>
                     </motion.div>
                   </Accordion>
@@ -606,7 +596,7 @@ const DetailTanaman = () => {
           </p>
         }
         onCancel={() => {}}
-        onSubmit={() => {}}
+        onSubmit={() => deleteTanaman(id)}
         type="delete"
       />
     </>

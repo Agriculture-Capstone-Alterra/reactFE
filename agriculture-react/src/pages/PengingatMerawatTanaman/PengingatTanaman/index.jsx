@@ -12,6 +12,8 @@ import Pagination from '../../../components/Pagination/Pagination.jsx';
 import Modal from '../../../components/Modal/Modal.jsx';
 import ModalTrigger from '../../../components/Modal/ModalTrigger.jsx';
 import axios from "axios";
+import axiosWithAuth from '../../../api/axios.jsx';
+import Swal from 'sweetalert2';
 
 
 // start dokumentasi komponen
@@ -32,9 +34,9 @@ const PengingatTanaman = () => {
   const [modalData, setModalData] = useState({});
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [mockData, setMockData] = useState([]);
   const location = useLocation();
-  const penyiramanModalName = "deleteDataPenyiraman";
-  const pemupukanModalName = "deleteDataPemupukan";
+  const modalName = "deleteData";
 
   useEffect(() => {
     const urlState = location.state;
@@ -46,24 +48,51 @@ const PengingatTanaman = () => {
   }, [location.state]);
 
   useEffect(() => {
-    axios
-      .get(`${mockApiUrl}/penyiraman`)
-      .then(res => {
-        setDataPenyiramanList(res.data);
-      })
-      .catch(err => {
-        setDataPenyiramanList([])
-        console.log(err);
-      });
-    axios
-      .get(`${mockApiUrl}/pemupukan`)
-      .then(res => {
-        setDataPemupukanList(res.data);
-      })
-      .catch(err => {
-        setDataPemupukanList([])
-        console.log(err);
-      });
+    Swal.fire({
+      toast: true,
+      position: 'bottom-left',
+      showConfirmButton: false,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      text:"Sedang mendapatkan data tanaman...",
+    });
+    axiosWithAuth("https://service.api-agriplant.xyz/recommended-schedule")
+    .then((res1) => {
+      const endpointData = res1.data.data;
+      // console.log("Endpoint data : ", endpointData);
+      axios("https://6575b5f4b2fbb8f6509d68ad.mockapi.io/pengingatanaman")
+        .then((res2) => {
+          const rawData = res2.data;
+          setMockData(rawData);
+          // console.log("mock data : ", rawData);
+          // Combine data based on a common identifier, assuming it's "id"
+          const combinedData = endpointData?.map((item1) => {
+            const correspondingItem = rawData.find((item2) => item2.schedule_id === item1.id);
+            // console.log(correspondingItem);
+            return { 
+              ...item1,
+              ...correspondingItem,
+              id: item1.id,
+            };
+          });
+
+          console.log("combined data: ", combinedData);
+
+          const penyiramanList = combinedData?.filter((item) => item.schedule_type === 'siram');
+          const pemupukanList = combinedData?.filter((item) => item.schedule_type === 'pupuk');
+
+          setDataPenyiramanList(penyiramanList||[]);
+          setDataPemupukanList(pemupukanList||[]);
+        })
+        .catch((err) => console.log(err))
+        .finally(() => {
+          Swal.close();
+        });
+    })
+    .catch((err) => console.log(err));
+    
   }, []);
 
   const headers = [
@@ -83,24 +112,61 @@ const PengingatTanaman = () => {
     setModalData({ ...data });
   }
 
-  const executeDeletePenyiraman = (item) => {
-    const updatedData = dataPenyiramanList.filter((dataItem) => dataItem.id !== item.id);
-    setDataPenyiramanList(updatedData);
-    setModalData({});
-    setToastMessage('Data Penyiraman Berhasil dihapus');
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
-  };
+  const executeDelete = (item) => {
+    
+    // const mockItem = mockData.find((mock) => mock.schedule_id === item.id);
+    // console.log('endpoint item : ', item);
+    // console.log('mockitem: ', mockItem);
+    axiosWithAuth({
+      baseURL: `https://service.api-agriplant.xyz/recommended-schedule/${item.id}`,
+      method: "delete",
+    })
+      .then((response) => {
+        console.log("deleted from endpoint : ", response);
   
-  const executeDeletePemupukan = (item) => {
-    const updatedData = dataPemupukanList.filter((dataItem) => dataItem.id !== item.id);
-    setDataPemupukanList(updatedData);
-    setModalData({});
-    setToastMessage('Data Pemupukan Berhasil dihapus');
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+        // Find the corresponding item in mockData based on schedule_id
+        const mockItem = mockData.find((mock) => mock.schedule_id === item.id);
+  
+        axios({
+          baseURL: `https://6575b5f4b2fbb8f6509d68ad.mockapi.io/pengingatanaman/${mockItem.id}`,
+          method: "delete",
+        })
+          .then((response) => {
+            if(item.schedule_type == "siram"){
+              const updatedData = dataPenyiramanList.filter((dataItem) => dataItem.id !== item.id);
+              setDataPenyiramanList(updatedData);
+            } else {
+              const updatedData = dataPemupukanList.filter((dataItem) => dataItem.id !== item.id);
+              setDataPemupukanList(updatedData);
+            }
+            setModalData({});
+            setToastMessage('Data Berhasil dihapus');
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 3000);
+          })
+          .catch((err) => {
+            alert('got error, check console');
+            console.log(err);
+          });
+      })
+      .catch((err) => console.log(err));
   };
-
+  const getPengulangan = (days, until, repeat_in) => {
+    let finalString;
+    if(days == "" && repeat_in == 0){
+      finalString = "Ulangi setiap hari";
+    } else {
+      const untilDate = until === "" ? "" : ", sampai " + until;
+      const mingguCount = repeat_in > 0 ? repeat_in + " minggu sekali " : " minggu ";
+      const hariCount = days ? ", pada hari " + days : "";
+      finalString = "Setiap " +  mingguCount + hariCount + untilDate;
+      const maxLength = 100;
+      if (finalString.length > maxLength) {
+        finalString = finalString.substring(0, maxLength - 3) + "...";
+      }
+    }
+    return finalString;
+  }
   return (
     <>
       <Layout pagetitle={'Pengingat Tanaman'} breadcrumbs={crumbs}>
@@ -121,22 +187,24 @@ const PengingatTanaman = () => {
                     currentDataPenyiraman.map((item, index) => (
                       <tr key={index}>
                         <td>{item.number}</td>
-                        <td>{item.jenisTanaman}</td>
-                        <td>{item.namaPengingat}</td>
-                        <td>{item.waktu}</td>
-                        <td>{item.pengulangan}</td>
+                        <td>{item.plant.name}</td>
+                        <td>{item.name}</td>
+                        <td>{item.repeat_date}</td>
+                        <td width={"50%"}>
+                            {getPengulangan(item.repeat_days, item.expiration_date, item.repeat_in)}
+                        </td>
                         <td>
                           <div
                             className="p-2 dropdown-toggle-split"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                           >
-                            <TbDots className="fw-bold fs-4 ms-1" />
+                            <TbDots className="fw-bold fs-4" />
                           </div>
                           <ul className="dropdown-menu">
                             <li className="d-grid mb-2 ps-3 pe-3">
                               <Link
-                                to={`/pengingat-tanaman/edit-pengingat`}
+                                to={`/pengingat-tanaman/edit-pengingat/${item.id}`}
                                 className={`btn ${styles.btnAction}`}
                                 style={{ display: 'flex', alignItems: 'center' }}
                               >
@@ -146,7 +214,7 @@ const PengingatTanaman = () => {
                             </li>
                             <li className="d-grid mb-2 ps-3 pe-3">
                               <ModalTrigger
-                                modalTarget={penyiramanModalName}
+                                modalTarget={modalName}
                                 className={`btn ${styles.btnAction}`}
                                 style={{ display: 'flex', alignItems: 'center' }}
                                 onClick={() => handleDeleteClick(item)}
@@ -195,10 +263,12 @@ const PengingatTanaman = () => {
                     currentDataPemupukan.map((item, index) => (
                       <tr key={index}>
                         <td>{item.number}</td>
-                        <td>{item.jenisTanaman}</td>
-                        <td>{item.namaPengingat}</td>
-                        <td>{item.waktu}</td>
-                        <td>{item.pengulangan}</td>
+                        <td>{item.plant.name}</td>
+                        <td>{item.name}</td>
+                        <td>{item.repeat_date}</td>
+                        <td>
+                            {getPengulangan(item.repeat_days, item.expiration_date, item.repeat_in)}
+                        </td>
                         <td>
                           <div
                             className="p-2 dropdown-toggle-split"
@@ -210,7 +280,7 @@ const PengingatTanaman = () => {
                           <ul className="dropdown-menu">
                             <li className="d-grid mb-2 ps-3 pe-3">
                               <Link
-                                to={`/pengingat-tanaman/edit-pengingat`}
+                                to={`/pengingat-tanaman/edit-pengingat/${item.id}`}
                                 className={`btn ${styles.btnAction}`}
                                 style={{ display: 'flex', alignItems: 'center' }}
                               >
@@ -220,7 +290,7 @@ const PengingatTanaman = () => {
                             </li>
                             <li className="d-grid mb-2 ps-3 pe-3">
                               <ModalTrigger
-                                modalTarget={pemupukanModalName}
+                                modalTarget={modalName}
                                 className={`btn ${styles.btnAction}`}
                                 style={{ display: 'flex', alignItems: 'center' }}
                                 onClick={() => handleDeleteClick(item)}
@@ -265,19 +335,11 @@ const PengingatTanaman = () => {
         />
       )}
       <Modal
-        id={penyiramanModalName}
+        id={modalName}
         title="Hapus Data Tanaman"
-        content={<p className='text-center'>Apakah anda yakin akan mengapus data tanaman?</p>}
+        content={<p className='text-center'>Apakah anda yakin akan mengapus data pengingat?</p>}
         onCancel= {() => {}}
-        onSubmit= {() => executeDeletePenyiraman(modalData)}
-        type="delete"
-      />
-      <Modal
-        id={pemupukanModalName}
-        title="Edit Data"
-        content={<p className='text-center'>Apakah anda yakin akan mengedit data tanaman?</p>}
-        onCancel= {() => {}}
-        onSubmit= {() => executeDeletePemupukan(modalData)}
+        onSubmit= {() => executeDelete(modalData)}
         type="delete"
       />
     </>

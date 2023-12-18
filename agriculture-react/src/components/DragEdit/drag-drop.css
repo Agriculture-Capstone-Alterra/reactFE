@@ -1,0 +1,63 @@
+#drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+#drop-area:hover {
+    border: 2px solid #c8c8c8;
+}
+#drop-area input{
+    display:none;
+}
+#drop-area .select {
+    color: #3E87F4;
+    cursor: pointer;
+}
+#image-preview {
+    display: block;
+    flex-wrap: wrap;
+}
+.preview-container {
+    margin: 0 0 10px 0;
+    padding: 9px 9px 9px 9px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 2px;
+    border: 1px solid #CED4DA;
+    background: rgba(255, 255, 255, 0.00);
+    gap: 8px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+.preview-container img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 2px;
+}
+.image-info {
+    display: flex;
+    flex-wrap:wrap;
+    align-items: center;
+    margin-top: 5px;
+    justify-content: space-between;
+    width: -webkit-fill-available;
+}
+.image-name {
+    margin-left: 5px;
+    font-size: 14px;
+    float: inline-start;
+}
+.remove-image {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    float: inline-end;
+    font-size: 14px;
+}
