@@ -73,34 +73,34 @@ const EditProduct = () => {
         data
       );
       // console.log(productResponse);
-      const product_id = id;
-      const productFormData = new FormData();
-      for (const image of imageProduct) {
-        const base64toRes = await fetch(image.src);
-        const base64toBlob = await base64toRes.blob();
-        productFormData.append("plant_product_id", product_id);
-        productFormData.append("image_files", base64toBlob);
-      }
-      oldImageProduct.map((item) => {
-        axiosWithAuth
-          .delete(`plant-product-images/${item.id}`)
-          .then((result) => {
-            console.log(result);
-          })
-          .catch((error) => {
-            console.log("Error :", error);
-          });
-      });
-      const productImageResponse = await axiosWithAuth.post(
-        `plant-product-images/${product_id}`,
-        productFormData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      navigate("produk-lokal");
+      // const product_id = id;
+      // const productFormData = new FormData();
+      // for (const image of imageProduct) {
+      //   const base64toRes = await fetch(image.src);
+      //   const base64toBlob = await base64toRes.blob();
+      //   productFormData.append("plant_product_id", product_id);
+      //   productFormData.append("image_files", base64toBlob);
+      // }
+      // oldImageProduct.map((item) => {
+      //   axiosWithAuth
+      //     .delete(`plant-product-images/${item.id}`)
+      //     .then((result) => {
+      //       console.log(result);
+      //     })
+      //     .catch((error) => {
+      //       console.log("Error :", error);
+      //     });
+      // });
+      // const productImageResponse = await axiosWithAuth.post(
+      //   `plant-product-images/${product_id}`,
+      //   productFormData,
+      //   {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   }
+      // );
+      navigate("/produk-lokal");
     } catch (error) {
       console.log("Error :", error);
     }
@@ -337,7 +337,7 @@ const EditProduct = () => {
               className="btn btn-green col-auto m12"
               onClick={() => handleSubmit()}
             >
-              Tambah
+              Edit
             </button>
           </div>
           {/* <FormLayout onSubmit={() => handleSubmit()}>

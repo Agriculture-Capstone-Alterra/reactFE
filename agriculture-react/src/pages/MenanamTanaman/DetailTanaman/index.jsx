@@ -197,7 +197,7 @@ const DetailTanaman = () => {
                 </div>
                 <div className="d-flex flex-wrap gap-4 px-4 mt-4">
                   <Accordion
-                    title="Deskripsi Tananman"
+                    title="Deskripsi Tanaman"
                     onClick={() => setIsShowDeskripsi(!isShowDeskripsi)}
                     isShowAccordion={isShowDeskripsi}
                   >
