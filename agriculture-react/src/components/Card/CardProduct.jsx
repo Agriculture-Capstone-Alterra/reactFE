@@ -8,53 +8,76 @@ import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import ModalTrigger from "../Modal/ModalTrigger";
 import "./CustomDot.css";
-const CardProduct = ({ changeIdDetailProduct }) => {
-  const deleteModalName = "deletaDataTanaman";
+const CardProduct = ({ product, changeIdDetailProduct, deleteProduct }) => {
+  const deleteModalName = `deletaDataTanaman${product.id}`;
+  const showDelete = (id) => {
+    console.log(id);
+  };
   return (
     <>
       <div className={styles.cardProduct}>
-        <Carousel autoPlay={true} showArrows={false} showThumbs={false}>
-          <div className="mb-5">
-            <img
-              src={aloe}
-              style={{ cursor: "pointer" }}
-              onClick={() => changeIdDetailProduct(1)}
-              alt=""
-              data-bs-toggle="modal"
-              data-bs-target={`#product${1}`}
-            />
-          </div>
-          <div className="mb-5">
-            <img
-              src={aloe}
-              style={{ cursor: "pointer" }}
-              onClick={() => changeIdDetailProduct(1)}
-              alt=""
-              data-bs-toggle="modal"
-              data-bs-target={`#product${1}`}
-            />
-          </div>
-        </Carousel>
-
+        <div className={styles.imageCarousel}>
+          <Carousel autoPlay={true} showArrows={false} showThumbs={false}>
+            {product.images.length > 0 ? (
+              product.images.map((item, index) => (
+                <div className="mb-5" key={index}>
+                  <img
+                    src={item.image_path}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => changeIdDetailProduct(product.id)}
+                    className={styles.imageCarousel}
+                    alt=""
+                    data-bs-toggle="modal"
+                    data-bs-target={`#product${product.id}`}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="mb-5">
+                <img
+                  src={aloe}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => changeIdDetailProduct(product.id)}
+                  alt=""
+                  data-bs-toggle="modal"
+                  data-bs-target={`#product${product.id}`}
+                />
+              </div>
+              // <></>
+            )}
+          </Carousel>
+        </div>
         <div
-          className={`${styles.cardInfo}`}
-          onClick={() => changeIdDetailProduct(1)}
+          className={`mt-5 ${styles.cardInfo}`}
+          onClick={() => changeIdDetailProduct(product.id)}
           data-bs-toggle="modal"
-          data-bs-target={`#product${1}`}
+          data-bs-target={`#product${product.id}`}
         >
-          <p className="fonts16 fontw600">Bibit Aloe</p>
+          <p className="fonts16 fontw600">{product.name}</p>
           <p className="fonts12 fontw600" style={{ color: "#10B981" }}>
-            Tersedia : 1100
+            Tersedia : {product.stock}
           </p>
           <p className="fonts12 fontw600" style={{ color: "#3B82F6" }}>
-            Sudah Terjual : 1100
+            Sudah Terjual : {product.sold}
           </p>
-          <p className="fonts12 fontw600">Harga Pokok : 70.000/kg</p>
-          <p className="fonts12 fontw600">Harga Jual : 80.000/kg</p>
+          <p className="fonts12 fontw600">
+            Harga Pokok :{" "}
+            {product.cost_price.toLocaleString("id-ID", {
+              maximumFractionDigits: 0,
+            })}
+            /kg
+          </p>
+          <p className="fonts12 fontw600">
+            Harga Jual :{" "}
+            {product.sales_price.toLocaleString("id-ID", {
+              maximumFractionDigits: 0,
+            })}
+            /kg
+          </p>
         </div>
         <div className={`mt-3 ${styles.footerCard}`}>
           <Link
-            to={"/menanam-tanaman"}
+            to={`/produk-lokal/edit-produk/${product.id}`}
             className={`btn btn-outline-primary`}
             style={{ whiteSpace: "nowrap" }}
           >
@@ -77,14 +100,14 @@ const CardProduct = ({ changeIdDetailProduct }) => {
       </div>
       <Modal
         id={deleteModalName}
-        title="Hapus Data Tanaman"
+        title="Hapus Data Product"
         content={
           <p className="text-center">
-            Apakah anda yakin akan mengapus data tanaman?
+            Apakah anda yakin akan mengapus data product?
           </p>
         }
         onCancel={() => {}}
-        onSubmit={() => console.log("Oke")}
+        onSubmit={() => deleteProduct(product.id)}
         type="delete"
       />
     </>

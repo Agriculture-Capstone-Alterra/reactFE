@@ -1,12 +1,9 @@
+/* eslint-disable react/prop-types */
 import "./style.module.css";
 
-const FilterProduct = () => {
+const FilterProduct = ({ changeFilter }) => {
   const product = ["All", "Bibit", "Benih"];
 
-  const cekValue = (e) => {
-    const { name, value } = e.target;
-    console.log(name, value);
-  };
   return (
     <>
       <div>
@@ -29,7 +26,7 @@ const FilterProduct = () => {
                 name="filterProduct"
                 id={`filterProduct${index}`}
                 value={item}
-                onChange={(e) => cekValue(e)}
+                onChange={(e) => changeFilter(e)}
               />
               <label
                 className="form-check-label"

@@ -15,6 +15,7 @@
 
 .cardInfo {
   flex-shrink: 0;
+  width: 348px;
   max-width: 348px;
   border-radius: 16px;
 }
