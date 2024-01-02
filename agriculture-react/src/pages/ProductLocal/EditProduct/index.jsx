@@ -5,8 +5,7 @@ import Invalid from "../../../components/Invalid";
 import Select from "../../../components/Select";
 import Layout from "../../../layout/Layout";
 import TextArea from "../../../components/Textarea";
-import DragFile from "../../../components/DragFile";
-import FormLayout from "../../../components/FormLayout";
+import DragEdit from "../../../components/DragEdit";
 import axiosWithAuth from "../../../api/axios";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -72,34 +71,6 @@ const EditProduct = () => {
         `plant-products/${id}`,
         data
       );
-      // console.log(productResponse);
-      // const product_id = id;
-      // const productFormData = new FormData();
-      // for (const image of imageProduct) {
-      //   const base64toRes = await fetch(image.src);
-      //   const base64toBlob = await base64toRes.blob();
-      //   productFormData.append("plant_product_id", product_id);
-      //   productFormData.append("image_files", base64toBlob);
-      // }
-      // oldImageProduct.map((item) => {
-      //   axiosWithAuth
-      //     .delete(`plant-product-images/${item.id}`)
-      //     .then((result) => {
-      //       console.log(result);
-      //     })
-      //     .catch((error) => {
-      //       console.log("Error :", error);
-      //     });
-      // });
-      // const productImageResponse = await axiosWithAuth.post(
-      //   `plant-product-images/${product_id}`,
-      //   productFormData,
-      //   {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   }
-      // );
       navigate("/produk-lokal");
     } catch (error) {
       console.log("Error :", error);
@@ -153,6 +124,24 @@ const EditProduct = () => {
       crumbname: "Tambah Produk",
     },
   ];
+  const timestampRegExp = /\b\d{13}\b/;
+  const handleRemoveImageProduct = async (id) => {
+      try {
+          if(timestampRegExp.test(id)){
+              alert('Reload website!')
+          } else {
+              const response = await axiosWithAuth.delete(`plant-product-images/${id}`);
+              if (response.status === 200) {
+                  const updatedImages = imageProduct.filter((image) => image.id !== id);
+                  setImageProduct(updatedImages);
+              } else {
+                  console.error('Failed to delete image:', response.statusText);
+              }
+          }
+      } catch (error) {
+          console.error('Error deleting image:', error.message);
+      }
+  };
   return (
     <>
       <Layout pagetitle={"Produk Lokal"} breadcrumbs={breadcrumbsobjectexample}>
@@ -263,7 +252,7 @@ const EditProduct = () => {
                     name="salesPrice"
                     value={dataProduct.salesPrice}
                     onChange={(e) => onChangeValue(e)}
-                    placeholder="Masukkan harga pokok"
+                    placeholder="Masukkan harga jual"
                   />
                   <Invalid errormsg={"Tolong masukkan harga jual."} />
                 </div>
@@ -313,12 +302,14 @@ const EditProduct = () => {
               <label className="form-label fontw600" htmlFor="imageProduct">
                 Gambar
               </label>
-              <DragFile
-                name={"gambarsaran"}
-                value={imageProduct}
-                setValue={setImageProduct}
-                onDelete={deleteImageProduct}
-              />
+              <DragEdit
+                    name={'gambarproduct'}
+                    value={imageProduct}
+                    setValue={setImageProduct}
+                    onDelete={handleRemoveImageProduct}
+                    idPlant={id}
+                    linkApi={`plant-product-images`}
+                />
               <Invalid errormsg={"Tolong masukkan gambar product."} />
             </div>
           </div>
@@ -340,8 +331,6 @@ const EditProduct = () => {
               Edit
             </button>
           </div>
-          {/* <FormLayout onSubmit={() => handleSubmit()}>
-          </FormLayout> */}
         </div>
       </Layout>
     </>

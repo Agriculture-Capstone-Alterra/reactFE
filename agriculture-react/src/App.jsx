@@ -25,11 +25,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+      <Route path="/landingpage" element={<LandingPage />} />
         <Route path="/" element={<PrivateRoute />}>
           {/* punya sfutra */}
           <Route path="/testpaage" element={<TestPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/landingpage" element={<LandingPage />} />
           {/* end punya safutra */}
           <Route
             path="/menanam-tanaman/tambah-tanaman"

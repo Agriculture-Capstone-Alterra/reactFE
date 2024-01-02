@@ -200,14 +200,22 @@ export default function Dashboard(){
         })
     }
     async function GetTopFarmer(){
-        axiosWithAuth.get('/admin/user-plants/top-farmer').then((response) => {
-            const resp = response.data.data
-            console.log("huh,", resp)
-            setDatafarmer(resp)
-            setSelectedDataFarmer(resp[0].top_farmers)
-
-        })
+        try {
+            const response = await axiosWithAuth.get('/admin/user-plants/top-farmer');
+            const resp = response.data.data;
+    
+            console.log("huh,", resp);
+            if (resp && resp.length > 0) {
+                setDatafarmer(resp);
+                setSelectedDataFarmer(resp[0].top_farmers);
+            } else {
+                console.error("Data tidak ditemukan atau kosong");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
     }
+    
     async function GetAnalyticsData(){
         axiosWithAuth.get('/admin/user-plants/statistics').then((response) => {
             const resp = response.data.data
@@ -232,7 +240,7 @@ export default function Dashboard(){
             for (let day = 1; day <= 31; day++) {
                 const currentDate = `${currentmonthdate.year}-${currentmonthdate.month}-${day.toString().padStart(2, '0')}T00:00:00Z`;
                 const lastDate = `${lastmonthdate.year}-${lastmonthdate.month}-${day.toString().padStart(2, '0')}T00:00:00Z`;
-                const findexistscurrent = currentmonth.list.find((item) => item.date === currentDate);
+                const findexistscurrent = currentmonth.list ? currentmonth.list.find((item) => item.date === currentDate) : 0;
                 const findexistslast = lastmonth.list ? lastmonth.list.find((item) => item.date === lastDate) : 0
                 if(findexistscurrent){
                     // listcurrentmonth.push(findexistscurrent)
